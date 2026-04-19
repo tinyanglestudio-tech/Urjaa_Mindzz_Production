@@ -29,6 +29,36 @@
   .gold-border{border:1.5px solid transparent;background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#fccc38,#ff9734,#a74632) border-box}
   #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
   #mobile-menu.active{transform:translateX(0)}
+
+  /* Merged: Community + Home extras */
+  .bg-mesh-2{background-color:#fbf9f1;background-image:radial-gradient(ellipse at 80% 20%,rgba(252,204,56,0.12) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(167,70,50,0.07) 0%,transparent 50%)}
+  .glass-dark{background:rgba(167,70,50,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15)}
+  .btn-secondary{background:linear-gradient(135deg,#a74632,#8e3a29);box-shadow:0 4px 16px rgba(167,70,50,0.3);transition:all 0.3s ease;color:#fff}
+  .btn-secondary:hover{box-shadow:0 8px 28px rgba(167,70,50,0.45);transform:translateY(-2px)}
+  .btn-primary-grad{background:linear-gradient(135deg,#7c6100 0%,#5a4500 100%);box-shadow:0 4px 20px rgba(124,97,0,0.3);transition:all 0.3s ease}
+  .btn-primary-grad:hover{box-shadow:0 8px 32px rgba(124,97,0,0.45);transform:translateY(-2px)}
+  .serif-text{font-family:'Noto Serif',serif}
+  .sanskrit-glow{text-shadow:0 0 30px rgba(244,196,48,0.35)}
+  .grad-text{background:linear-gradient(135deg,#7c6100 0%,#a74632 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .glass-hero{background:linear-gradient(135deg,rgba(252,204,56,0.12) 0%,rgba(167,70,50,0.08) 50%,rgba(254,252,244,0.4) 100%);backdrop-filter:blur(4px)}
+  .blob3{border-radius:50% 50% 30% 70%/50% 60% 40% 50%}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes drift{0%,100%{transform:translateX(0) scale(1)}50%{transform:translateX(10px) scale(1.04)}}
+  .anim-float,.af{animation:float 6s ease-in-out infinite}
+  .anim-float2,.af2{animation:float2 8s ease-in-out infinite;animation-delay:-2s}
+  .anim-drift{animation:drift 10s ease-in-out infinite}
+  .badge{background:linear-gradient(135deg,rgba(252,204,56,0.22),rgba(255,151,52,0.12));border:1px solid rgba(252,204,56,0.4)}
+  .scrapbook{background:white;padding:10px 10px 40px 10px;box-shadow:0 10px 30px rgba(0,0,0,0.1);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+  .scrapbook:hover{transform:translateY(-12px) rotate(0deg) scale(1.05) !important;z-index:50;box-shadow:0 30px 60px rgba(0,0,0,0.2)}
+  .pillar-love{background:linear-gradient(135deg,rgba(255,196,184,0.5),rgba(255,196,184,0.2))}
+  .pillar-stimulate{background:linear-gradient(135deg,rgba(252,204,56,0.3),rgba(252,204,56,0.1))}
+  .pillar-explore{background:linear-gradient(135deg,rgba(255,151,52,0.2),rgba(255,151,52,0.05))}
+  .pillar-connect{background:linear-gradient(135deg,rgba(255,196,184,0.3),rgba(255,196,184,0.05))}
+  .pillar-bloom{background:linear-gradient(135deg,rgba(252,204,56,0.2),rgba(252,204,56,0.05))}
+  .vision-grad{background:linear-gradient(135deg,rgba(255,255,255,0.9) 0%,rgba(254,252,244,0.95) 100%)}
+  html{scroll-behavior:smooth}
+  section[id]{scroll-margin-top:120px}
 </style>
 </head>
 <body class="bg-mesh text-on-surface">
@@ -40,9 +70,9 @@
       <img alt="Urjaa Mindz Logo" class="w-auto object-contain h-20 md:h-28"  src="logo.png"/>
     </a>
     <div class="hidden md:flex items-center gap-6 font-['Noto_Serif'] text-base font-bold tracking-tight">
-      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="home.html">Home</a>
-      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="index.html">Programs</a>
-      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="community.html">Community</a>
+      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="#programs">Programs</a>
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#community">Community</a>
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#home">Home</a>
       <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="admin.html">Admin</a>
     </div>
     <div class="flex items-center gap-3">
@@ -53,9 +83,9 @@
   <!-- Mobile sidebar -->
   <div class="fixed inset-y-0 right-0 w-64 bg-white shadow-2xl z-50 md:hidden flex flex-col p-6 gap-4 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
     <div class="flex justify-end"><button id="menu-close"><span class="material-symbols-outlined text-2xl">close</span></button></div>
-    <a class="text-[#383833]" href="home.html">Home</a>
-    <a class="text-[#F4C430]" href="index.html">Programs</a>
-    <a class="text-[#383833]" href="community.html">Community</a>
+    <a class="text-[#F4C430]" href="#programs">Programs</a>
+    <a class="text-[#383833]" href="#community">Community</a>
+    <a class="text-[#383833]" href="#home">Home</a>
     <a class="text-[#383833]" href="admin.html">Admin</a>
     <a class="btn-gold text-on-primary-container px-6 py-3 rounded-full text-center mt-4 font-bold" href="#join-cta">Join Now</a>
   </div>
@@ -63,6 +93,7 @@
 
 <main class="pt-12 pb-20">
 
+<div id="programs"></div>
 <!-- HERO -->
 <section class="max-w-7xl mx-auto px-4 md:px-8 mb-20 relative overflow-hidden pt-10" style="min-height:480px">
   <div class="blob1" style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:rgba(252,204,56,0.15);z-index:0;pointer-events:none"></div>
@@ -859,7 +890,7 @@ window._selectAge = function(key) {
 </section>
 
 <!-- FINAL CTA -->
-<section class="max-w-4xl mx-auto px-4 mt-20" id="join-cta">
+<section class="max-w-4xl mx-auto px-4 mt-20" id="programs-cta">
   <div class="p-10 md:p-16 rounded-2xl text-center relative overflow-hidden shadow-2xl" style="background:linear-gradient(135deg,#7c6100,#5a4500)">
     <div style="position:absolute;inset:0;opacity:0.07;background-image:radial-gradient(circle at 2px 2px,#fff 1px,transparent 0);background-size:36px 36px"></div>
     <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black text-white mb-4 relative z-10">Start Their Journey Today</h2>
@@ -878,6 +909,526 @@ window._selectAge = function(key) {
 <!-- Sensory Play Guides & Articles sections removed -->
 </div>
 
+
+<!-- ====== COMMUNITY SECTION (merged) ====== -->
+<div id="community">
+<!-- ====== HERO ====== -->
+<section data-section="community-hero" class="relative overflow-hidden pt-12 pb-20 px-4 md:px-12">
+  <!-- Blobs -->
+  <div class="blob1 af" style="position:absolute;top:5%;left:3%;width:220px;height:220px;background:rgba(252,204,56,0.15);pointer-events:none;z-index:0"></div>
+  <div class="blob2 af2" style="position:absolute;bottom:10%;right:5%;width:180px;height:180px;background:rgba(167,70,50,0.1);pointer-events:none;z-index:0"></div>
+
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10 relative z-10">
+    <!-- Text -->
+    <div class="flex-1 space-y-6">
+      <h2 class="text-secondary text-xl md:text-2xl font-['Noto_Serif'] italic">स्नेहेन वर्धते बुद्धिः</h2>
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-['Noto_Serif'] font-black text-on-surface leading-tight" data-text-key="comm_title">
+        The Nurture <br/><span class="text-primary italic">Collective</span>
+      </h1>
+      <p class="text-base md:text-lg text-on-surface-variant max-w-lg leading-relaxed" data-text-key="comm_sub">
+        A sanctuary for mindful mothers. Connect, share, and grow in a space designed to celebrate the wisdom of conscious parenting.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="https://www.instagram.com/urjaa.mom.diaries?igsh=dHNvMTNxaWlteWVq" target="_blank" rel="noopener noreferrer" class="border-2 border-primary text-primary px-8 py-4 rounded-xl text-base font-bold hover:bg-primary-container/20 transition-all glass-card inline-block text-center no-underline">Watch Stories</a>
+      </div>
+    </div>
+
+    <!-- Hero image -->
+    <div class="flex-1 relative w-full max-w-lg mx-auto lg:mx-0">
+      <div class="blob1" style="position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:rgba(252,204,56,0.2);z-index:0"></div>
+      <div style="position:relative;z-index:1;border-radius:1rem;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);transform:rotate(2deg);transition:transform 0.5s ease">
+        <img data-img-id="comm-hero" alt="warm candid portrait of an Indian mother laughing with her young child" style="width:100%;height:420px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80"/>
+      </div>
+      <!-- Quote card -->
+      <div class="glass-card absolute -bottom-5 -left-4 z-20 p-5 rounded-xl max-w-[220px]" style="transform:rotate(-2deg)">
+        <p class="text-secondary font-['Noto_Serif'] font-bold text-sm italic" data-text-key="comm_quote">"A community that feels like home."</p>
+        <p class="text-on-surface-variant text-xs mt-1" data-text-key="comm_quote_attr">— Priya S., Mumbai</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====== MOTHERS WHO BLOOM ====== -->
+<section data-section="community-bloom" class="py-20 px-4 overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-['Noto_Serif'] font-black mb-4">Mothers Who Bloom</h2>
+      <p class="text-on-surface-variant max-w-xl mx-auto italic text-sm">Real stories from our community of resilient, conscious parents across India.</p>
+    </div>
+
+    <!-- Scrapbook photos -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-20 items-start" data-sync-list="gallery">
+      <div class="af flex justify-center">
+        <div class="scrapbook w-full max-w-xs" style="transform:rotate(-2deg)">
+          <img data-img-id="growing" alt="Growing Together" style="width:100%;height:200px;object-fit:cover;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=500&q=80"/>
+          <p class="mt-3 text-center font-['Noto_Serif'] italic text-sm text-on-surface-variant">Growing Together</p>
+        </div>
+      </div>
+      <div class="af2 flex justify-center" style="animation-delay:-1s">
+        <div class="scrapbook w-full max-w-xs" style="transform:rotate(1deg)">
+          <img data-img-id="nurture-circle" alt="Our Nurture Circle" style="width:100%;height:200px;object-fit:cover;object-position:top;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1536321115970-5dfa13356211?w=500&q=80"/>
+          <p class="mt-3 text-center font-['Noto_Serif'] italic text-base text-primary font-bold">Our Nurture Circle</p>
+        </div>
+      </div>
+      <div class="af flex justify-center" style="animation-delay:-2s">
+        <div class="scrapbook w-full max-w-xs" style="transform:rotate(3deg)">
+          <img data-img-id="wisdom-comm" alt="Wisdom in Community" style="width:100%;height:200px;object-fit:cover;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80"/>
+          <p class="mt-3 text-center font-['Noto_Serif'] italic text-sm text-on-surface-variant">Wisdom in Community</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start" data-sync-list="testimonials">
+      <!-- Story 1 -->
+      <div class="glass-card p-8 rounded-2xl soft-card relative gold-border">
+        <span class="text-6xl text-primary opacity-15 font-serif leading-none absolute top-4 left-4">"</span>
+        <p class="text-on-surface relative z-10 leading-relaxed italic text-base mb-6">
+          Urjaa Mindz helped me find the balance between my career and being the present mother I always wanted to be. The community support is unparalleled.
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-1 bg-secondary rounded-full"></div>
+          <span class="font-bold text-sm">Ananya Verma, Bangalore</span>
+        </div>
+      </div>
+
+      <!-- Stories 2 & 3 -->
+      <div class="flex flex-col gap-6">
+        <div class="glass-card p-6 rounded-2xl soft-card border-l-4 border-primary">
+          <p class="text-base leading-relaxed text-on-surface mb-5">
+            The 'Sensory Play' workshops gave me practical tools to connect with my son's unique learning style. We are growing together every day.
+          </p>
+          <div class="flex items-center gap-3">
+            <div style="width:52px;height:52px;border-radius:50%;background:#a74632;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">MK</div>
+            <div>
+              <h4 class="font-bold text-sm">Meera Kapur</h4>
+              <p class="text-xs text-on-surface-variant">Early Childhood Educator & Mom</p>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card p-6 rounded-2xl soft-card border-l-4 border-secondary">
+          <p class="text-base leading-relaxed text-on-surface mb-5">
+            Finally, a space that understands the cultural nuances of raising a child in an Indian household while embracing modern mindful practices.
+          </p>
+          <div class="flex items-center gap-3">
+            <div style="width:52px;height:52px;border-radius:50%;background:#995200;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">SS</div>
+            <div>
+              <h4 class="font-bold text-sm">Srishti Shah</h4>
+              <p class="text-xs text-on-surface-variant">Mumbai Community Leader</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== LIVE WORKSHOPS ====== -->
+<section class="py-20 max-w-7xl mx-auto px-4 md:px-8" id="workshops">
+  <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+    <div>
+      <span class="inline-block bg-primary-container/40 text-primary text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full mb-4">Upcoming Sessions</span>
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-2">Live Workshops for Moms</h2>
+      <p class="text-on-surface-variant text-sm">Connect with experts and fellow mothers in immersive live sessions.</p>
+    </div>
+  </div>
+  <div class="space-y-5" data-sync-list="workshops">
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">12</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Mindful Motherhood: The First 500 Days</h4>
+        <p class="text-on-surface-variant text-sm">Understanding the emotional and neurological shifts in you and your baby.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Limited Spots</span>
+        <button onclick="openJoinPopup()" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>
+      </div>
+    </div>
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="text-on-secondary p-5 rounded-xl text-center min-w-[100px]" style="background:#a74632">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">18</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Sanskrit Mantras & Baby Brain Development</h4>
+        <p class="text-on-surface-variant text-sm">Exploring the resonance and cognitive benefits of ancient sound vibrations.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-surface-container-highest px-4 py-1 rounded-full">Online Only</span>
+        <button onclick="openJoinPopup()" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>
+      </div>
+    </div>
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">25</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Feeding Curiosity: Nutrition for Smart Minds</h4>
+        <p class="text-on-surface-variant text-sm">Science-backed dietary guides for toddlers during peak brain growth periods.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Free Webinar</span>
+        <button onclick="openJoinPopup()" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== JOIN CTA ====== -->
+<section data-section="community-cta" class="py-20 px-4 mx-3 md:mx-8 rounded-2xl overflow-hidden relative" id="join-cta" style="background:linear-gradient(135deg,#a74632 0%,#8e3a29 60%,#7c2e1f 100%)">
+  <!-- Glassmorphism overlay -->
+  <div style="position:absolute;top:0;right:0;opacity:0.06;pointer-events:none">
+    <span class="material-symbols-outlined" style="font-size:280px;color:white">spa</span>
+  </div>
+  <div style="position:absolute;top:-60px;left:-60px;width:240px;height:240px;background:rgba(255,255,255,0.05);border-radius:50%;pointer-events:none"></div>
+  <div style="position:absolute;bottom:-80px;right:-40px;width:300px;height:300px;background:rgba(255,255,255,0.04);border-radius:50%;pointer-events:none"></div>
+
+  <div class="max-w-3xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-['Noto_Serif'] font-black text-white mb-4" data-text-key="comm_cta_title">Join the Circle</h2>
+      <p class="text-lg text-white/85" data-text-key="comm_cta_sub">Unlock exclusive workshops, community forums, and nurturing resources.</p>
+    </div>
+
+    <div class="p-6 md:p-10 rounded-2xl" style="background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2)">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-1">
+          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Full Name</label>
+          <input class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="Your Name" type="text"/>
+        </div>
+        <div class="space-y-1">
+          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Email Address</label>
+          <input class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="name@example.com" type="email"/>
+        </div>
+        <div class="space-y-1 md:col-span-2">
+          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Tell us about your journey</label>
+          <textarea class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="I'm a mother of two looking for..." rows="3"></textarea>
+        </div>
+        <div class="md:col-span-2 mt-2">
+          <button onclick="openJoinPopup()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-lg font-black hover:scale-105 transition-all" data-text-key="comm_cta_btn">Become a Member</button>
+        </div>
+        <p class="md:col-span-2 text-center text-xs text-white/60">By joining, you agree to our Community Guidelines and Privacy Policy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ====== HOME SECTION (merged) ====== -->
+<div id="home">
+<section data-section="home-hero" class="relative min-h-[90vh] flex items-center justify-center px-4 lg:px-20 py-16">
+  <!-- Background blobs -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-[5%] left-[5%] w-72 h-72 blob1 bg-yellow-200/30 anim-float"></div>
+    <div class="absolute bottom-[10%] right-[8%] w-64 h-64 blob2 bg-red-200/20 anim-float2"></div>
+    <div class="absolute top-[40%] right-[20%] w-48 h-48 blob3 bg-orange-200/20 anim-drift"></div>
+  </div>
+
+  <!-- Hero Image bg -->
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;overflow:hidden">
+    <img data-img-id="hero-bg" alt="Mother and toddler laughing" style="width:100%;height:100%;object-fit:cover;opacity:0.12;display:block" src="https://images.unsplash.com/photo-1566004100631-35d015d6a491?w=1200&q=80"/>
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom, rgba(254,252,244,0.1) 0%, rgba(254,252,244,0.55) 60%, #fefcf4 100%)"></div>
+  </div>
+
+  <div class="relative z-10 text-center max-w-4xl mx-auto">
+    <!-- Badge -->
+    <div class="mb-6 flex justify-center">
+      <span class="badge text-secondary font-semibold tracking-widest uppercase text-xs px-5 py-2 rounded-full">Radiant Nurturing</span>
+    </div>
+
+    <!-- Sanskrit headline -->
+    <h1 class="serif-text text-4xl sm:text-6xl md:text-8xl font-bold text-secondary mb-6 leading-tight sanskrit-glow" data-text-key="hero_sanskrit">
+      स्नेहेन वर्धते बुद्धिः
+    </h1>
+
+    <!-- Subheading -->
+    <p class="text-base sm:text-lg md:text-xl text-on-surface-variant font-medium max-w-2xl mx-auto mb-10 serif-text italic leading-relaxed px-4" data-text-key="hero_subtitle">
+      "As a mother, you are the first light your child sees. At Urjaa Mindz, we believe with affection, the intellect grows — nurturing the next generation through love, heart-centered play, and ancient wisdom."
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
+      <a href="#programs" class="btn-primary-grad text-white text-base px-8 py-4 rounded-xl font-bold w-full sm:w-auto text-center" data-text-key="hero_btn1">Start Your Journey</a>
+      <a href="#our-story" class="flex items-center gap-2 text-secondary font-bold text-base hover:underline decoration-2 underline-offset-8 group justify-center">
+        <span class="material-symbols-outlined glass-card p-2 rounded-full group-hover:rotate-12 transition-transform text-xl">play_circle</span>
+        <span data-text-key="hero_btn2">See Our Vision</span>
+      </a>
+    </div>
+
+    <!-- Stats floating glass cards -->
+    <div class="mt-14 flex flex-wrap gap-3 justify-center px-4">
+      <div class="glass-card rounded-2xl px-5 py-3 flex items-center gap-2">
+        <span class="text-xl">🌸</span>
+        <span class="font-bold text-sm text-secondary" data-text-key="stat1">5,000+ Mothers</span>
+      </div>
+      <div class="glass-card rounded-2xl px-5 py-3 flex items-center gap-2">
+        <span class="text-xl">🧠</span>
+        <span class="font-bold text-sm text-primary" data-text-key="stat2">50+ Resources</span>
+      </div>
+      <div class="glass-card rounded-2xl px-5 py-3 flex items-center gap-2">
+        <span class="text-xl">💫</span>
+        <span class="font-bold text-sm text-tertiary">Ancient + Modern</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PHILOSOPHY ====== -->
+<section data-section="home-philosophy" class="py-20 relative overflow-hidden mx-3 md:mx-8 rounded-[2.5rem] bg-mesh-2">
+  <div class="max-w-7xl mx-auto px-5 md:px-12 grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Image mosaic -->
+    <div class="order-2 lg:order-1">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <img data-img-id="phil-1" alt="Nurturing nature" style="width:100%;height:224px;object-fit:cover;border-radius:1rem;box-shadow:0 4px 24px rgba(124,97,0,0.1);display:block" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80"/>
+          <img data-img-id="phil-2" alt="Child learning" style="width:100%;height:144px;object-fit:cover;border-radius:1rem;box-shadow:0 4px 24px rgba(124,97,0,0.1);display:block" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80"/>
+        </div>
+        <div style="padding-top:2rem">
+          <img data-img-id="phil-3" alt="Mother child bond" style="width:100%;height:384px;object-fit:cover;border-radius:1rem;box-shadow:0 4px 24px rgba(124,97,0,0.1);display:block" src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80"/>
+        </div>
+      </div>
+    </div>
+    <!-- Text -->
+    <div class="order-1 lg:order-2 px-1">
+      <h2 class="serif-text text-secondary text-3xl sm:text-5xl font-black mb-4 leading-tight sanskrit-glow" data-text-key="phil_title">
+        स्नेहेन वर्धते बुद्धिः
+      </h2>
+      <p class="text-lg serif-text italic text-primary-dim mb-8" data-text-key="phil_tagline">"Wisdom grows through love."</p>
+      <div class="space-y-6 text-base text-on-surface-variant" data-sync-list="philCards">
+        <div class="flex gap-4 items-start glass-card rounded-2xl p-4">
+          <span class="material-symbols-outlined text-primary text-3xl shrink-0 bg-primary-container/30 p-2 rounded-xl">psychology</span>
+          <div>
+            <h4 class="font-bold text-on-surface text-base mb-1">Cognitive Empathy</h4>
+            <p>Learning is about feeling the connection between facts and the heart.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 items-start glass-card rounded-2xl p-4">
+          <span class="material-symbols-outlined text-primary text-3xl shrink-0 bg-primary-container/30 p-2 rounded-xl">groups</span>
+          <div>
+            <h4 class="font-bold text-on-surface text-base mb-1">Village-Led Growth</h4>
+            <p>Every child is surrounded by "Urjaa" mentors who lead with presence and patience.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 items-start glass-card rounded-2xl p-4">
+          <span class="material-symbols-outlined text-primary text-3xl shrink-0 bg-primary-container/30 p-2 rounded-xl">auto_awesome</span>
+          <div>
+            <h4 class="font-bold text-on-surface text-base mb-1">Joyful Rigor</h4>
+            <p>We challenge the mind through play, curiosity, and belief in every child's innate wisdom.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 5 PILLARS ====== -->
+<section data-section="home-pillars" class="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+  <div class="text-center mb-14">
+    <span class="text-primary font-bold uppercase tracking-widest text-xs">Our Framework</span>
+    <h2 class="serif-text text-3xl sm:text-5xl font-bold mb-3 mt-2" data-text-key="pillars_title">Our Nurturing Pillars</h2>
+    <p class="text-on-surface-variant max-w-md mx-auto italic text-sm">Five paths to blooming potential</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" data-sync-list="pillars">
+    <!-- Love -->
+    <div class="pillar-love glass-card rounded-2xl p-7 soft-card border-b-4 border-secondary/30 sm:col-span-2 lg:col-span-1">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-3xl">💞</span>
+        <h3 class="serif-text text-2xl font-bold text-secondary">Love</h3>
+      </div>
+      <p class="text-sm text-on-secondary-container font-medium mb-4 italic">"The foundation of every brilliant mind"</p>
+      <p class="text-sm text-on-surface-variant mb-4">At Urjaa Mindz, everything begins with affection and emotional security. When a child feels loved, their brain becomes more receptive to learning.</p>
+      <div class="bg-white/50 px-4 py-2 rounded-xl">
+        <p class="text-xs font-bold text-secondary">🔸 Emotional bonding · Safe environment · Positive reinforcement</p>
+      </div>
+    </div>
+
+    <!-- Stimulate -->
+    <div class="pillar-stimulate glass-card rounded-2xl p-7 soft-card border-b-4 border-primary/30">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-3xl">🧠</span>
+        <h3 class="serif-text text-2xl font-bold text-primary">Stimulate</h3>
+      </div>
+      <p class="text-sm text-on-primary-container font-medium mb-4 italic">"Activate the brain in the early years"</p>
+      <p class="text-sm text-on-surface-variant mb-4">Intentional, brain-boosting activities to strengthen neural connections during critical early years.</p>
+      <div class="bg-white/50 px-4 py-2 rounded-xl">
+        <p class="text-xs font-bold text-primary">🔸 Memory & concentration · Cognitive development</p>
+      </div>
+    </div>
+
+    <!-- Explore -->
+    <div class="pillar-explore glass-card rounded-2xl p-7 soft-card border-b-4 border-tertiary/30">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-3xl">🌈</span>
+        <h3 class="serif-text text-2xl font-bold text-tertiary">Explore</h3>
+      </div>
+      <p class="text-sm font-medium mb-4 italic text-on-tertiary-container">"Learning through experience"</p>
+      <p class="text-sm text-on-surface-variant mb-4">Children learn best when they explore with their senses and discover the world through active play.</p>
+      <div class="bg-white/50 px-4 py-2 rounded-xl">
+        <p class="text-xs font-bold text-tertiary">🔸 Sensory play · Hands-on activities</p>
+      </div>
+    </div>
+
+    <!-- Connect -->
+    <div class="pillar-connect glass-card rounded-2xl p-7 soft-card border-b-4 border-secondary/20">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-3xl">💖</span>
+        <h3 class="serif-text text-2xl font-bold text-secondary">Connect</h3>
+      </div>
+      <p class="text-sm font-medium mb-4 italic text-on-secondary-container">"Strong bonds create strong minds"</p>
+      <p class="text-sm text-on-surface-variant mb-4">A deep parent-child connection builds confidence, communication, and emotional strength.</p>
+      <div class="bg-white/50 px-4 py-2 rounded-xl">
+        <p class="text-xs font-bold text-secondary">🔸 Bonding · Emotional expression · Trust</p>
+      </div>
+    </div>
+
+    <!-- Bloom -->
+    <div class="pillar-bloom glass-card rounded-2xl p-7 soft-card border-b-4 border-primary/20">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-3xl">🌱</span>
+        <h3 class="serif-text text-2xl font-bold text-primary">Bloom</h3>
+      </div>
+      <p class="text-sm font-medium mb-4 italic text-on-primary-container">"Every child grows in their own unique way"</p>
+      <p class="text-sm text-on-surface-variant mb-4">We nurture each child's individual potential, allowing them to grow naturally and confidently.</p>
+      <div class="bg-white/50 px-4 py-2 rounded-xl">
+        <p class="text-xs font-bold text-primary">🔸 Confidence building · Creativity · Holistic growth</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== OUR STORY + PHILOSOPHY ====== -->
+<section data-section="home-story" class="py-20 px-4 md:px-8 scroll-mt-24" id="our-story">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Section label -->
+    <div class="text-center mb-14">
+      <span class="badge text-primary font-bold uppercase tracking-widest text-xs px-4 py-1.5 rounded-full">Who We Are</span>
+      <h2 class="serif-text text-3xl sm:text-5xl font-bold mt-4 mb-2">Our Story & Philosophy</h2>
+      <p class="text-on-surface-variant italic text-sm">Born from love. Grown through purpose.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
+      <!-- Story -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 text-secondary">
+          <span class="material-symbols-outlined text-3xl">auto_stories</span>
+          <h3 class="serif-text text-2xl font-bold uppercase tracking-tight">Our Story</h3>
+        </div>
+        <p class="text-base leading-relaxed text-on-surface-variant" data-text-key="story_text">
+          Urjaa Mindz was born from a simple yet powerful realization — a child's true potential unfolds when nurtured with love, awareness, and the right stimulation from the very beginning. As mothers, we experienced firsthand how early brain-boosting activities, conscious engagement, and sensory-rich experiences created a visible difference in our own children's growth. What started as a personal journey soon transformed into a purpose — to empower other parents with the same awareness, tools, and confidence.
+        </p>
+        <div class="grid grid-cols-2 gap-4 mt-8">
+          <div class="glass-card p-5 rounded-2xl soft-card flex flex-col gap-2 items-center text-center"><span class="text-3xl">💞</span><span class="font-bold text-xs text-secondary">Emotional security</span></div>
+          <div class="glass-card p-5 rounded-2xl soft-card flex flex-col gap-2 items-center text-center"><span class="text-3xl">🧠</span><span class="font-bold text-xs text-secondary">Brain stimulation</span></div>
+          <div class="glass-card p-5 rounded-2xl soft-card flex flex-col gap-2 items-center text-center"><span class="text-3xl">🌈</span><span class="font-bold text-xs text-secondary">Sensory-rich experiences</span></div>
+          <div class="glass-card p-5 rounded-2xl soft-card flex flex-col gap-2 items-center text-center"><span class="text-3xl">💖</span><span class="font-bold text-xs text-secondary">Strong parent-child bonding</span></div>
+        </div>
+      </div>
+
+      <!-- Philosophy -->
+      <div class="glass-card gold-border p-8 md:p-10 rounded-3xl soft-card relative">
+        <div class="flex items-center gap-3 text-primary mb-6">
+          <span class="material-symbols-outlined text-3xl">psychology</span>
+          <h3 class="serif-text text-2xl font-bold uppercase tracking-tight">Philosophy</h3>
+        </div>
+        <div class="text-center mb-5">
+          <span class="inline-block bg-primary-container px-6 py-3 rounded-full serif-text text-xl font-bold text-on-primary-container shadow-inner">"स्नेहेन वर्धते बुद्धिः"</span>
+        </div>
+        <p class="text-lg serif-text font-bold text-on-surface mb-4 leading-snug" data-text-key="phil_tagline2">Where Affection Becomes the Foundation of Intelligence.</p>
+        <p class="text-base leading-relaxed text-on-surface-variant italic border-l-4 border-primary/25 pl-5">
+          At Urjaa Mindz, we believe that a child's brain develops best not just through teaching, but through affection, connection, and meaningful engagement. When a child feels safe, valued, and connected, their mind naturally opens to explore, absorb, and grow.
+        </p>
+      </div>
+    </div>
+
+    <!-- Founders -->
+    <div class="text-center mb-12">
+      <h2 class="serif-text text-3xl md:text-4xl font-bold mb-3">The Hearts Behind Urjaa</h2>
+      <p class="text-on-surface-variant mb-12 max-w-xl mx-auto text-sm">Two mothers, one vision — bringing a combined decade of experience in education and conscious parenting.</p>
+
+      <div class="relative max-w-2xl mx-auto mb-14">
+        <div class="blob1 anim-float" style="position:absolute;top:-20px;left:-20px;width:120px;height:120px;background:rgba(252,204,56,0.15);z-index:0;pointer-events:none"></div>
+        <img alt="Jayashree Jain and Reema Tayshete - Founders of Urjaa Mindz" data-img-id="founders" style="width:100%;height:auto;border-radius:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,0.12);border:4px solid rgba(255,255,255,0.6);display:block;position:relative;z-index:1" src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80"/>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div class="glass-card p-8 rounded-2xl soft-card gold-border text-left">
+          <h3 class="serif-text text-xl font-bold" data-text-key="f1_name">Jayashree Jain</h3>
+          <p class="text-primary font-bold text-xs tracking-widest uppercase mb-3 mt-1">Co-Founder</p>
+          <p class="text-on-surface-variant italic text-sm" data-text-key="f1_quote">"Urjaa is my love letter to every child who feels too much and thinks too deeply."</p>
+        </div>
+        <div class="glass-card p-8 rounded-2xl soft-card gold-border text-left">
+          <h3 class="serif-text text-xl font-bold" data-text-key="f2_name">Reema Tayshete</h3>
+          <p class="text-primary font-bold text-xs tracking-widest uppercase mb-3 mt-1">Co-Founder</p>
+          <p class="text-on-surface-variant italic text-sm" data-text-key="f2_quote">"We are building a world where children grow like wildflowers — freely, beautifully, and rooted in love."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== VISION & MISSION ====== -->
+<section data-section="home-vision" class="py-16 px-4 md:px-8 relative">
+  <div class="max-w-5xl mx-auto">
+    <div class="glass-card vision-grad p-8 md:p-14 rounded-3xl gold-border soft-card">
+      <div class="grid md:grid-cols-2 gap-12">
+        <div>
+          <h4 class="font-bold text-primary uppercase tracking-widest text-xs mb-3">Vision</h4>
+          <h2 class="serif-text text-2xl font-bold text-secondary mb-5" data-text-key="vision_title">Raising Aware Minds Through Love & Connection</h2>
+          <p class="text-on-surface-variant mb-4 text-sm" data-text-key="vision_desc">To create a world where every parent understands that:</p>
+          <ul class="space-y-2 mb-6 text-sm">
+            <li class="flex items-start gap-2 text-on-surface-variant"><span class="text-secondary">👉</span> Affection is the foundation of intelligence</li>
+            <li class="flex items-start gap-2 text-on-surface-variant"><span class="text-secondary">👉</span> Connection is the pathway to learning</li>
+          </ul>
+          <p class="mt-5 text-secondary font-semibold italic text-sm">A generation that doesn't just learn — but blooms with creativity, confidence, and emotional strength 🌸</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-primary uppercase tracking-widest text-xs mb-3">Mission</h4>
+          <h2 class="serif-text text-2xl font-bold text-secondary mb-5" data-text-key="mission_title">To Nurture Every Child's Mind Through Love-Led Development</h2>
+          <ul class="space-y-3 text-on-surface-variant text-sm">
+            <li class="flex items-start gap-2"><span>🌼</span> Build awareness about early brain development</li>
+            <li class="flex items-start gap-2"><span>🧠</span> Provide brain-boosting activities that enhance cognitive growth</li>
+            <li class="flex items-start gap-2"><span>🌈</span> Encourage sensory and experiential learning</li>
+            <li class="flex items-start gap-2"><span>💞</span> Strengthen parent-child connection</li>
+            <li class="flex items-start gap-2"><span>🌱</span> Support each child's unique potential</li>
+          </ul>
+          <div class="mt-6 p-4 bg-primary-container/20 rounded-xl text-xs italic text-secondary-dim font-medium border border-primary-container/30">
+            Through our 5 pillars — 👉 Love · Stimulate · Explore · Connect · Bloom — we create a strong, loving foundation for lifelong learning.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== COMMUNITY CTA ====== -->
+<section data-section="home-cta" class="py-24 px-4 text-center scroll-mt-24" id="home-cta">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="serif-text text-3xl sm:text-5xl md:text-6xl font-bold text-on-surface mb-6" data-text-key="cta_title">Join the Urjaa Journey</h2>
+    <p class="text-base md:text-xl text-on-surface-variant mb-10 max-w-xl mx-auto" data-text-key="cta_sub">
+      Be part of a thriving community of 5,000+ mothers who are rediscovering the joy of nurturing.
+    </p>
+    <div class="glass-card p-8 rounded-3xl inline-block soft-card max-w-xs w-full">
+      <div class="flex flex-col items-center gap-5">
+        <div class="flex -space-x-3">
+          <img alt="Avatar 1" class="w-11 h-11 rounded-full shadow-md" style="border:3px solid white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOLlJjnRRYUHgCvTY2-ODKYoOJvgGFi4BxCQHC04Ke9HAL1gnyEciFPzHPNYsg0dSSw8_w4P74i9uoKe3ocYrIXpLDrpJuJrWJm-R9xikx5zCwcNsVhulvIvACUxXLZ0TDbvXAiiv7qgZ9Ni92-VYf6iPRrzF_TY--SgiCLRiojgnLOckbpT4paR4ubAbFgW8HT6dy3fTg-U_5ChAxYR1pmYX74ijKpBOw5bYfXdr9vQQq7tl0oaPK-tmL4o6afW91u45hCO5UHVti"/>
+          <img alt="Avatar 2" class="w-11 h-11 rounded-full shadow-md" style="border:3px solid white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMM1Aql9BDILN1LudC2tu_XwGl91_8oEnykhYPTo-wAQVlG033Ko8u62EPQNpZ1OJSbCXJAFXIiPmFfxym3v__n_cpDuy0Jv4rXVBKo9KsXuRX9R340h-z_hf2JJQGYB9bSJjF2LXQLVgBSRsjReMmC4mGVY_Gk-6mYR5zvx11gNhr52OSfg1SpfZXacF3rjDR_5OBnzCW1opKbPF9Z2fKhBbRC-0Y5CAabOsAIgYLcW-eBFciscQ4P_rfMSB1MfW671U4_I59GF8_"/>
+          <img alt="Avatar 3" class="w-11 h-11 rounded-full shadow-md" style="border:3px solid white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd2H12Ub8tZr3CE5frd1qImgsUNH05RZorZT64tvtgFLxvDil98Aqk8TRcXS7BnpLvh1GWVoB7JNYWkP3nEVGmmUADD2dv_BZ_FBdUfwTiGGWolDbnmlZrxQ6km4-uRv3w57tlSFC6Rc8dJoOlbP33szjvDZwGBYQFGRBEc9JE9U_A_vcbtdZa-VjdQxNkAKKCysRwyxbTxV05apEIBeCxgR0KOCC7p6AC7i35A9jUTFnA_HTO0tQSS1GuAxCmDkLyxuUjGu5j5r1I"/>
+        </div>
+        <span class="font-bold text-primary text-sm" data-text-key="cta_count">5k+ Mothers Joined</span>
+        <a href="#community" class="btn-primary-grad text-white px-8 py-3 rounded-full font-bold text-base w-full text-center" data-text-key="cta_btn">Enter the Community</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
 </main>
 
 <!-- FOOTER -->
@@ -890,9 +1441,9 @@ window._selectAge = function(key) {
     <div class="grid grid-cols-2 gap-10">
       <div class="flex flex-col gap-2">
         <h5 class="font-bold text-[#8e3a1f] text-xs uppercase tracking-widest mb-1">Explore</h5>
-        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="home.html">Home</a>
-        <a class="font-['Noto_Serif'] text-sm text-primary font-bold border-b border-primary/20 w-fit" href="index.html">Programs</a>
-        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="community.html">Community</a>
+        <a class="font-['Noto_Serif'] text-sm text-primary font-bold border-b border-primary/20 w-fit" href="#programs">Programs</a>
+        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="#community">Community</a>
+        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="#home">Home</a>
       </div>
       <div>
         <h5 class="font-bold text-[#8e3a1f] text-xs uppercase tracking-widest mb-3">Wisdom</h5>
