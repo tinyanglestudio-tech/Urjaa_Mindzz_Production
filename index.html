@@ -1219,21 +1219,43 @@ window._selectAge = function(key) {
       aspect-ratio: 1 / 1;
       margin: 0 auto;
     }
+    .pillars-circle::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70%;
+      height: 70%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,160,50,0.55) 0%, rgba(255,140,40,0.28) 35%, rgba(255,170,70,0) 70%);
+      filter: blur(18px);
+      z-index: 0;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: .85; transform: translate(-50%, -50%) scale(1); }
+      50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.06); }
+    }
     .pillars-circle .pillar-center {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 30%;
+      width: 44%;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       background: #fff;
-      box-shadow: 0 8px 32px rgba(124,97,0,0.18);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
+      padding: 14px;
       z-index: 2;
+      box-shadow:
+        0 0 0 6px rgba(255,165,70,0.22),
+        0 0 36px 14px rgba(255,140,40,0.45),
+        0 0 80px 28px rgba(255,170,60,0.32),
+        0 10px 40px rgba(124,97,0,0.22);
     }
     .pillars-circle .pillar-center img {
       width: 100%;
@@ -1243,7 +1265,8 @@ window._selectAge = function(key) {
     }
     .pillars-circle .pillar-node {
       position: absolute;
-      width: 34%;
+      width: 25%;
+      z-index: 3;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       display: flex;
@@ -1261,14 +1284,14 @@ window._selectAge = function(key) {
       transform: translate(-50%, -50%) scale(1.05);
       box-shadow: 0 10px 32px rgba(124,97,0,0.22);
     }
-    .pillars-circle .pillar-node .p-emoji { font-size: 2rem; line-height:1; margin-bottom:4px; }
-    .pillars-circle .pillar-node .p-name { font-weight:800; font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; }
-    .pillars-circle .pillar-node .p-tag { font-size: .7rem; opacity: .95; margin-top: 4px; font-style: italic; padding: 0 6px; }
-    .pillars-circle .node-love      { top: 12%;  left: 28%; background: radial-gradient(circle at 30% 30%, #ffb3c1, #ff8095); }
-    .pillars-circle .node-explore   { top: 12%;  left: 72%; background: radial-gradient(circle at 30% 30%, #f9d27a, #f0a93b); }
-    .pillars-circle .node-stimulate { top: 50%;  left: 10%; background: radial-gradient(circle at 30% 30%, #9ecae1, #4a90c8); }
-    .pillars-circle .node-bloom     { top: 50%;  left: 90%; background: radial-gradient(circle at 30% 30%, #ffd28a, #f3944a); }
-    .pillars-circle .node-connect   { top: 85%;  left: 50%; background: radial-gradient(circle at 30% 30%, #a8d5a0, #5fa85a); }
+    .pillars-circle .pillar-node .p-emoji { font-size: 1.6rem; line-height:1; margin-bottom:2px; }
+    .pillars-circle .pillar-node .p-name { font-weight:800; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+    .pillars-circle .pillar-node .p-tag { font-size: .6rem; opacity: .95; margin-top: 2px; font-style: italic; padding: 0 4px; line-height: 1.2; }
+    .pillars-circle .node-love      { top: 10%;  left: 18%; background: radial-gradient(circle at 30% 30%, #ffb3c1, #ff8095); }
+    .pillars-circle .node-explore   { top: 10%;  left: 82%; background: radial-gradient(circle at 30% 30%, #f9d27a, #f0a93b); }
+    .pillars-circle .node-stimulate { top: 60%;  left: 8%;  background: radial-gradient(circle at 30% 30%, #9ecae1, #4a90c8); }
+    .pillars-circle .node-bloom     { top: 60%;  left: 92%; background: radial-gradient(circle at 30% 30%, #ffd28a, #f3944a); }
+    .pillars-circle .node-connect   { top: 92%;  left: 50%; background: radial-gradient(circle at 30% 30%, #a8d5a0, #5fa85a); }
     @media (max-width: 767px) {
       .pillars-circle { display: none; }
     }
