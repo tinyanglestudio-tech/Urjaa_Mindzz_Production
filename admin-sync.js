@@ -206,6 +206,45 @@
     }).join('');
   }
 
+  // ── Testimonials (community) ──────────────────────────────────────────────
+  function applyTestimonials(s){
+    if(!s.testimonials || !s.testimonials.length) return;
+    var container = listAt('[data-sync-list="testimonials"]');
+    if(!container) return;
+    var list = s.testimonials;
+    var first = list[0];
+    var rest = list.slice(1);
+    var leftCard = '';
+    if (first) {
+      var loc1 = first.location ? ', ' + first.location : '';
+      leftCard = '<div class="glass-card p-8 rounded-2xl soft-card relative gold-border">'+
+        '<span class="text-6xl text-primary opacity-15 font-serif leading-none absolute top-4 left-4">&ldquo;</span>'+
+        '<p class="text-on-surface relative z-10 leading-relaxed italic text-base mb-6">'+esc(first.quote)+'</p>'+
+        '<div class="flex items-center gap-3">'+
+          '<div class="w-10 h-1 bg-secondary rounded-full"></div>'+
+          '<span class="font-bold text-sm">'+esc(first.name)+esc(loc1)+'</span>'+
+        '</div>'+
+      '</div>';
+    }
+    var borders = ['border-primary','border-secondary','border-primary','border-secondary'];
+    var rightCards = rest.map(function(t, i){
+      var initials = t.initials || (t.name ? t.name.split(/\s+/).map(function(p){return p.charAt(0);}).join('').slice(0,2).toUpperCase() : '');
+      var color = t.color || '#7c6100';
+      var bc = borders[i % borders.length];
+      return '<div class="glass-card p-6 rounded-2xl soft-card border-l-4 '+bc+'">'+
+        '<p class="text-base leading-relaxed text-on-surface mb-5">'+esc(t.quote)+'</p>'+
+        '<div class="flex items-center gap-3">'+
+          '<div style="width:52px;height:52px;border-radius:50%;background:'+esc(color)+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">'+esc(initials)+'</div>'+
+          '<div>'+
+            '<h4 class="font-bold text-sm">'+esc(t.name)+'</h4>'+
+            '<p class="text-xs text-on-surface-variant">'+esc(t.role||'')+(t.location?' &middot; '+esc(t.location):'')+'</p>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    container.innerHTML = leftCard + '<div class="flex flex-col gap-6">' + rightCards + '</div>';
+  }
+
   // ── Sanskrit Wisdom (toolkit area on index) ───────────────────────────────
   function applyWisdom(s){
     if(!s.wisdom || !s.wisdom.length) return;
@@ -304,7 +343,6 @@
     if (!s) return;
     try { applyTexts(s); } catch(e) { console.error(e); }
     try { applyColors(s); } catch(e) { console.error(e); }
-    try { applyImages(s); } catch(e) { console.error(e); }
     try { applySections(s); } catch(e) { console.error(e); }
     try { applyPillars(s); } catch(e) { console.error(e); }
     try { applyPhilCards(s); } catch(e) { console.error(e); }
@@ -314,9 +352,11 @@
     try { applyWorkshops(s); } catch(e) { console.error(e); }
     try { applyChatRooms(s); } catch(e) { console.error(e); }
     try { applyGallery(s); } catch(e) { console.error(e); }
+    try { applyTestimonials(s); } catch(e) { console.error(e); }
     try { applyWisdom(s); } catch(e) { console.error(e); }
     try { applyPdfGuides(s); } catch(e) { console.error(e); }
     try { applyArticles(s); } catch(e) { console.error(e); }
+    try { applyImages(s); } catch(e) { console.error(e); }
   }
 
   function run(){
