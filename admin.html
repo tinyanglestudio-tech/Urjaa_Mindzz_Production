@@ -643,7 +643,7 @@ body{
 
     <!-- Footer note -->
     <div style="text-align:center;margin-top:20px">
-      <a href="index.html" style="font-size:12px;color:#65655f;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color 0.2s"
+      <a href="home.html" style="font-size:12px;color:#65655f;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color 0.2s"
         onmouseenter="this.style.color='#7c6100'" onmouseleave="this.style.color='#65655f'">
         <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span>
         Back to website
@@ -1983,7 +1983,7 @@ function showPage(name) {
 
   // Update topbar
   const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Home Page', programs:'Programs Page', community:'Community Page', toolkit:'Toolkit Page', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings' };
-  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'programs.html', community:'community.html', toolkit:'programs.html', sections:'All Pages', images:'All Pages', workshops:'programs.html', testimonials:'community.html', settings:'Global' };
+  const badges = { dashboard:'Overview', analytics:'Live Data', home:'home.html', programs:'index.html', community:'community.html', toolkit:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'community.html', settings:'Global' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
   document.getElementById('topbar-badge').textContent = badges[name] || '';
 
@@ -2155,10 +2155,10 @@ function renderPage(name) {
 
 function renderDashboard() {
   const pages = [
-    { name:'index.html', label:'Home', url:'index.html', live:true },
-    { name:'programs.html', label:'Programs', url:'programs.html', live:true },
+    { name:'home.html', label:'Home', url:'home.html', live:true },
+    { name:'index.html', label:'Programs', url:'index.html', live:true },
     { name:'community.html', label:'Community', url:'community.html', live:true },
-    { name:'programs.html', label:'Programs & Toolkit', url:'programs.html', live:true },
+    { name:'index.html', label:'Programs & Toolkit', url:'index.html', live:true },
     { name:'story.html', label:'Our Story (legacy)', url:'story.html', live:true },
   ];
   document.getElementById('pages-status-list').innerHTML = pages.map(p => `
@@ -3503,7 +3503,7 @@ function testWebhook() {
 }
 
 function previewSite() {
-  window.open('index.html', '_blank');
+  window.open('home.html', '_blank');
 }
 
 function toast(msg) {
@@ -3541,10 +3541,10 @@ function seedDemoAnalytics() {
   if (existing.visits.length > 0) return; // already has data
 
   const pages = [
-    { url:'index.html',     label:'Home' },
-    { url:'programs.html',  label:'Programs' },
+    { url:'home.html',      label:'Home' },
+    { url:'index.html',     label:'Programs' },
     { url:'community.html', label:'Community' },
-    { url:'programs.html',   label:'Toolkit' },
+    { url:'index.html',     label:'Toolkit' },
   ];
   const devices = ['Mobile','Desktop','Tablet'];
   const deviceW  = [0.62, 0.31, 0.07]; // weights
@@ -3576,7 +3576,7 @@ function seedDemoAnalytics() {
       formSubmits.push({
         ts: Math.round(t),
         form: ['Join Community','Contact Us','Newsletter'][Math.floor(Math.random()*3)],
-        page: ['community.html','index.html','programs.html'][Math.floor(Math.random()*3)],
+        page: ['community.html','home.html','index.html'][Math.floor(Math.random()*3)],
       });
     }
   }
@@ -3671,10 +3671,10 @@ function renderPagesChart(visits) {
   if (!el) return;
 
   const pages = [
-    { key:'index.html',     label:'Home',      icon:'🏠', color:'#7c6100' },
-    { key:'programs.html',  label:'Programs',  icon:'📚', color:'#a74632' },
+    { key:'home.html',      label:'Home',      icon:'🏠', color:'#7c6100' },
+    { key:'index.html',     label:'Programs',  icon:'📚', color:'#a74632' },
     { key:'community.html', label:'Community', icon:'👥', color:'#995200' },
-    { key:'programs.html',   label:'Programs & Toolkit',   icon:'🧰', color:'#a74632' },
+    { key:'index.html',     label:'Programs & Toolkit',   icon:'🧰', color:'#a74632' },
   ];
 
   const counts = {};
@@ -3896,7 +3896,7 @@ function renderSessions(visits) {
     return;
   }
 
-  const pageColors = { 'index.html':'#7c6100', 'programs.html':'#a74632', 'community.html':'#995200', 'programs.html':'#a74632' };
+  const pageColors = { 'home.html':'#7c6100', 'index.html':'#a74632', 'community.html':'#995200' };
   const deviceIcons = { 'Mobile':'📱', 'Desktop':'🖥️', 'Tablet':'📟' };
 
   el.innerHTML = `

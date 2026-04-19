@@ -36,12 +36,12 @@
 <!-- HEADER -->
 <header class="glass sticky top-0 z-50 rounded-b-[2rem] shadow-sm">
   <nav class="flex justify-between items-center w-full px-4 md:px-8 py-3 max-w-7xl mx-auto">
-    <a href="index.html">
+    <a href="home.html">
       <img alt="Urjaa Mindz Logo" class="w-auto object-contain h-20 md:h-28"  src="logo.png"/>
     </a>
     <div class="hidden md:flex items-center gap-6 font-['Noto_Serif'] text-base font-bold tracking-tight">
-      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="index.html">Home</a>
-      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="programs.html">Programs</a>
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="home.html">Home</a>
+      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="index.html">Programs</a>
       <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="community.html">Community</a>
       <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="admin.html">Admin</a>
     </div>
@@ -53,8 +53,8 @@
   <!-- Mobile sidebar -->
   <div class="fixed inset-y-0 right-0 w-64 bg-white shadow-2xl z-50 md:hidden flex flex-col p-6 gap-4 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
     <div class="flex justify-end"><button id="menu-close"><span class="material-symbols-outlined text-2xl">close</span></button></div>
-    <a class="text-[#383833]" href="index.html">Home</a>
-    <a class="text-[#F4C430]" href="programs.html">Programs</a>
+    <a class="text-[#383833]" href="home.html">Home</a>
+    <a class="text-[#F4C430]" href="index.html">Programs</a>
     <a class="text-[#383833]" href="community.html">Community</a>
     <a class="text-[#383833]" href="admin.html">Admin</a>
     <a class="btn-gold text-on-primary-container px-6 py-3 rounded-full text-center mt-4 font-bold" href="#join-cta">Join Now</a>
@@ -1043,14 +1043,14 @@ window._selectAge = function(key) {
 <footer class="glass rounded-t-[2.5rem] mt-16 border-t border-white/40">
   <div class="flex flex-col md:flex-row justify-between items-start w-full px-6 md:px-12 py-12 max-w-7xl mx-auto gap-8">
     <div class="max-w-xs">
-      <a href="index.html"><img alt="Urjaa Mindz Logo" class="w-auto object-contain h-24 mb-3"  src="logo.png"/></a>
+      <a href="home.html"><img alt="Urjaa Mindz Logo" class="w-auto object-contain h-24 mb-3"  src="logo.png"/></a>
       <p class="font-['Noto_Serif'] text-sm text-[#383833] leading-relaxed">Nurturing ancient wisdom for modern little minds.</p>
     </div>
     <div class="grid grid-cols-2 gap-10">
       <div class="flex flex-col gap-2">
         <h5 class="font-bold text-[#8e3a1f] text-xs uppercase tracking-widest mb-1">Explore</h5>
-        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="index.html">Home</a>
-        <a class="font-['Noto_Serif'] text-sm text-primary font-bold border-b border-primary/20 w-fit" href="programs.html">Programs</a>
+        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="home.html">Home</a>
+        <a class="font-['Noto_Serif'] text-sm text-primary font-bold border-b border-primary/20 w-fit" href="index.html">Programs</a>
         <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="community.html">Community</a>
       </div>
       <div>
@@ -1083,7 +1083,7 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
     const data = loadData();
     const device = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : /iPad|Tablet/i.test(navigator.userAgent) ? 'Tablet' : 'Desktop';
     const page = location.pathname.split('/').pop() || 'index.html';
-    const labels = { 'index.html':'Home', 'programs.html':'Programs', 'community.html':'Community', 'story.html':'Our Story' };
+    const labels = { 'home.html':'Home', 'index.html':'Programs', 'community.html':'Community', 'story.html':'Our Story' };
     const session = sessionStorage.getItem('urjaa_session') || ('sess_'+Date.now()+'_'+Math.floor(Math.random()*9999));
     sessionStorage.setItem('urjaa_session', session);
     const entry = { ts:Date.now(), page, label:labels[page]||page, device, session, duration:0 };
@@ -1127,6 +1127,7 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
     document.querySelectorAll('[href="#join-cta"]').forEach(el=>{
       el.addEventListener('click', ()=>recordForm('Join Community', page), {once:true});
     });
+
   }
 
   recordVisit();
