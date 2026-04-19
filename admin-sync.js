@@ -1,6 +1,3 @@
-// Urjaa Admin Sync — fetches latest admin state from Supabase and applies to the page.
-// Included on every public page. Always fetches fresh data (cache-busted) so website
-// reflects the most recent admin panel edits.
 (function(){
   var KEY = 'urjaa_admin_state';
   var SB_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
@@ -18,7 +15,6 @@
   }
   function listAt(selector){ return document.querySelector(selector); }
 
-  // ── Images ────────────────────────────────────────────────────────────────
   function applyImages(s){
     if(!s.images) return;
     s.images.forEach(function(img){
@@ -34,7 +30,6 @@
     });
   }
 
-  // ── Section visibility ────────────────────────────────────────────────────
   function applySections(s){
     if(!s.sections) return;
     Object.keys(s.sections).forEach(function(key){
@@ -44,7 +39,6 @@
     });
   }
 
-  // ── Pillars (home) ────────────────────────────────────────────────────────
   function applyPillars(s){
     if(!s.pillars || !s.pillars.length) return;
     var container = listAt('[data-sync-list="pillars"]');
@@ -65,7 +59,6 @@
     }).join('');
   }
 
-  // ── Philosophy Cards (home) ───────────────────────────────────────────────
   function applyPhilCards(s){
     if(!s.philCards || !s.philCards.length) return;
     var container = listAt('[data-sync-list="philCards"]');
@@ -81,7 +74,6 @@
     }).join('');
   }
 
-  // ── Brain-Boosting Programs (index/programs) ──────────────────────────────
   function applyBubbles(s){
     if(!s.bubbles || !s.bubbles.length) return;
     var container = listAt('[data-sync-list="bubbles"]');
@@ -98,7 +90,6 @@
     }).join('');
   }
 
-  // ── Montessori Activities (index/programs) ────────────────────────────────
   function applyMontessori(s){
     if(!s.montessori || !s.montessori.length) return;
     var container = listAt('[data-sync-list="montessori"]');
@@ -120,7 +111,6 @@
     }).join('');
   }
 
-  // ── DIY Activities (index/programs) ───────────────────────────────────────
   function applyDIY(s){
     if(!s.diy || !s.diy.length) return;
     var container = listAt('[data-sync-list="diy"]');
@@ -139,7 +129,6 @@
     }).join('');
   }
 
-  // ── Workshops (index/community) ───────────────────────────────────────────
   function applyWorkshops(s){
     if(!s.workshops) return;
     var wsContainer = listAt('[data-sync-list="workshops"]') || (document.getElementById('workshops') && document.querySelector('#workshops .space-y-5'));
@@ -169,7 +158,6 @@
     }).join('');
   }
 
-  // ── Chat Rooms (community) ────────────────────────────────────────────────
   function applyChatRooms(s){
     if(!s.chatRooms || !s.chatRooms.length) return;
     var container = document.getElementById('room-list') || listAt('[data-sync-list="chatRooms"]');
@@ -189,7 +177,6 @@
     }).join('');
   }
 
-  // ── Gallery (community) ───────────────────────────────────────────────────
   function applyGallery(s){
     if(!s.gallery || !s.gallery.length) return;
     var container = listAt('[data-sync-list="gallery"]');
@@ -206,7 +193,6 @@
     }).join('');
   }
 
-  // ── Testimonials (community) ──────────────────────────────────────────────
   function applyTestimonials(s){
     if(!s.testimonials || !s.testimonials.length) return;
     var container = listAt('[data-sync-list="testimonials"]');
@@ -245,7 +231,6 @@
     container.innerHTML = leftCard + '<div class="flex flex-col gap-6">' + rightCards + '</div>';
   }
 
-  // ── Sanskrit Wisdom (toolkit area on index) ───────────────────────────────
   function applyWisdom(s){
     if(!s.wisdom || !s.wisdom.length) return;
     var container = listAt('[data-sync-list="wisdom"]');
@@ -258,7 +243,7 @@
     }).join('');
   }
 
-function applyTexts(s){
+  function applyTexts(s){
     if (!s.texts) return;
     Object.keys(s.texts).forEach(function(key){
       var val = s.texts[key];
@@ -317,16 +302,9 @@ function applyTexts(s){
     try { applyImages(s); } catch(e) { console.error(e); }
   }
 
-  function run(){
-    // 1) Fast paint from localStorage (may be stale on other devices, but smooth UX)
-    try {
-      var cached = localStorage.getItem(KEY);
-      if (cached) apply(JSON.parse(cached));
-    } catch(e) {}
-
-    // 2) Always fetch fresh from Supabase with cache-busting, then apply again
+  function fetchAndApply() {
     var url = SB_URL + '/rest/v1/site_settings?id=eq.admin_state&select=data&_=' + Date.now();
-    fetch(url, {
+    return fetch(url, {
       cache: 'no-store',
       headers: {
         apikey: SB_KEY,
@@ -343,6 +321,79 @@ function applyTexts(s){
         }
       })
       .catch(function(){});
+  }
+
+  function connectRealtime() {
+    var wsUrl = SB_URL.replace(/^http/, 'ws') + '/realtime/v1/websocket?apikey=' + SB_KEY + '&vsn=1.0.0';
+    var ws = new WebSocket(wsUrl);
+    var heartbeatRef = 0;
+    var heartbeatInterval = null;
+    var ref = 0;
+
+    function send(msg) {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(msg));
+      }
+    }
+
+    ws.onopen = function() {
+      ref++;
+      send({
+        topic: 'realtime:public:site_settings',
+        event: 'phx_join',
+        payload: {
+          config: {
+            broadcast: { self: false },
+            presence: { key: '' },
+            postgres_changes: [
+              { event: '*', schema: 'public', table: 'site_settings', filter: 'id=eq.admin_state' }
+            ]
+          }
+        },
+        ref: String(ref)
+      });
+
+      heartbeatInterval = setInterval(function() {
+        heartbeatRef++;
+        send({ topic: 'phoenix', event: 'heartbeat', payload: {}, ref: String(heartbeatRef) });
+      }, 30000);
+    };
+
+    ws.onmessage = function(evt) {
+      try {
+        var msg = JSON.parse(evt.data);
+        if (msg.event === 'postgres_changes') {
+          var payload = msg.payload;
+          if (payload && payload.data && payload.data.record && payload.data.record.data) {
+            var newState = payload.data.record.data;
+            try { localStorage.setItem(KEY, JSON.stringify(newState)); } catch(e) {}
+            apply(newState);
+          } else {
+            fetchAndApply();
+          }
+        }
+      } catch(e) {}
+    };
+
+    ws.onclose = function() {
+      clearInterval(heartbeatInterval);
+      setTimeout(connectRealtime, 3000);
+    };
+
+    ws.onerror = function() {
+      ws.close();
+    };
+  }
+
+  function run(){
+    try {
+      var cached = localStorage.getItem(KEY);
+      if (cached) apply(JSON.parse(cached));
+    } catch(e) {}
+
+    fetchAndApply().then(function() {
+      connectRealtime();
+    });
   }
 
   if (document.readyState === 'loading') {
