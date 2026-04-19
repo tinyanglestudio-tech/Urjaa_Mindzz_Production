@@ -1677,7 +1677,7 @@ function adminLogin() {
           </div>
           <div class="field">
             <div class="field-label">Google Apps Script URL</div>
-            <input class="field-input" id="webhook-gsheet-url" type="url" placeholder="https://script.google.com/macros/s/AKfycb.../exec" style="font-size:12px"/>
+            <input class="field-input" id="webhook-gsheet-url" type="url" placeholder="https://script.google.com/macros/s/AKfycb.../exec" value="https://script.google.com/macros/s/AKfycbzKq25_8ZU8GevEIz0mGk7CSHQnqn56lN7dA7ISDDi4gNRaxsq4DVg0u9btloTo9hKh/exec" style="font-size:12px"/>
             <p style="font-size:11px;color:#94918a;margin-top:4px">Paste the full Web App URL from your Google Apps Script deployment</p>
           </div>
           <div class="field" style="margin-top:12px">
@@ -3430,17 +3430,20 @@ function saveAll() {
 
 // ── Webhook Settings ──────────────────────────────────────────────────────
 var WEBHOOK_KEY = 'urjaa_webhook_settings';
+var DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbzKq25_8ZU8GevEIz0mGk7CSHQnqn56lN7dA7ISDDi4gNRaxsq4DVg0u9btloTo9hKh/exec';
 
 function loadWebhookSettings() {
   try {
     var saved = localStorage.getItem(WEBHOOK_KEY);
-    if (saved) {
-      var s = JSON.parse(saved);
-      var urlEl = document.getElementById('webhook-gsheet-url');
-      var keyEl = document.getElementById('webhook-callmebot-key');
-      if (urlEl && s.gsheet_url) urlEl.value = s.gsheet_url;
-      if (keyEl && s.callmebot_key) keyEl.value = s.callmebot_key;
+    var s = saved ? JSON.parse(saved) : {};
+    if (!s.gsheet_url) {
+      s.gsheet_url = DEFAULT_GSHEET_URL;
+      localStorage.setItem(WEBHOOK_KEY, JSON.stringify(s));
     }
+    var urlEl = document.getElementById('webhook-gsheet-url');
+    var keyEl = document.getElementById('webhook-callmebot-key');
+    if (urlEl) urlEl.value = s.gsheet_url || DEFAULT_GSHEET_URL;
+    if (keyEl && s.callmebot_key) keyEl.value = s.callmebot_key;
   } catch(e) {}
 }
 
