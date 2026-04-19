@@ -109,7 +109,6 @@
         <div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:rgba(167,70,50,0.06);border-radius:50%;pointer-events:none"></div>
         <div class="relative z-10">
           <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-            <span id="level-badge" style="display:inline-block;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:6px 16px;border-radius:999px;width:fit-content">LEVEL 1</span>
             <span id="level-age-range" style="font-size:13px;color:#94918a;font-weight:600">0–6 Months</span>
           </div>
           <h3 id="level-title" class="font-['Noto_Serif'] text-2xl md:text-3xl font-black mb-2" style="color:#383833">Sense & See</h3>
@@ -588,7 +587,6 @@ window._selectAge = function(key) {
   placeholder.classList.add('hidden');
 
   // Level header
-  document.getElementById('level-badge').textContent = 'LEVEL ' + lv.level;
   document.getElementById('level-age-range').textContent = AGES.find(a=>a.key===key).label;
   document.getElementById('level-title').textContent = lv.name;
   document.getElementById('level-tagline').textContent = lv.tagline;
