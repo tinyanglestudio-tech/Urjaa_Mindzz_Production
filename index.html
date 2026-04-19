@@ -1048,24 +1048,57 @@ window._selectAge = function(key) {
       <p class="text-lg text-white/85" data-text-key="comm_cta_sub">Unlock exclusive workshops, community forums, and nurturing resources.</p>
     </div>
 
-    <div class="p-6 md:p-10 rounded-2xl" style="background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2)">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="space-y-1">
-          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Full Name</label>
-          <input class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="Your Name" type="text"/>
+    <div id="circle-form-wrapper" class="p-6 md:p-10 rounded-2xl" style="background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2)">
+      <div id="circle-form-state">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-1">
+            <label class="text-xs font-bold uppercase tracking-wider text-white/80">Your Name</label>
+            <input id="circle-name" class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="e.g. Priya Sharma" type="text"/>
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-bold uppercase tracking-wider text-white/80">WhatsApp Number</label>
+            <div class="flex gap-2">
+              <select id="circle-country" class="bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white py-3 text-sm rounded-none" style="width:90px">
+                <option value="+91" class="text-black">+91</option>
+                <option value="+1" class="text-black">+1</option>
+                <option value="+44" class="text-black">+44</option>
+                <option value="+61" class="text-black">+61</option>
+                <option value="+971" class="text-black">+971</option>
+                <option value="+65" class="text-black">+65</option>
+                <option value="+60" class="text-black">+60</option>
+                <option value="+49" class="text-black">+49</option>
+                <option value="+81" class="text-black">+81</option>
+                <option value="+86" class="text-black">+86</option>
+                <option value="+880" class="text-black">+880</option>
+                <option value="+92" class="text-black">+92</option>
+                <option value="+977" class="text-black">+977</option>
+                <option value="+94" class="text-black">+94</option>
+              </select>
+              <input id="circle-phone" class="flex-1 bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm min-w-0" placeholder="98XXXXXXXX" type="tel"/>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-bold uppercase tracking-wider text-white/80">Child's Age</label>
+            <input id="circle-child-age" class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="e.g. 6 months, 2 years" type="text"/>
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-bold uppercase tracking-wider text-white/80">Location</label>
+            <input id="circle-location" class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="e.g. Mumbai, Bangalore" type="text"/>
+          </div>
+          <div id="circle-error" class="md:col-span-2 text-center text-sm font-semibold" style="display:none;color:#fca5a5"></div>
+          <div class="md:col-span-2 mt-2">
+            <button onclick="submitCircleForm()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-lg font-black hover:scale-105 transition-all" data-text-key="comm_cta_btn">Become a Member</button>
+          </div>
+          <p class="md:col-span-2 text-center text-xs text-white/60">By joining, you agree to our Community Guidelines and Privacy Policy.</p>
         </div>
-        <div class="space-y-1">
-          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Email Address</label>
-          <input class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="name@example.com" type="email"/>
+      </div>
+      <div id="circle-thanks-state" style="display:none;text-align:center;padding:24px 0">
+        <div style="width:64px;height:64px;background:linear-gradient(135deg,#34d399,#10b981);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 6px 24px rgba(16,185,129,0.3)">
+          <span style="font-size:32px;color:white">&#10003;</span>
         </div>
-        <div class="space-y-1 md:col-span-2">
-          <label class="text-xs font-bold uppercase tracking-wider text-white/80">Tell us about your journey</label>
-          <textarea class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="I'm a mother of two looking for..." rows="3"></textarea>
-        </div>
-        <div class="md:col-span-2 mt-2">
-          <button onclick="openJoinPopup()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-lg font-black hover:scale-105 transition-all" data-text-key="comm_cta_btn">Become a Member</button>
-        </div>
-        <p class="md:col-span-2 text-center text-xs text-white/60">By joining, you agree to our Community Guidelines and Privacy Policy.</p>
+        <h3 style="font-family:'Noto Serif',serif;font-size:22px;font-weight:700;color:white;margin:0 0 8px">Welcome to Urjaa!</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,0.85);margin:0 0 6px">Thank you, <strong id="circle-thanks-name"></strong>!</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);margin:0">Our team will connect with you on WhatsApp very soon.</p>
       </div>
     </div>
   </div>
@@ -1663,6 +1696,37 @@ function showJoinThanks(name){
   document.getElementById('join-thanks-state').style.display='';
   var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
   if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML='<span style="font-size:18px">💛</span> Join Our Community';}
+}
+function submitCircleForm(){
+  var name=document.getElementById('circle-name').value.trim();
+  var code=document.getElementById('circle-country').value;
+  var phone=document.getElementById('circle-phone').value.trim().replace(/[\s\-()]/g,'');
+  var childAge=document.getElementById('circle-child-age').value.trim();
+  var loc=document.getElementById('circle-location').value.trim();
+  var errEl=document.getElementById('circle-error');
+  var submitBtn=document.querySelector('#circle-form-state button[onclick="submitCircleForm()"]');
+  if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';return}
+  if(!phone||phone.length<7){errEl.textContent='Please enter a valid WhatsApp number';errEl.style.display='block';return}
+  if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';return}
+  if(!loc){errEl.textContent='Please enter your location';errEl.style.display='block';return}
+  errEl.style.display='none';
+  if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Sending...';}
+  var fullPhone=code+' '+phone;
+  var sbUrl=window.__SUPABASE_URL||'';
+  var sbKey=window.__SUPABASE_ANON_KEY||'';
+  if(sbUrl&&sbKey){
+    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:window.location.pathname})}).catch(function(){});
+  }
+  var data={name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,timestamp:new Date().toISOString(),source:window.location.pathname};
+  var wh={};try{wh=JSON.parse(localStorage.getItem('urjaa_webhook_settings')||'{}');}catch(e){}
+  if(wh.gsheet_url){fetch(wh.gsheet_url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+  if(wh.callmebot_key){var waMsg=encodeURIComponent('New Urjaa Mindz Enquiry\nName: '+name+'\nWhatsApp: '+fullPhone+'\nChild Age: '+childAge+'\nLocation: '+loc+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
+  setTimeout(function(){
+    document.getElementById('circle-thanks-name').textContent=name;
+    document.getElementById('circle-form-state').style.display='none';
+    document.getElementById('circle-thanks-state').style.display='';
+    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
+  },1200);
 }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('a[href="#join-cta"]').forEach(function(el){
