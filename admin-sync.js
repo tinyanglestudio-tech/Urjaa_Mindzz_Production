@@ -35,7 +35,11 @@
     Object.keys(s.sections).forEach(function(key){
       var el = document.querySelector('[data-section="' + key + '"]');
       if (!el) return;
-      el.style.display = s.sections[key].visible ? '' : 'none';
+      if (!s.sections[key].visible) {
+        el.style.display = 'none';
+      } else {
+        el.style.removeProperty('display');
+      }
     });
   }
 
