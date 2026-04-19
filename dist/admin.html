@@ -800,6 +800,7 @@ function adminLogin() {
         <span class="material-symbols-outlined" style="font-size:16px">save</span>
         <span>Save</span>
       </button>
+      <span id="sync-status" style="font-size:11px;font-weight:600;margin-left:8px;white-space:nowrap;color:#2d8a4e">Synced</span>
     </div>
   </div>
 
@@ -1702,18 +1703,19 @@ const SUPABASE_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
 
 function _pushToSupabase(id, data) {
-  try {
-    return fetch(SUPABASE_URL + '/rest/v1/site_settings?on_conflict=id', {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates,return=minimal'
-      },
-      body: JSON.stringify({ id: id, data: data, updated_at: new Date().toISOString() })
-    });
-  } catch(e) { console.error('Supabase push failed:', e); }
+  return fetch(SUPABASE_URL + '/rest/v1/site_settings?on_conflict=id', {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify({ id: id, data: data, updated_at: new Date().toISOString() })
+  }).then(function(r) {
+    if (!r.ok) throw new Error('DB save failed: ' + r.status);
+    return r;
+  });
 }
 
 function _fetchFromSupabase(id) {
@@ -1729,17 +1731,28 @@ function _fetchFromSupabase(id) {
 
 function saveState() {
   try {
-    const toSave = JSON.parse(JSON.stringify(state));
+    var toSave = JSON.parse(JSON.stringify(state));
     delete toSave.currentPage;
     localStorage.setItem(ADMIN_STATE_KEY, JSON.stringify(toSave));
-    _pushToSupabase('admin_state', toSave);
+    _pushToSupabase('admin_state', toSave)
+      .then(function() {
+        var el = document.getElementById('sync-status');
+        if (el) { el.textContent = 'Synced'; el.style.color = '#2d8a4e'; }
+      })
+      .catch(function(e) {
+        console.error('Save failed:', e);
+        var el = document.getElementById('sync-status');
+        if (el) { el.textContent = 'Sync failed — retrying...'; el.style.color = '#a74632'; }
+        setTimeout(saveState, 2000);
+      });
   } catch(e) { console.error('Save failed:', e); }
 }
 
-// Auto-save: debounced save that triggers on any state change
 var _autoSaveTimer = null;
 function autoSave() {
   clearTimeout(_autoSaveTimer);
+  var el = document.getElementById('sync-status');
+  if (el) { el.textContent = 'Saving...'; el.style.color = '#7c6100'; }
   _autoSaveTimer = setTimeout(saveState, 500);
 }
 
