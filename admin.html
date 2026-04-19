@@ -1998,10 +1998,9 @@ function wireTextFields() {
   document.querySelectorAll('[data-key]').forEach(function(el){
     var key = el.getAttribute('data-key');
     if (!key) return;
+    if (key === 'admin_pwd' || key === 'admin_pwd2') return;
     if (Object.prototype.hasOwnProperty.call(state.texts, key)) {
       el.value = state.texts[key];
-    } else {
-      state.texts[key] = (el.value != null) ? el.value : (el.textContent || '');
     }
     if (el._wiredTextKey) return;
     el._wiredTextKey = true;

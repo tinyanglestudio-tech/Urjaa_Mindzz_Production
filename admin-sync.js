@@ -263,17 +263,47 @@
     if (!s.texts) return;
     Object.keys(s.texts).forEach(function(key){
       var val = s.texts[key];
+      if (val == null) return;
       document.querySelectorAll('[data-text-key="'+key+'"]').forEach(function(el){
         var tag = el.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA') el.value = val;
-        else el.textContent = val;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') {
+          if (el.value !== val) el.value = val;
+        } else {
+          var current = (el.textContent || '').trim();
+          var next = String(val == null ? '' : val).trim();
+          if (current !== next) el.textContent = val;
+        }
       });
+      document.querySelectorAll('[data-text-key-attr^="'+key+':"]').forEach(function(el){
+        var spec = el.getAttribute('data-text-key-attr');
+        if (!spec) return;
+        var parts = spec.split(':');
+        if (parts[0] !== key) return;
+        var attr = parts[1];
+        if (attr) el.setAttribute(attr, val);
+      });
+    });
+  }
+
+  function applyColors(s){
+    if (!s.texts) return;
+    var map = {
+      color_primary: '--md-sys-color-primary',
+      color_secondary: '--md-sys-color-secondary',
+      color_gold: '--md-sys-color-tertiary',
+      color_bg: '--md-sys-color-background'
+    };
+    var root = document.documentElement;
+    Object.keys(map).forEach(function(k){
+      var v = s.texts[k];
+      if (v) root.style.setProperty(map[k], v);
     });
   }
 
   function apply(s){
     if (!s) return;
     try { applyTexts(s); } catch(e) { console.error(e); }
+    try { applyColors(s); } catch(e) { console.error(e); }
     try { applyImages(s); } catch(e) { console.error(e); }
     try { applySections(s); } catch(e) { console.error(e); }
     try { applyPillars(s); } catch(e) { console.error(e); }
