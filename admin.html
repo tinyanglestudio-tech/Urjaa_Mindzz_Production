@@ -1737,12 +1737,41 @@ function adminLogin() {
 // ── State ──────────────────────────────────────────────────────────────────
 // ── State Persistence ──────────────────────────────────────────────────────
 const ADMIN_STATE_KEY = 'urjaa_admin_state';
+const SUPABASE_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+
+function _pushToSupabase(id, data) {
+  try {
+    return fetch(SUPABASE_URL + '/rest/v1/site_settings?on_conflict=id', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify({ id: id, data: data, updated_at: new Date().toISOString() })
+    });
+  } catch(e) { console.error('Supabase push failed:', e); }
+}
+
+function _fetchFromSupabase(id) {
+  return fetch(SUPABASE_URL + '/rest/v1/site_settings?id=eq.' + encodeURIComponent(id) + '&select=data', {
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+    }
+  }).then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(rows){ return (rows && rows[0]) ? rows[0].data : null; })
+    .catch(function(){ return null; });
+}
 
 function saveState() {
   try {
     const toSave = JSON.parse(JSON.stringify(state));
     delete toSave.currentPage;
     localStorage.setItem(ADMIN_STATE_KEY, JSON.stringify(toSave));
+    _pushToSupabase('admin_state', toSave);
   } catch(e) { console.error('Save failed:', e); }
 }
 
@@ -3460,8 +3489,10 @@ function saveWebhookSettings() {
     return;
   }
   
-  localStorage.setItem(WEBHOOK_KEY, JSON.stringify({gsheet_url: url, callmebot_key: key}));
-  
+  var payload = {gsheet_url: url, callmebot_key: key};
+  localStorage.setItem(WEBHOOK_KEY, JSON.stringify(payload));
+  try { _pushToSupabase('webhook_settings', payload); } catch(e){}
+
   statusEl.style.display = 'block';
   statusEl.style.background = 'rgba(16,185,129,0.1)';
   statusEl.style.color = '#10b981';
@@ -3522,6 +3553,35 @@ function toast(msg) {
 loadSavedState();
 showPage('dashboard');
 loadWebhookSettings();
+
+// Pull latest from Supabase so admin edits sync across devices
+_fetchFromSupabase('admin_state').then(function(remote){
+  if (remote && typeof remote === 'object') {
+    for (var k in remote) {
+      if (Object.prototype.hasOwnProperty.call(remote, k) && k !== 'currentPage') {
+        state[k] = remote[k];
+      }
+    }
+    try { localStorage.setItem(ADMIN_STATE_KEY, JSON.stringify(state)); } catch(e){}
+    try { showPage(state.currentPage || 'dashboard'); } catch(e){}
+  } else {
+    // First run: seed Supabase with whatever is in state
+    try {
+      var toSeed = JSON.parse(JSON.stringify(state));
+      delete toSeed.currentPage;
+      _pushToSupabase('admin_state', toSeed);
+    } catch(e){}
+  }
+});
+
+_fetchFromSupabase('webhook_settings').then(function(remote){
+  if (remote && typeof remote === 'object') {
+    try {
+      localStorage.setItem(WEBHOOK_KEY, JSON.stringify(remote));
+      loadWebhookSettings();
+    } catch(e){}
+  }
+});
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ANALYTICS ENGINE

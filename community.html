@@ -1055,10 +1055,11 @@ document.addEventListener('DOMContentLoaded',function(){
 // ── Urjaa Admin Sync: Load admin-edited content from localStorage ──
 (function(){
   var KEY = 'urjaa_admin_state';
-  try {
-    var saved = localStorage.getItem(KEY);
-    if (!saved) return;
-    var s = JSON.parse(saved);
+  var SB_URL='https://iqikqkprswelbthkuglg.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+  function _apply(s){
+    try {
+      if (!s) return;
 
     // ── Testimonials ──
     if (s.testimonials && s.testimonials.length) {
@@ -1133,7 +1134,13 @@ document.addEventListener('DOMContentLoaded',function(){
       // handled by data attributes
     }
 
-  } catch(e) { console.error('Admin sync error:', e); }
+    } catch(e) { console.error('Admin sync error:', e); }
+  }
+  try { var _l = localStorage.getItem(KEY); if (_l) _apply(JSON.parse(_l)); } catch(e){}
+  fetch(SB_URL+'/rest/v1/site_settings?id=eq.admin_state&select=data',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
+    .then(function(r){return r.ok?r.json():[];})
+    .then(function(rows){ if(rows&&rows[0]&&rows[0].data){ try{localStorage.setItem(KEY,JSON.stringify(rows[0].data));}catch(e){} _apply(rows[0].data); } })
+    .catch(function(){});
 })();
 
 </script>
