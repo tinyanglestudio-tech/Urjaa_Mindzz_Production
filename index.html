@@ -30,9 +30,9 @@
   .program-bubble{border-radius:2rem;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2.5rem;text-align:center}
   @media(max-width:767px){.program-bubble{min-height:auto;padding:1.5rem}}
   .gold-border{border:1.5px solid transparent;background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#fccc38,#ff9734,#a74632) border-box}
-  #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
+  #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%);position:fixed;top:0;right:0;bottom:0;z-index:300}
   #mobile-menu.active{transform:translateX(0)}
-  #mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:40;opacity:0;transition:opacity 0.3s ease}
+  #mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:299;opacity:0;transition:opacity 0.3s ease}
   #mobile-menu-backdrop.active{display:block;opacity:1}
 
   /* Merged: Community + Home extras */
@@ -125,7 +125,7 @@
   <!-- Mobile backdrop -->
   <div id="mobile-menu-backdrop" class="md:hidden"></div>
   <!-- Mobile sidebar -->
-  <div class="fixed inset-y-0 right-0 w-72 bg-white shadow-2xl z-50 md:hidden flex flex-col p-6 gap-2 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
+  <div class="w-72 bg-white shadow-2xl md:hidden flex flex-col p-6 gap-2 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
     <div class="flex justify-between items-center mb-4">
       <img alt="Urjaa Mindz" class="h-10 w-auto object-contain" src="logo.png"/>
       <button id="menu-close" style="width:44px;height:44px;border-radius:12px;background:rgba(124,97,0,0.06);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:24px">close</span></button>
@@ -143,7 +143,7 @@
 <div id="programs"></div>
 <!-- HERO -->
 <section class="max-w-7xl mx-auto px-4 md:px-8 mb-10 md:mb-20 relative overflow-hidden pt-4 md:pt-6">
-  <img src="/ChatGPT_Image_Apr_19,_2026,_07_04_18_PM.png" alt="Every mother wonders how to nurture her child" loading="lazy" style="width:100%;height:auto;display:block;border-radius:1rem;box-shadow:0 20px 60px rgba(0,0,0,0.12)"/>
+  <img data-img-id="hero-main" src="/hero-main.png" alt="Every mother wonders how to nurture her child" loading="lazy" style="width:100%;height:auto;display:block;border-radius:1rem;box-shadow:0 20px 60px rgba(0,0,0,0.12)"/>
 </section>
 
 <!-- AGE SELECTOR -->
@@ -914,7 +914,7 @@ window._selectAge = function(key) {
     <div class="flex-1 relative w-full max-w-lg mx-auto lg:mx-0">
       <div class="blob1" style="position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:rgba(252,204,56,0.2);z-index:0"></div>
       <div style="position:relative;z-index:1;border-radius:1rem;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);transform:rotate(2deg);transition:transform 0.5s ease">
-        <img data-img-id="comm-hero" alt="Welcome to Our Community - mothers connecting and sharing" loading="lazy" style="width:100%;height:auto;max-height:420px;object-fit:cover;display:block" src="/ChatGPT_Image_Apr_19,_2026,_12_49_47_AM.png"/>
+        <img data-img-id="comm-hero" alt="Welcome to Our Community - mothers connecting and sharing" loading="lazy" style="width:100%;height:auto;max-height:420px;object-fit:cover;display:block" src="/community-hero.png"/>
       </div>
       <!-- Quote card -->
       <div class="glass-card absolute -bottom-5 -left-4 z-20 p-5 rounded-xl max-w-[220px]" style="transform:rotate(-2deg)">
