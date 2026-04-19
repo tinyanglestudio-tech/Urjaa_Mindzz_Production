@@ -259,8 +259,21 @@
     }).join('');
   }
 
+  function applyTexts(s){
+    if (!s.texts) return;
+    Object.keys(s.texts).forEach(function(key){
+      var val = s.texts[key];
+      document.querySelectorAll('[data-text-key="'+key+'"]').forEach(function(el){
+        var tag = el.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') el.value = val;
+        else el.textContent = val;
+      });
+    });
+  }
+
   function apply(s){
     if (!s) return;
+    try { applyTexts(s); } catch(e) { console.error(e); }
     try { applyImages(s); } catch(e) { console.error(e); }
     try { applySections(s); } catch(e) { console.error(e); }
     try { applyPillars(s); } catch(e) { console.error(e); }
