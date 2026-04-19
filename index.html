@@ -849,7 +849,7 @@ window._selectAge = function(key) {
     <div style="position:absolute;inset:0;opacity:0.07;background-image:radial-gradient(circle at 2px 2px,#fff 1px,transparent 0);background-size:36px 36px"></div>
     <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black text-white mb-4 relative z-10">Start Their Journey Today</h2>
     <p class="text-primary-container text-base mb-8 relative z-10">Ready to see the Urjaa Mindz difference? Experience a trial session with us.</p>
-    <a href="community.html#join-cta" class="bg-white text-primary px-10 py-4 rounded-xl text-lg font-black hover:scale-105 transition-transform relative z-10 inline-block no-underline">Register for a Trial Session</a>
+    <a onclick="openJoinPopup()" class="bg-white text-primary px-10 py-4 rounded-xl text-lg font-black hover:scale-105 transition-transform relative z-10 inline-block no-underline cursor-pointer">Register for a Trial Session</a>
   </div>
 </section>
 
@@ -1564,6 +1564,16 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
         </div>
       </div>
 
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Child's Age</label>
+        <input id="join-child-age" type="text" placeholder="e.g. 6 months, 2 years" style="width:100%;padding:12px 14px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box" onfocus="this.style.borderColor='#7c6100';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'" onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.boxShadow=''"/>
+      </div>
+
+      <div style="margin-bottom:8px">
+        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Location</label>
+        <input id="join-location" type="text" placeholder="e.g. Mumbai, Bangalore" style="width:100%;padding:12px 14px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box" onfocus="this.style.borderColor='#7c6100';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'" onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.boxShadow=''"/>
+      </div>
+
       <div id="join-error" style="display:none;background:rgba(190,45,6,0.08);border:1px solid rgba(190,45,6,0.2);border-radius:10px;padding:8px 12px;font-size:12px;color:#be2d06;font-weight:600;text-align:center;margin:12px 0 0"></div>
 
       <button onclick="submitJoinForm()" style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(124,97,0,0.25);display:flex;align-items:center;justify-content:center;gap:8px" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(124,97,0,0.35)'" onmouseleave="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(124,97,0,0.25)'">
@@ -1593,6 +1603,8 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
 @keyframes joinBounce{0%{transform:scale(0)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 </style>
 <script>
+window.__SUPABASE_URL='https://iqikqkprswelbthkuglg.supabase.co';
+window.__SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
 function openJoinPopup(){
   var o=document.getElementById('join-popup-overlay');
   var c=document.getElementById('join-popup-card');
@@ -1601,6 +1613,8 @@ function openJoinPopup(){
   document.getElementById('join-error').style.display='none';
   document.getElementById('join-name').value='';
   document.getElementById('join-phone').value='';
+  document.getElementById('join-child-age').value='';
+  document.getElementById('join-location').value='';
   o.style.display='flex';
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     o.style.opacity='1';
@@ -1621,18 +1635,26 @@ function submitJoinForm(){
   var name=document.getElementById('join-name').value.trim();
   var code=document.getElementById('join-country').value;
   var phone=document.getElementById('join-phone').value.trim().replace(/[\s\-()]/g,'');
+  var childAge=document.getElementById('join-child-age').value.trim();
+  var location=document.getElementById('join-location').value.trim();
   var errEl=document.getElementById('join-error');
   var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
   if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';document.getElementById('join-name').focus();return}
   if(!phone||phone.length<7){errEl.textContent='Please enter a valid WhatsApp number';errEl.style.display='block';document.getElementById('join-phone').focus();return}
+  if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';document.getElementById('join-child-age').focus();return}
+  if(!location){errEl.textContent='Please enter your location';errEl.style.display='block';document.getElementById('join-location').focus();return}
   errEl.style.display='none';
   if(submitBtn){submitBtn.disabled=true;submitBtn.innerHTML='<span style="font-size:16px">⏳</span> Sending...';}
   var fullPhone=code+' '+phone;
-  var data={name:name,phone:fullPhone,country_code:code,timestamp:new Date().toISOString(),source:window.location.pathname};
-  // Read webhook settings from localStorage (set via Admin Panel)
+  var sbUrl=window.__SUPABASE_URL||'';
+  var sbKey=window.__SUPABASE_ANON_KEY||'';
+  if(sbUrl&&sbKey){
+    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:window.location.pathname})}).catch(function(){});
+  }
+  var data={name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,timestamp:new Date().toISOString(),source:window.location.pathname};
   var wh={};try{wh=JSON.parse(localStorage.getItem('urjaa_webhook_settings')||'{}');}catch(e){}
   if(wh.gsheet_url){fetch(wh.gsheet_url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
-  if(wh.callmebot_key){var waMsg=encodeURIComponent('🌱 New Urjaa Mindz Enquiry\n👤 Name: '+name+'\n📱 WhatsApp: '+fullPhone+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
+  if(wh.callmebot_key){var waMsg=encodeURIComponent('New Urjaa Mindz Enquiry\nName: '+name+'\nWhatsApp: '+fullPhone+'\nChild Age: '+childAge+'\nLocation: '+location+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
   setTimeout(function(){showJoinThanks(name);},1200);
 }
 function showJoinThanks(name){
