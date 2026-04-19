@@ -30,10 +30,10 @@
   .program-bubble{border-radius:2rem;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2.5rem;text-align:center}
   @media(max-width:767px){.program-bubble{min-height:auto;padding:1.5rem}}
   .gold-border{border:1.5px solid transparent;background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#fccc38,#ff9734,#a74632) border-box}
-  #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
-  #mobile-menu.active{transform:translateX(0)}
-  #mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;opacity:0;transition:opacity 0.3s ease}
+  #mobile-menu.active{transform:translateX(0) !important}
+  #mobile-menu-backdrop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:9998;opacity:0;transition:opacity 0.3s ease}
   #mobile-menu-backdrop.active{display:block;opacity:1}
+  @media(min-width:768px){#mobile-menu,#mobile-menu-backdrop{display:none !important}}
 
   /* Merged: Community + Home extras */
   .bg-mesh-2{background-color:#fbf9f1;background-image:radial-gradient(ellipse at 80% 20%,rgba(252,204,56,0.12) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(167,70,50,0.07) 0%,transparent 50%)}
@@ -122,21 +122,21 @@
       <button class="md:hidden flex items-center justify-center text-[#383833]" id="menu-toggle" style="width:44px;height:44px;border-radius:12px;background:rgba(124,97,0,0.06)"><span class="material-symbols-outlined" style="font-size:26px">menu</span></button>
     </div>
   </nav>
-  <!-- Mobile backdrop -->
-  <div id="mobile-menu-backdrop" class="md:hidden"></div>
-  <!-- Mobile sidebar -->
-  <div class="fixed inset-y-0 right-0 w-72 bg-white shadow-2xl md:hidden flex flex-col p-6 gap-2 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu" style="z-index:300">
-    <div class="flex justify-between items-center mb-4">
-      <img alt="Urjaa Mindz" class="h-10 w-auto object-contain" src="logo.png"/>
-      <button id="menu-close" style="width:44px;height:44px;border-radius:12px;background:rgba(124,97,0,0.06);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:24px">close</span></button>
-    </div>
-    <a class="text-[#F4C430] flex items-center gap-3 py-3 px-3 rounded-xl" href="#programs" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">school</span>Programs</a>
-    <a class="text-[#383833] flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-[rgba(124,97,0,0.04)]" href="#community" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">groups</span>Community</a>
-    <a class="text-[#383833] flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-[rgba(124,97,0,0.04)]" href="#home" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">auto_stories</span>Our Story</a>
-    <div style="flex:1"></div>
-    <a class="btn-gold text-on-primary-container px-6 py-3 rounded-full text-center font-bold" href="#join-cta" style="min-height:48px;display:flex;align-items:center;justify-content:center">Join Now</a>
-  </div>
 </header>
+<!-- Mobile backdrop -->
+<div id="mobile-menu-backdrop"></div>
+<!-- Mobile sidebar -->
+<div class="flex flex-col font-['Noto_Serif'] text-lg font-bold" id="mobile-menu" style="position:fixed;top:0;right:0;bottom:0;width:288px;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.18);z-index:9999;padding:1.5rem;gap:0.5rem;transform:translateX(100%);transition:transform 0.3s ease-in-out">
+  <div class="flex justify-between items-center mb-4">
+    <img alt="Urjaa Mindz" class="h-10 w-auto object-contain" src="logo.png"/>
+    <button id="menu-close" style="width:44px;height:44px;border-radius:12px;background:rgba(124,97,0,0.06);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:24px">close</span></button>
+  </div>
+  <a class="text-[#F4C430] flex items-center gap-3 py-3 px-3 rounded-xl" href="#programs" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">school</span>Programs</a>
+  <a class="text-[#383833] flex items-center gap-3 py-3 px-3 rounded-xl" href="#community" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">groups</span>Community</a>
+  <a class="text-[#383833] flex items-center gap-3 py-3 px-3 rounded-xl" href="#home" style="min-height:44px"><span class="material-symbols-outlined" style="font-size:20px">auto_stories</span>Our Story</a>
+  <div style="flex:1"></div>
+  <a class="btn-gold text-on-primary-container px-6 py-3 rounded-full text-center font-bold" href="#join-cta" style="min-height:48px;display:flex;align-items:center;justify-content:center">Join Now</a>
+</div>
 
 <main class="pt-4 md:pt-12 pb-12 md:pb-20">
 
@@ -1497,12 +1497,9 @@ const menuBackdrop = document.getElementById('mobile-menu-backdrop');
 function openMobileMenu(){mobileMenu.classList.add('active');menuBackdrop.classList.add('active');document.body.style.overflow='hidden';}
 function closeMobileMenu(){mobileMenu.classList.remove('active');menuBackdrop.classList.remove('active');document.body.style.overflow='';}
 menuToggle.addEventListener('click', openMobileMenu);
-menuToggle.addEventListener('touchstart', function(e){e.preventDefault();openMobileMenu();},{passive:false});
 menuClose.addEventListener('click', closeMobileMenu);
 menuBackdrop.addEventListener('click', closeMobileMenu);
-mobileMenu.querySelectorAll('a').forEach(function(l){
-  l.addEventListener('click', function(){setTimeout(closeMobileMenu, 50);});
-});
+mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click', closeMobileMenu);});
 </script>
 
 <!-- Urjaa Mindz Analytics Tracker -->
