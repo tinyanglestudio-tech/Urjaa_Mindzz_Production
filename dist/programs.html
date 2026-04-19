@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Programs & Workshops | Urjaa Mindz</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:#fefcf4;color:#383833}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  .glass{background:rgba(254,252,244,0.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.55)}
+  .glass-card{background:rgba(255,255,255,0.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.8);box-shadow:0 4px 24px rgba(124,97,0,0.07)}
+  .bg-mesh{background-color:#fefcf4;background-image:radial-gradient(ellipse at 20% 15%,rgba(252,204,56,0.14) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(167,70,50,0.08) 0%,transparent 55%)}
+  .soft-card{box-shadow:0 4px 24px rgba(124,97,0,0.08),0 1px 4px rgba(0,0,0,0.04);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+  .soft-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(124,97,0,0.14)}
+  .btn-gold{background:linear-gradient(135deg,#fccc38,#f5b800);box-shadow:0 4px 16px rgba(252,204,56,0.4);transition:all 0.3s ease}
+  .btn-gold:hover{box-shadow:0 8px 28px rgba(252,204,56,0.55);transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,#7c6100,#5a4500);box-shadow:0 4px 16px rgba(124,97,0,0.3);color:#fff;transition:all 0.3s ease}
+  .btn-primary:hover{box-shadow:0 8px 28px rgba(124,97,0,0.45);transform:translateY(-2px)}
+  .blob1{border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
+  .blob2{border-radius:40% 60% 70% 30%/40% 50% 60% 50%}
+  .asym1{border-radius:40% 60% 70% 30%/40% 50% 60% 50%}
+  .asym2{border-radius:50% 50% 30% 70%/50% 60% 40% 50%}
+  .asym3{border-radius:60% 40% 50% 50%/40% 40% 60% 60%}
+  .program-bubble{border-radius:2rem;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2.5rem;text-align:center}
+  .gold-border{border:1.5px solid transparent;background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#fccc38,#ff9734,#a74632) border-box}
+  #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
+  #mobile-menu.active{transform:translateX(0)}
+</style>
+  <script type="module" crossorigin src="/assets/admin-sync-Dqcemyru.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/admin-sync-BhBMKv1-.css">
+</head>
+<body class="bg-mesh text-on-surface">
+
+<!-- HEADER -->
+<header class="glass sticky top-0 z-50 rounded-b-[2rem] shadow-sm">
+  <nav class="flex justify-between items-center w-full px-4 md:px-8 py-3 max-w-7xl mx-auto">
+    <a href="home.html">
+      <img alt="Urjaa Mindz Logo" class="w-auto object-contain h-20 md:h-28"  src="/assets/logo-BCZWC3h6.png"/>
+    </a>
+    <div class="hidden md:flex items-center gap-6 font-['Noto_Serif'] text-base font-bold tracking-tight">
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="home.html">Home</a>
+      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="index.html">Programs</a>
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="community.html">Community</a>
+      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="admin.html">Admin</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a class="hidden md:flex btn-gold text-on-primary-container px-5 py-2 rounded-full font-bold text-sm items-center justify-center" href="#join-cta">Join Now</a>
+      <button class="md:hidden p-2 text-[#383833]" id="menu-toggle"><span class="material-symbols-outlined text-2xl">menu</span></button>
+    </div>
+  </nav>
+  <!-- Mobile sidebar -->
+  <div class="fixed inset-y-0 right-0 w-64 bg-white shadow-2xl z-50 md:hidden flex flex-col p-6 gap-4 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
+    <div class="flex justify-end"><button id="menu-close"><span class="material-symbols-outlined text-2xl">close</span></button></div>
+    <a class="text-[#383833]" href="home.html">Home</a>
+    <a class="text-[#F4C430]" href="index.html">Programs</a>
+    <a class="text-[#383833]" href="community.html">Community</a>
+    <a class="text-[#383833]" href="admin.html">Admin</a>
+    <a class="btn-gold text-on-primary-container px-6 py-3 rounded-full text-center mt-4 font-bold" href="#join-cta">Join Now</a>
+  </div>
+</header>
+
+<main class="pt-12 pb-20">
+
+<!-- HERO -->
+<section class="max-w-7xl mx-auto px-4 md:px-8 mb-20 relative overflow-hidden pt-10" style="min-height:480px">
+  <div class="blob1" style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:rgba(252,204,56,0.15);z-index:0;pointer-events:none"></div>
+  <div class="relative z-10 text-center md:text-left md:max-w-xl">
+    <span class="text-secondary font-bold text-base mb-3 block font-['Noto_Serif']">स्नेहेन वर्धते बुद्धिः</span>
+    <h1 class="font-['Noto_Serif'] text-4xl sm:text-5xl md:text-7xl font-black text-on-surface mb-5 leading-tight" data-text-key="prog_headline">
+      Nurturing <span class="text-primary italic">Brilliant</span> Minds
+    </h1>
+    <p class="text-base md:text-lg text-on-surface-variant mb-8 leading-relaxed" data-text-key="prog_sub">
+      Science-backed programs designed to celebrate and stimulate your toddler's natural curiosity through play, connection, and wisdom.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button onclick="document.getElementById('workshops')?.scrollIntoView({behavior:'smooth',block:'start'})" class="glass-card text-primary px-8 py-4 rounded-xl text-base font-bold hover:scale-105 transition-transform">Book Workshop</button>
+    </div>
+  </div>
+  <!-- Hero image — desktop only -->
+  <div class="hidden lg:block absolute top-0 right-0 w-5/12 h-full">
+    <img data-img-id="prog-hero" alt="Toddler painting" style="width:100%;height:100%;min-height:400px;object-fit:cover;border-radius:3rem;box-shadow:0 20px 60px rgba(0,0,0,0.12);transform:rotate(2deg);display:block" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7JPJuEcyzNL2mpgcaETXGI7s7pQe3MFj8d4784jLK7JHk3odGjGyO7M0QZl0ords8XFIJaosmezpAr_Sv9gzikSE9NAzbXz8AXmjLoA2TN1UphG4bICDyZkEf8eh0N_M6ayvmHR7fJYC7y1u02VXkiz4XK_QOIM5OISDTdAySEr-QSKPiBumac73JEmp3hB7POVjZYzkcwixD4j8C0HL73XVbkWV-y5D2shT8xeXC9QZMF0ab4BbhWZ1iUO081s-gZN68dsErVp-0"/>
+  </div>
+</section>
+
+<!-- AGE SELECTOR -->
+<section data-section="programs-age" id="age-selector" class="py-16 px-4 md:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Heading -->
+    <div class="text-center mb-10">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest text-primary bg-primary-container/30 px-4 py-1.5 rounded-full mb-4">Personalised For Your Child</span>
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">What's your child's age?</h2>
+      <p class="text-on-surface-variant text-sm max-w-md mx-auto">Select an age group to explore the right programs, milestones, and activities for your little one.</p>
+    </div>
+
+    <!-- Age buttons -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" id="age-btn-group">
+      <!-- rendered by JS -->
+    </div>
+
+    <!-- Dynamic Level Program Section -->
+    <div id="age-content" class="hidden" style="animation:fadeSlideIn 0.5s ease forwards">
+
+      <!-- Level Badge + Title -->
+      <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 relative overflow-hidden" id="level-header" style="border:1.5px solid rgba(252,204,56,0.3)">
+        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(252,204,56,0.1);border-radius:50%;pointer-events:none"></div>
+        <div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:rgba(167,70,50,0.06);border-radius:50%;pointer-events:none"></div>
+        <div class="relative z-10">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+            <span id="level-age-range" style="font-size:13px;color:#94918a;font-weight:600">0–6 Months</span>
+          </div>
+          <h3 id="level-title" class="font-['Noto_Serif'] text-2xl md:text-3xl font-black mb-2" style="color:#383833">Sense & See</h3>
+          <p id="level-tagline" style="font-size:14px;color:#65655f;line-height:1.6;max-width:640px">Right stimulation at the right age – building brain connections from day one.</p>
+        </div>
+      </div>
+
+      <!-- Focus Areas Grid -->
+      <div class="mb-6">
+        <h4 style="font-family:'Noto Serif',serif;font-size:16px;font-weight:700;color:#383833;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="width:28px;height:28px;background:linear-gradient(135deg,#fccc38,#e6a817);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🎯</span>
+          Focus Areas
+        </h4>
+        <div id="focus-pills" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Milestone banner -->
+      <div id="milestone-banner" style="display:none !important" class="glass-card rounded-2xl p-6 md:p-7 mb-8 flex flex-col md:flex-row items-start gap-5 gold-border overflow-hidden">
+        <div class="milestone-img-wrap">
+          <img id="milestone-img" src="" alt="Milestone" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:1rem"/>
+        </div>
+        <div class="flex-1">
+          <p class="text-xs font-bold uppercase tracking-widest text-primary mb-1" id="milestone-label">Milestone</p>
+          <h3 class="font-['Noto_Serif'] text-xl font-bold mb-2" id="milestone-title">Key Developmental Milestone</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed" id="milestone-desc"></p>
+        </div>
+      </div>
+
+      <!-- Focus area detail cards -->
+      <div style="display:none !important" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10" id="focus-cards">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- Activity carousel -->
+      <div style="display:none !important" class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center justify-between mb-6">
+          <h4 class="font-['Noto_Serif'] font-bold text-lg flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">checklist</span>
+            Recommended Activities
+          </h4>
+          <div class="flex items-center gap-2">
+            <button id="act-prev" onclick="window._actScroll(-1)"
+              class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style="background:rgba(124,97,0,0.1);border:1.5px solid rgba(124,97,0,0.2)">
+              <span class="material-symbols-outlined text-primary" style="font-size:18px">chevron_left</span>
+            </button>
+            <span id="act-counter" class="text-xs font-bold text-on-surface-variant w-10 text-center">1 / 6</span>
+            <button id="act-next" onclick="window._actScroll(1)"
+              class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style="background:rgba(124,97,0,0.1);border:1.5px solid rgba(124,97,0,0.2)">
+              <span class="material-symbols-outlined text-primary" style="font-size:18px">chevron_right</span>
+            </button>
+          </div>
+        </div>
+        <div class="relative overflow-hidden rounded-xl">
+          <div id="activity-list" class="flex transition-transform duration-400"
+            style="transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)">
+          </div>
+        </div>
+        <div id="act-dots" class="flex justify-center gap-2 mt-4"></div>
+      </div>
+
+      <!-- Subscribe CTA -->
+      <div id="level-cta" class="glass-card rounded-2xl p-6 md:p-8 text-center" style="border:1.5px solid rgba(16,185,129,0.2);background:linear-gradient(145deg,rgba(16,185,129,0.04),rgba(252,204,56,0.06))">
+        <div style="font-size:32px;margin-bottom:8px">🌱</div>
+        <h4 style="font-family:'Noto Serif',serif;font-size:18px;font-weight:700;color:#383833;margin-bottom:6px">Ready to unlock your child's potential?</h4>
+        <p style="font-size:13px;color:#65655f;margin-bottom:16px;line-height:1.5">Join the Urjaa community for personalised guidance, workshops, and resources.</p>
+        <button onclick="openJoinPopup()" style="background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;padding:13px 32px;border-radius:14px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(124,97,0,0.25)" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+          Join Now — It's Free
+        </button>
+      </div>
+
+    </div><!-- end age-content -->
+
+
+    <!-- Placeholder before selection -->
+    <div id="age-placeholder" class="text-center py-12">
+      <div class="text-5xl mb-4">👆</div>
+      <p class="text-on-surface-variant text-sm">Select an age group above to see personalised content</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Age selector button */
+  .age-btn {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.07);
+    border-radius: 1.25rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .age-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(124,97,0,0.14);
+    border-color: rgba(252,204,56,0.5);
+  }
+  .age-btn.selected {
+    background: linear-gradient(135deg,#7c6100,#5a4500);
+    border-color: #7c6100;
+    box-shadow: 0 8px 28px rgba(124,97,0,0.35);
+    transform: translateY(-4px) scale(1.03);
+  }
+  .age-btn.selected .age-label { color: #fff; }
+  .age-btn.selected .age-range { color: rgba(255,255,255,0.75); }
+  .age-btn.selected .age-emoji { filter: none; }
+  .age-btn.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fccc38;
+  }
+  .age-emoji { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .age-label { font-family: 'Noto Serif', serif; font-weight: 700; font-size: 0.9rem; color: #383833; display: block; margin-bottom: 0.2rem; }
+  .age-range { font-size: 0.75rem; color: #65655f; font-weight: 600; }
+
+  /* Focus area card — image on top */
+  .focus-card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.07);
+  }
+  .focus-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(124,97,0,0.14); }
+  .focus-card-img {
+    width: 100%; height: 140px;
+    object-fit: cover; display: block;
+    transition: transform 0.4s ease;
+  }
+  .focus-card:hover .focus-card-img { transform: scale(1.05); }
+  .focus-card-body { padding: 1rem 1rem 1.1rem; }
+  .focus-card-icon { font-size: 1.3rem; margin-bottom: 0.3rem; display: block; }
+  .focus-title { font-family: 'Noto Serif', serif; font-weight: 700; font-size: 0.92rem; display: block; margin-bottom: 0.3rem; color: #383833; }
+  .focus-desc  { font-size: 0.76rem; line-height: 1.55; color: #65655f; }
+
+  /* Activity carousel card */
+  .activity-card {
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: rgba(255,255,255,0.75);
+    border: 1.5px solid rgba(255,255,255,0.8);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.08);
+  }
+  .activity-card-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+  .activity-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .activity-card-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .activity-card-text {
+    font-family: 'Noto Serif', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #383833;
+    line-height: 1.5;
+  }
+  /* Arrow button hover */
+  #act-prev:hover, #act-next:hover {
+    background: rgba(124,97,0,0.18) !important;
+    transform: scale(1.08);
+  }
+  /* Dot */
+  .act-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(124,97,0,0.2);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  .act-dot.active {
+    background: #7c6100;
+    width: 22px;
+    border-radius: 4px;
+  }
+
+  /* Milestone banner with bg image */
+  .milestone-img-wrap {
+    width: 100%; height: 160px;
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .milestone-img-wrap { width: 200px; height: 140px; }
+  }
+  .milestone-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; border-radius:1rem; }
+
+  /* Slide-in animation for content */
+  @keyframes slideDown {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .slide-in { animation: slideDown 0.35s ease forwards; }
+
+  /* Level section animations */
+  @keyframes fadeSlideIn {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Focus area pills */
+  .focus-pill {
+    display:flex;align-items:center;gap:10px;
+    padding:14px 18px;
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1.5px solid rgba(255,255,255,0.8);
+    border-radius:16px;
+    box-shadow:0 2px 12px rgba(124,97,0,0.06);
+    transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+    cursor:default;
+  }
+  .focus-pill:hover {
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(124,97,0,0.1);
+    border-color:rgba(252,204,56,0.4);
+  }
+  .focus-pill-icon {
+    width:40px;height:40px;
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;flex-shrink:0;
+  }
+  .focus-pill-text {
+    font-size:13px;font-weight:600;color:#383833;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    line-height:1.3;
+  }
+</style>
+
+<script>
+(function(){
+
+const AGE_DATA = {
+  '0-6': {
+    emoji: '🌸',
+    label: '0–6 Months',
+    range: 'Newborn to 6 months',
+    milestone: {
+      emoji: '👁️',
+      label: 'Key Milestone',
+      title: 'Sensory Awakening & Bonding',
+      desc: 'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling. Every gentle touch, sound, and face builds critical neural pathways during this rapid growth window.',
+      img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',
+    },
+    focuses: [
+      { icon:'👁️', title:'Visual Tracking',     desc:'High-contrast images and slow movement to develop eye muscles and focus.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80' },
+      { icon:'👂', title:'Auditory Stimulation', desc:'Soft music, your voice, and natural sounds to build auditory processing.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)',   img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🤲', title:'Tactile Exploration',  desc:'Different textures, skin-to-skin contact, and gentle massage for touch development.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
+      { icon:'💞', title:'Emotional Bonding',    desc:'Eye contact, responsive caregiving, and mirroring to build secure attachment.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)',   img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Black & white high-contrast cards — hold 20–30 cm from baby\'s face', color:'#fccc38', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
+      { text:'Gentle tummy time on a soft mat with a mirror placed in front',          color:'#fccc38', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Sing the same lullaby daily — repetition builds auditory memory',         color:'#a74632', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+      { text:'Narrate everything you do while changing or feeding baby',                color:'#a74632', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Soft textured sensory book — guide tiny fingers across each page',        color:'#995200', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
+      { text:'Warm oil massage before bath — sesame or coconut oil in circular strokes',color:'#995200', img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=300&q=80' },
+    ],
+  },
+
+  '6-12': {
+    emoji: '🧡',
+    label: '6–12 Months',
+    range: '6 to 12 months',
+    milestone: {
+      emoji: '🤸',
+      title: 'Motor Skills & Object Permanence',
+      label: 'Key Milestone',
+      desc: 'Baby begins sitting, crawling, and pulling to stand. They understand that objects exist even when hidden — a huge cognitive leap. Babbling intensifies and they respond to their name, showing emerging social awareness.',
+      img: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🧠', title:'Cognitive Growth', desc:'Object permanence games (peek-a-boo, hidden toys) to build memory and prediction.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80' },
+      { icon:'✋', title:'Fine Motor',        desc:'Picking up small soft objects, transferring toys hand-to-hand, and banging exploration.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80' },
+      { icon:'🗣️', title:'Language Seeds',   desc:'Babbling back and forth, naming objects constantly, reading board books aloud.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🏃', title:'Gross Motor',       desc:'Supported sitting, tummy-to-sit transitions, crawling over soft obstacles.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Peek-a-boo with a soft cloth — builds object permanence and delight',            color:'#fccc38', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Stacking soft rings and knocking them down — cause and effect learning',          color:'#fccc38', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
+      { text:'Treasure basket: fill with safe household objects of different textures',         color:'#a74632', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
+      { text:'Mirror play — baby studies their reflection and begins self-recognition',         color:'#a74632', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Water play in shallow tub — pouring and splashing builds schema patterns',        color:'#995200', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Crawl obstacle course with cushions, tunnels, and soft ramps',                    color:'#995200', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
+    ],
+  },
+
+  '12-24': {
+    emoji: '⭐',
+    label: '12–24 Months',
+    range: '1 to 2 years',
+    milestone: {
+      emoji: '🚶',
+      title: 'Walking, Talking & Symbolic Play',
+      label: 'Key Milestone',
+      desc: 'First steps mark a revolution in independence. Vocabulary explodes from first words to 50+ by age 2. Toddlers begin pretend play — feeding a doll, talking on a toy phone — showing they can hold mental representations of real-world actions.',
+      img: 'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🎭', title:'Pretend Play',        desc:'Role-play scenarios using household objects to build symbolic thinking and creativity.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
+      { icon:'🔤', title:'Language Explosion',   desc:'Naming, pointing, two-word phrases — building vocabulary through rich conversation.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🧩', title:'Problem Solving',      desc:'Simple shape sorters, nesting cups, and puzzle boards to build spatial reasoning.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80' },
+      { icon:'🎨', title:'Creative Expression',  desc:'First scribbles with chunky crayons, finger painting, and clay exploration.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Pretend kitchen play — narrate what you\'re "cooking" together',                  color:'#fccc38', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80' },
+      { text:'Shape sorter challenge: name each shape as they post it through the hole',        color:'#fccc38', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
+      { text:'Nature walk: name every flower, tree, bird, and stone you encounter',             color:'#a74632', img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
+      { text:'Finger painting with edible turmeric + flour paint on baking paper',             color:'#a74632', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
+      { text:'Block stacking towers — count aloud as they build, clap when it falls!',         color:'#995200', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
+      { text:'Reading the same book nightly — ask "what\'s next?" to build prediction',        color:'#995200', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+    ],
+  },
+
+  '24-36': {
+    emoji: '🌟',
+    label: '24–36 Months',
+    range: '2 to 3 years',
+    milestone: {
+      emoji: '💬',
+      title: 'Language, Logic & Emotional Regulation',
+      label: 'Key Milestone',
+      desc: 'Sentences grow from 2 words to full stories. Toddlers ask "Why?" constantly — this is curiosity doing its best work. They begin understanding rules, categorising objects, and experiencing a full range of emotions they\'re just learning to navigate.',
+      img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🔢', title:'Early Numeracy',        desc:'Counting objects, understanding "more" and "less", sorting by colour and size.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400&q=80' },
+      { icon:'🗺️', title:'Memory & Recall',       desc:'Retelling stories, remembering sequences, and simple rhymes to build working memory.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🫂', title:'Emotional Intelligence', desc:'Naming feelings, empathy games, and calm-down corners to build self-regulation.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80' },
+      { icon:'🔬', title:'Scientific Curiosity',   desc:'Simple experiments — dissolving sugar, sinking/floating — to feed the "why" phase.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Sorting games: sort fruit by colour, toys by shape, socks by size',              color:'#fccc38', img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=300&q=80' },
+      { text:'"What happened today?" retelling at bedtime builds narrative memory',              color:'#fccc38', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+      { text:'Water + oil + food colouring experiment: observe and discuss what happens',        color:'#a74632', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Feelings check-in cards — name an emotion, draw a face that matches',             color:'#a74632', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Nature mandalas: collect leaves and arrange in patterns on the ground',            color:'#995200', img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
+      { text:'Simple board games with turns — builds patience and rule-following',               color:'#995200', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80' },
+    ],
+  },
+};
+
+// ── Render age buttons ───────────────────────────────────────────────────
+const AGES = [
+  { key:'0-6',   emoji:'🌸', label:'0–6 Months',   sub:'Newborn' },
+  { key:'6-12',  emoji:'🧡', label:'6–12 Months',  sub:'Explorer' },
+  { key:'12-24', emoji:'⭐', label:'12–24 Months', sub:'Toddler' },
+  { key:'24-36', emoji:'🌟', label:'24–36 Months', sub:'Big Kid' },
+];
+
+const btnGroup = document.getElementById('age-btn-group');
+btnGroup.innerHTML = AGES.map(a => `
+  <button class="age-btn" data-age="${a.key}" onclick="window._selectAge('${a.key}')">
+    <span class="age-emoji">${a.emoji}</span>
+    <span class="age-label">${a.label}</span>
+    <span class="age-range">${a.sub}</span>
+  </button>`).join('');
+
+// ── Level Program Data ───────────────────────────────────────────────
+// Default icons for focus area mapping
+const FOCUS_ICONS = {'Visual Development':'👁️','Auditory Development':'👂','Sensory Exploration':'🤲','Brain Stimulation':'🧠','Motor Skills (Tummy Time)':'💪','Emotional Bonding':'💞','Cognitive Development':'🧩','Language Development':'🗣️','Attention & Focus':'🎯','Early Knowledge Building':'📚','Fine Motor Skills':'✋','Coordination (Bilateral)':'🤸','Cognitive & Logical Development':'🧠','Creativity & Imagination':'🎨','Language & Communication':'🗣️','Visual Skills':'👁️','Focus & Attention':'🎯','Sensory Play':'🤲','Early Maths Skills':'🔢'};
+const FOCUS_BGS = ['rgba(252,204,56,0.15)','rgba(167,70,50,0.08)','rgba(255,151,52,0.1)','rgba(124,97,0,0.08)','rgba(16,185,129,0.08)','rgba(252,204,56,0.12)','rgba(167,70,50,0.06)','rgba(124,97,0,0.06)'];
+
+// Load from admin state if available
+var LEVEL_DATA = (function(){
+  var defaults = {
+  '0-6':  { level:1, name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.',
+            focusAreas:[
+              {icon:'👁️',title:'Visual Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'👂',title:'Auditory Development',bg:'rgba(167,70,50,0.08)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🧠',title:'Brain Stimulation',bg:'rgba(124,97,0,0.08)'},
+              {icon:'💪',title:'Motor Skills (Tummy Time)',bg:'rgba(16,185,129,0.08)'},
+              {icon:'💞',title:'Emotional Bonding',bg:'rgba(252,204,56,0.12)'},
+            ]},
+  '6-12': { level:2, name:'Explore & Learn', tagline:'Nurturing curiosity, communication, and focus during the most absorbent learning phase.',
+            focusAreas:[
+              {icon:'🧩',title:'Cognitive Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'🗣️',title:'Language Development',bg:'rgba(167,70,50,0.08)'},
+              {icon:'👁️',title:'Visual Development',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(124,97,0,0.08)'},
+              {icon:'🎯',title:'Attention & Focus',bg:'rgba(16,185,129,0.08)'},
+              {icon:'📚',title:'Early Knowledge Building',bg:'rgba(252,204,56,0.12)'},
+            ]},
+  '12-24':{ level:3, name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.',
+            focusAreas:[
+              {icon:'🧩',title:'Cognitive Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'✋',title:'Fine Motor Skills',bg:'rgba(167,70,50,0.08)'},
+              {icon:'👁️',title:'Visual Development',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🗣️',title:'Language Development',bg:'rgba(124,97,0,0.08)'},
+              {icon:'🤸',title:'Coordination (Bilateral)',bg:'rgba(16,185,129,0.08)'},
+              {icon:'🎯',title:'Attention & Focus',bg:'rgba(252,204,56,0.12)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(167,70,50,0.06)'},
+            ]},
+  '24-36':{ level:4, name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.',
+            focusAreas:[
+              {icon:'🧠',title:'Cognitive & Logical Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'✋',title:'Fine Motor Skills',bg:'rgba(167,70,50,0.08)'},
+              {icon:'🎨',title:'Creativity & Imagination',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🗣️',title:'Language & Communication',bg:'rgba(124,97,0,0.08)'},
+              {icon:'👁️',title:'Visual Skills',bg:'rgba(16,185,129,0.08)'},
+              {icon:'🎯',title:'Focus & Attention',bg:'rgba(252,204,56,0.12)'},
+              {icon:'🤲',title:'Sensory Play',bg:'rgba(167,70,50,0.06)'},
+              {icon:'🔢',title:'Early Maths Skills',bg:'rgba(124,97,0,0.06)'},
+            ]},
+  };
+  // Merge admin-edited level data from localStorage
+  try {
+    var adminState = JSON.parse(localStorage.getItem('urjaa_admin_state') || '{}');
+    if (adminState.levelPrograms) {
+      Object.keys(adminState.levelPrograms).forEach(function(key) {
+        if (defaults[key]) {
+          var lp = adminState.levelPrograms[key];
+          defaults[key].name = lp.name || defaults[key].name;
+          defaults[key].tagline = lp.tagline || defaults[key].tagline;
+          if (lp.focusAreas && lp.focusAreas.length) {
+            defaults[key].focusAreas = lp.focusAreas.map(function(title, i) {
+              return {icon: FOCUS_ICONS[title] || '✨', title: title, bg: FOCUS_BGS[i % FOCUS_BGS.length]};
+            });
+          }
+        }
+      });
+    }
+  } catch(e) {}
+  return defaults;
+})();
+
+// ── Select age ───────────────────────────────────────────────────────────
+window._selectAge = function(key) {
+  const d = AGE_DATA[key];
+  const lv = LEVEL_DATA[key];
+  if (!d || !lv) return;
+
+  // Update buttons
+  document.querySelectorAll('.age-btn').forEach(b => b.classList.toggle('selected', b.dataset.age === key));
+
+  // Show content with animation
+  const content = document.getElementById('age-content');
+  const placeholder = document.getElementById('age-placeholder');
+  content.style.animation = 'none';
+  content.offsetHeight; // force reflow
+  content.style.animation = 'fadeSlideIn 0.5s ease forwards';
+  content.classList.remove('hidden');
+  placeholder.classList.add('hidden');
+
+  // Level header
+  document.getElementById('level-age-range').textContent = AGES.find(a=>a.key===key).label;
+  document.getElementById('level-title').textContent = lv.name;
+  document.getElementById('level-tagline').textContent = lv.tagline;
+
+  // Focus area pills
+  document.getElementById('focus-pills').innerHTML = lv.focusAreas.map(fa => `
+    <div class="focus-pill">
+      <div class="focus-pill-icon" style="background:${fa.bg}">${fa.icon}</div>
+      <span class="focus-pill-text">${fa.title}</span>
+    </div>`).join('');
+
+  // Milestone banner
+  document.getElementById('milestone-img').src   = d.milestone.img;
+  document.getElementById('milestone-img').alt   = d.milestone.title;
+  document.getElementById('milestone-label').textContent = d.milestone.label || 'Key Milestone';
+  document.getElementById('milestone-title').textContent = d.milestone.title;
+  document.getElementById('milestone-desc').textContent  = d.milestone.desc;
+
+  // Focus detail cards
+  document.getElementById('focus-cards').innerHTML = d.focuses.map(f => `
+    <div class="focus-card" style="border:1.5px solid ${f.border}">
+      <div style="overflow:hidden;height:140px;background:${f.bg}">
+        <img class="focus-card-img" src="${f.img}" alt="${f.title}"/>
+      </div>
+      <div class="focus-card-body" style="background:${f.bg}">
+        <span class="focus-card-icon">${f.icon}</span>
+        <span class="focus-title">${f.title}</span>
+        <span class="focus-desc">${f.desc}</span>
+      </div>
+    </div>`).join('');
+
+  // Activity carousel
+  window._actIdx = 0;
+  const actTrack = document.getElementById('activity-list');
+  const actDots  = document.getElementById('act-dots');
+
+  actTrack.innerHTML = d.activities.map((a, i) => `
+    <div class="activity-card">
+      <img class="activity-card-img" src="${a.img}" alt="${a.text.slice(0,40)}"/>
+      <div class="activity-card-body">
+        <span class="activity-card-num" style="color:${a.color}">Activity ${i+1} of ${d.activities.length}</span>
+        <span class="activity-card-text">${a.text}</span>
+      </div>
+    </div>`).join('');
+
+  actDots.innerHTML = d.activities.map((_, i) => `
+    <button class="act-dot ${i===0?'active':''}" onclick="window._actGoTo(${i})"></button>`).join('');
+
+  document.getElementById('act-counter').textContent = `1 / ${d.activities.length}`;
+  actTrack.style.transform = 'translateX(0)';
+
+  window._actGoTo = function(idx) {
+    const total = d.activities.length;
+    window._actIdx = Math.max(0, Math.min(total - 1, idx));
+    actTrack.style.transform = `translateX(-${window._actIdx * 100}%)`;
+    document.getElementById('act-counter').textContent = `${window._actIdx + 1} / ${total}`;
+    document.querySelectorAll('.act-dot').forEach((dot, i) => dot.classList.toggle('active', i === window._actIdx));
+    document.getElementById('act-prev').style.opacity = window._actIdx === 0 ? '0.35' : '1';
+    document.getElementById('act-next').style.opacity = window._actIdx === total - 1 ? '0.35' : '1';
+  };
+  window._actScroll = function(dir) { window._actGoTo(window._actIdx + dir); };
+  window._actGoTo(0);
+
+  // Smooth scroll to level header
+  setTimeout(() => document.getElementById('level-header').scrollIntoView({ behavior:'smooth', block:'start' }), 150);
+};
+
+})();
+</script>
+
+<!-- BRAIN-BOOSTING PROGRAMS -->
+<section data-section="programs-bubbles" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">Brain-Boosting Programs</h2>
+      <p class="text-on-surface-variant max-w-lg mx-auto text-sm">Foundational curriculum for ages 1-4, focusing on holistic neural development.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Sensory Play -->
+      <div class="glass-card program-bubble soft-card border border-primary-container/20">
+        <div style="width:130px;height:130px;min-width:130px;min-height:130px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(124,97,0,0.15)">
+          <img data-img-id="sensory-play" alt="Sensory Play" style="width:130px;height:130px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80"/>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Sensory Play</h3>
+        <p class="text-on-surface-variant text-sm mb-5">Exploration through touch, sound, and sight to build strong neural pathways in the early years.</p>
+        <div class="flex items-center text-primary font-bold cursor-pointer group text-sm">
+          <span>Learn more</span>
+          <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+        </div>
+      </div>
+      <!-- Memory & Focus -->
+      <div class="glass-card program-bubble soft-card border border-primary-container/20">
+        <div style="width:130px;height:130px;min-width:130px;min-height:130px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(124,97,0,0.15)">
+          <img data-img-id="memory-focus" alt="Memory and Focus" style="width:130px;height:130px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80"/>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Memory & Focus</h3>
+        <p class="text-on-surface-variant text-sm mb-5">Playful activities designed to improve retention and lengthen attention spans through joyful engagement.</p>
+        <div class="flex items-center text-primary font-bold cursor-pointer group text-sm">
+          <span>Learn more</span>
+          <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+        </div>
+      </div>
+      <!-- Cognitive Activation -->
+      <div class="glass-card program-bubble soft-card border border-primary-container/20">
+        <div style="width:130px;height:130px;min-width:130px;min-height:130px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(124,97,0,0.15)">
+          <img data-img-id="cognitive" alt="Cognitive Activation" style="width:130px;height:130px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80"/>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Cognitive Activation</h3>
+        <p class="text-on-surface-variant text-sm mb-5">Advanced problem-solving games that stimulate critical thinking and logical reasoning early on.</p>
+        <div class="flex items-center text-primary font-bold cursor-pointer group text-sm">
+          <span>Learn more</span>
+          <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform text-base">arrow_forward</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONTESSORI PLAY IDEAS -->
+<section data-section="programs-montessori" class="py-20 relative overflow-hidden" style="display:none">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-20">
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black mb-3">Montessori Play Ideas</h2>
+      <p class="text-on-surface-variant text-base max-w-lg mx-auto">Child-led exploration for independent minds.</p>
+    </div>
+    <div class="space-y-24">
+      <!-- Texture Sorting -->
+      <div class="flex flex-col md:flex-row items-center gap-10 lg:gap-16">
+        <div class="w-full md:w-1/2 flex justify-center">
+          <div class="relative group">
+            <div style="position:absolute;inset:-16px;background:rgba(124,97,0,0.08);border-radius:40% 60% 70% 30%/40% 50% 60% 50%;filter:blur(20px)"></div>
+            <img data-img-id="texture" alt="Texture Sorting" style="width:100%;max-width:360px;height:320px;object-fit:cover;border-radius:40% 60% 70% 30%/40% 50% 60% 50%;box-shadow:0 20px 60px rgba(0,0,0,0.12);display:block;position:relative;z-index:1;transition:all 0.4s" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80"/>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2 text-center md:text-left">
+          <div class="inline-flex items-center justify-center w-12 h-12 glass-card rounded-full mb-5 text-primary">
+            <span class="material-symbols-outlined text-2xl">touch_app</span>
+          </div>
+          <h3 class="font-['Noto_Serif'] text-3xl font-bold mb-4">Texture Sorting</h3>
+          <p class="text-on-surface-variant text-base mb-6 leading-relaxed">Engage tactile senses by organizing natural objects by their unique surface patterns. A simple way to build sensory focus.</p>
+          <button class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm">
+            <span class="material-symbols-outlined text-base">description</span> Download PDF Guide
+          </button>
+        </div>
+      </div>
+      <!-- Nature Mandalas -->
+      <div class="flex flex-col-reverse md:flex-row items-center gap-10 lg:gap-16">
+        <div class="w-full md:w-1/2 text-center md:text-left">
+          <div class="inline-flex items-center justify-center w-12 h-12 glass-card rounded-full mb-5 text-primary">
+            <span class="material-symbols-outlined text-2xl">filter_vintage</span>
+          </div>
+          <h3 class="font-['Noto_Serif'] text-3xl font-bold mb-4">Nature Mandalas</h3>
+          <p class="text-on-surface-variant text-base mb-6 leading-relaxed">Create beautiful symmetrical patterns using leaves, stones, and petals from your garden. Fosters creativity and geometry.</p>
+          <button class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm">
+            <span class="material-symbols-outlined text-base">description</span> Download PDF Guide
+          </button>
+        </div>
+        <div class="w-full md:w-1/2 flex justify-center">
+          <div class="relative group">
+            <div style="position:absolute;inset:-16px;background:rgba(167,70,50,0.07);border-radius:50% 50% 30% 70%/50% 60% 40% 50%;filter:blur(20px)"></div>
+            <img data-img-id="mandalas" alt="Nature Mandalas" style="width:100%;max-width:360px;height:320px;object-fit:cover;border-radius:50% 50% 30% 70%/50% 60% 40% 50%;box-shadow:0 20px 60px rgba(0,0,0,0.12);display:block;position:relative;z-index:1" src="https://images.unsplash.com/photo-1555685812-4b8f59697ef3?w=600&q=80"/>
+          </div>
+        </div>
+      </div>
+      <!-- Water Pouring -->
+      <div class="flex flex-col md:flex-row items-center gap-10 lg:gap-16">
+        <div class="w-full md:w-1/2 flex justify-center">
+          <div class="relative group">
+            <div style="position:absolute;inset:-16px;background:rgba(153,82,0,0.07);border-radius:60% 40% 50% 50%/40% 40% 60% 60%;filter:blur(20px)"></div>
+            <img data-img-id="water" alt="Water Pouring" style="width:100%;max-width:360px;height:320px;object-fit:cover;border-radius:60% 40% 50% 50%/40% 40% 60% 60%;box-shadow:0 20px 60px rgba(0,0,0,0.12);display:block;position:relative;z-index:1" src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&q=80"/>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2 text-center md:text-left">
+          <div class="inline-flex items-center justify-center w-12 h-12 glass-card rounded-full mb-5 text-primary">
+            <span class="material-symbols-outlined text-2xl">opacity</span>
+          </div>
+          <h3 class="font-['Noto_Serif'] text-3xl font-bold mb-4">Water Pouring</h3>
+          <p class="text-on-surface-variant text-base mb-6 leading-relaxed">Develop fine motor control and concentration through mindful liquid transfer exercises. A foundational Montessori classic.</p>
+          <button class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm">
+            <span class="material-symbols-outlined text-base">description</span> Download PDF Guide
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIY ACTIVITIES -->
+<section data-section="programs-diy" class="py-20 relative">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">DIY Activities</h2>
+      <p class="text-on-surface-variant max-w-lg mx-auto text-sm">Simple home experiments for big discoveries.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Kitchen Science -->
+      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #fccc38">
+        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
+          <img data-img-id="kitchen" alt="Kitchen Science" style="width:100%;height:180px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=600&q=80"/>
+        </div>
+        <div style="position:relative">
+          <div style="position:absolute;top:-56px;right:-8px;width:40px;height:40px;background:#fccc38;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#594500;transform:rotate(12deg)">DIY</div>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-primary">Kitchen Science</h3>
+        <p class="text-on-surface-variant text-sm mb-6">Turn everyday pantry staples into exciting chemical reactions and sensory wonders.</p>
+        <button class="w-full flex items-center justify-center gap-2 btn-gold text-on-primary-container px-6 py-3 rounded-full font-black text-sm">
+          <span class="material-symbols-outlined text-base">draw</span> Download PDF Guide
+        </button>
+      </div>
+      <!-- Cardboard Castles -->
+      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #a74632">
+        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
+          <img data-img-id="cardboard" alt="Cardboard Castles" style="width:100%;height:180px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"/>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-secondary">Cardboard Castles</h3>
+        <p class="text-on-surface-variant text-sm mb-6">Unlock engineering skills by transforming shipping boxes into grand imaginative fortresses.</p>
+        <button class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-black text-sm text-white" style="background:#a74632">
+          <span class="material-symbols-outlined text-base">auto_fix_high</span> Download PDF Guide
+        </button>
+      </div>
+      <!-- Homemade Shakers -->
+      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #ff9734">
+        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
+          <img data-img-id="shakers" alt="Homemade Shakers" style="width:100%;height:180px;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80"/>
+        </div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-tertiary">Homemade Shakers</h3>
+        <p class="text-on-surface-variant text-sm mb-6">Explore rhythm and sound by crafting custom musical instruments from recycled materials.</p>
+        <button class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-black text-sm text-[#4d2600]" style="background:#ff9734">
+          <span class="material-symbols-outlined text-base">music_note</span> Download PDF Guide
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE WORKSHOPS -->
+<section data-section="programs-workshops" class="py-20 max-w-7xl mx-auto px-4 md:px-8" id="workshops">
+  <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+    <div>
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-2">Live Workshops for Moms</h2>
+      <p class="text-on-surface-variant text-sm">Connect with experts and fellow mothers in immersive live sessions.</p>
+    </div>
+    <button class="text-primary font-bold flex items-center group text-sm">
+      View Full Calendar <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform">calendar_month</span>
+    </button>
+  </div>
+  <div class="space-y-5">
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">12</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Mindful Motherhood: The First 500 Days</h4>
+        <p class="text-on-surface-variant text-sm">Understanding the emotional and neurological shifts in you and your baby.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Limited Spots</span>
+        <a href="community.html#join-cta" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm inline-block text-center no-underline">Register</a>
+      </div>
+    </div>
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="text-on-secondary p-5 rounded-xl text-center min-w-[100px]" style="background:#a74632">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">18</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Sanskrit Mantras & Baby Brain Development</h4>
+        <p class="text-on-surface-variant text-sm">Exploring the resonance and cognitive benefits of ancient sound vibrations.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-surface-container-highest px-4 py-1 rounded-full">Online Only</span>
+        <a href="community.html#join-cta" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm inline-block text-center no-underline">Register</a>
+      </div>
+    </div>
+    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
+      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
+        <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
+        <span class="block text-3xl font-black">25</span>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Feeding Curiosity: Nutrition for Smart Minds</h4>
+        <p class="text-on-surface-variant text-sm">Science-backed dietary guides for toddlers during peak brain growth periods.</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
+        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Free Webinar</span>
+        <a href="community.html#join-cta" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm inline-block text-center no-underline">Register</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-20 mx-3 md:mx-8 rounded-2xl" style="background:rgba(255,196,184,0.15)">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <div class="text-center mb-16">
+      <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">How It Works</h2>
+      <p class="text-on-surface-variant text-sm">A simple journey toward your child's brighter future.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+      <div class="glass-card p-8 rounded-2xl soft-card">
+        <div class="w-20 h-20 blob1 btn-primary flex items-center justify-center mx-auto mb-6 text-2xl font-black">1</div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Choose</h3>
+        <p class="text-on-surface-variant text-sm">Select the program or workshop that best aligns with your child's current development stage.</p>
+      </div>
+      <div class="glass-card p-8 rounded-2xl soft-card">
+        <div class="w-20 h-20 blob1 btn-primary flex items-center justify-center mx-auto mb-6 text-2xl font-black">2</div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Connect</h3>
+        <p class="text-on-surface-variant text-sm">Join our curated sessions online or in-person and engage with our expert nurturing mentors.</p>
+      </div>
+      <div class="glass-card p-8 rounded-2xl soft-card">
+        <div class="w-20 h-20 blob1 btn-primary flex items-center justify-center mx-auto mb-6 text-2xl font-black">3</div>
+        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3">Grow</h3>
+        <p class="text-on-surface-variant text-sm">Watch as wisdom and confidence bloom through structured play and consistent nurturing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="max-w-4xl mx-auto px-4 mt-20" id="join-cta">
+  <div class="p-10 md:p-16 rounded-2xl text-center relative overflow-hidden shadow-2xl" style="background:linear-gradient(135deg,#7c6100,#5a4500)">
+    <div style="position:absolute;inset:0;opacity:0.07;background-image:radial-gradient(circle at 2px 2px,#fff 1px,transparent 0);background-size:36px 36px"></div>
+    <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black text-white mb-4 relative z-10">Start Their Journey Today</h2>
+    <p class="text-primary-container text-base mb-8 relative z-10">Ready to see the Urjaa Mindz difference? Experience a trial session with us.</p>
+    <a href="community.html#join-cta" class="bg-white text-primary px-10 py-4 rounded-xl text-lg font-black hover:scale-105 transition-transform relative z-10 inline-block no-underline">Register for a Trial Session</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TOOLKIT SECTION (merged from toolkit.html) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section data-section="toolkit-hero" class="py-20 max-w-7xl mx-auto px-4 md:px-8">
+  <div class="text-center mb-12">
+    <span class="inline-block bg-primary-container/40 text-primary text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full mb-4">Resource Library</span>
+    <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black text-on-surface mb-3" data-text-key="toolkit_title">The 'Urjaa' Toolkit</h2>
+    <p class="text-on-surface-variant max-w-xl mx-auto text-sm leading-relaxed">Curated resources, sensory play guides, and expert articles to support your parenting journey.</p>
+  </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-4 md:px-6">
+
+<!-- Sensory Play Guides & Articles sections removed -->
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="glass rounded-t-[2.5rem] mt-16 border-t border-white/40">
+  <div class="flex flex-col md:flex-row justify-between items-start w-full px-6 md:px-12 py-12 max-w-7xl mx-auto gap-8">
+    <div class="max-w-xs">
+      <a href="home.html"><img alt="Urjaa Mindz Logo" class="w-auto object-contain h-24 mb-3"  src="/assets/logo-BCZWC3h6.png"/></a>
+      <p class="font-['Noto_Serif'] text-sm text-[#383833] leading-relaxed">Nurturing ancient wisdom for modern little minds.</p>
+    </div>
+    <div class="grid grid-cols-2 gap-10">
+      <div class="flex flex-col gap-2">
+        <h5 class="font-bold text-[#8e3a1f] text-xs uppercase tracking-widest mb-1">Explore</h5>
+        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="home.html">Home</a>
+        <a class="font-['Noto_Serif'] text-sm text-primary font-bold border-b border-primary/20 w-fit" href="index.html">Programs</a>
+        <a class="font-['Noto_Serif'] text-sm text-[#383833] hover:text-primary transition-colors" href="community.html">Community</a>
+      </div>
+      <div>
+        <h5 class="font-bold text-[#8e3a1f] text-xs uppercase tracking-widest mb-3">Wisdom</h5>
+        <p class="font-['Noto_Serif'] text-base text-[#8e3a1f] font-bold" data-text-key="site_tagline">स्नेहेन वर्धते बुद्धिः</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center py-5 border-t border-white/30 text-xs text-stone-400" data-text-key="site_copyright">© 2025 Urjaa Mindz. Wisdom grows through love.</div>
+</footer>
+
+<script>
+const menuToggle = document.getElementById('menu-toggle');
+const menuClose = document.getElementById('menu-close');
+const mobileMenu = document.getElementById('mobile-menu');
+menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+menuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('active')));
+</script>
+
+<!-- Urjaa Mindz Analytics Tracker -->
+<script>
+(function(){
+  const KEY = 'urjaa_analytics';
+  function loadData(){ try{ return JSON.parse(localStorage.getItem(KEY))||{visits:[],formSubmits:[]}; }catch(e){return{visits:[],formSubmits:[]};} }
+  function saveData(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
+
+  // Record page visit
+  function recordVisit(){
+    const data = loadData();
+    const device = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : /iPad|Tablet/i.test(navigator.userAgent) ? 'Tablet' : 'Desktop';
+    const page = location.pathname.split('/').pop() || 'index.html';
+    const labels = { 'home.html':'Home', 'index.html':'Programs', 'community.html':'Community', 'story.html':'Our Story' };
+    const session = sessionStorage.getItem('urjaa_session') || ('sess_'+Date.now()+'_'+Math.floor(Math.random()*9999));
+    sessionStorage.setItem('urjaa_session', session);
+    const entry = { ts:Date.now(), page, label:labels[page]||page, device, session, duration:0 };
+    data.visits.push(entry);
+    if (data.visits.length > 2000) data.visits = data.visits.slice(-2000);
+    saveData(data);
+
+    // Update duration on unload
+    const start = Date.now();
+    window.addEventListener('visibilitychange', function(){
+      if(document.visibilityState==='hidden'){
+        const d2 = loadData();
+        const v = d2.visits.find(v=>v.session===session && v.page===page && v.ts===entry.ts);
+        if(v) v.duration = Math.round((Date.now()-start)/1000);
+        saveData(d2);
+      }
+    });
+  }
+
+  // Intercept form submits
+  function recordForm(formName, page){
+    const data = loadData();
+    data.formSubmits = data.formSubmits || [];
+    data.formSubmits.push({ ts:Date.now(), form:formName, page });
+    if (data.formSubmits.length > 500) data.formSubmits = data.formSubmits.slice(-500);
+    saveData(data);
+  }
+
+  // Hook into CTA buttons / forms
+  function hookForms(){
+    const page = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('a[href="#join-cta"],button').forEach(el=>{
+      if(el.textContent.trim().match(/join|subscribe|submit|send|register|become/i)){
+        el.addEventListener('click', ()=>recordForm('Join / CTA', page), {once:true});
+      }
+    });
+    document.querySelectorAll('form').forEach(f=>{
+      f.addEventListener('submit', ()=>recordForm('Contact Form', page), {once:true});
+    });
+    // Community join button
+    document.querySelectorAll('[href="#join-cta"]').forEach(el=>{
+      el.addEventListener('click', ()=>recordForm('Join Community', page), {once:true});
+    });
+
+  }
+
+  recordVisit();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', hookForms);
+  else hookForms();
+})();
+</script>
+
+
+<!-- ═══ Join Now Popup ═══ -->
+<div id="join-popup-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(46,31,0,0.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity 0.35s ease" onclick="if(event.target===this)closeJoinPopup()">
+  <div id="join-popup-card" style="background:linear-gradient(145deg,#fffdf6 0%,#fef9e7 100%);border-radius:24px;padding:36px 32px 32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(124,97,0,0.18),0 4px 16px rgba(0,0,0,0.06);border:1.5px solid rgba(252,204,56,0.3);position:relative;transform:translateY(30px) scale(0.95);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.35s ease;opacity:0">
+    <!-- Close btn -->
+    <button onclick="closeJoinPopup()" style="position:absolute;top:14px;right:14px;background:rgba(124,97,0,0.08);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s" onmouseenter="this.style.background='rgba(124,97,0,0.16)'" onmouseleave="this.style.background='rgba(124,97,0,0.08)'">
+      <span style="font-size:18px;color:#7c6100;line-height:1">✕</span>
+    </button>
+    
+    <!-- Form state -->
+    <div id="join-form-state">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="width:56px;height:56px;background:linear-gradient(135deg,#fccc38,#e6a817);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 4px 16px rgba(252,204,56,0.35)">
+          <span style="font-size:28px">🌱</span>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif;font-size:22px;font-weight:700;color:#383833;margin:0 0 4px">Join the Urjaa Family</h3>
+        <p style="font-size:13px;color:#65655f;margin:0;line-height:1.5">Connect with us on WhatsApp for updates,<br>workshops & nurturing resources</p>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Your Name</label>
+        <input id="join-name" type="text" placeholder="e.g. Priya Sharma" style="width:100%;padding:12px 14px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box" onfocus="this.style.borderColor='#7c6100';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'" onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.boxShadow=''"/>
+      </div>
+
+      <div style="margin-bottom:8px">
+        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">WhatsApp Number</label>
+        <div style="display:flex;gap:8px">
+          <select id="join-country" style="width:100px;padding:12px 6px 12px 10px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;cursor:pointer;transition:all 0.2s;flex-shrink:0" onfocus="this.style.borderColor='#7c6100'" onblur="this.style.borderColor='rgba(124,97,0,0.18)'">
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+60">🇲🇾 +60</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+39">🇮🇹 +39</option>
+            <option value="+7">🇷🇺 +7</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+27">🇿🇦 +27</option>
+            <option value="+82">🇰🇷 +82</option>
+            <option value="+966">🇸🇦 +966</option>
+            <option value="+62">🇮🇩 +62</option>
+            <option value="+63">🇵🇭 +63</option>
+            <option value="+94">🇱🇰 +94</option>
+            <option value="+977">🇳🇵 +977</option>
+            <option value="+880">🇧🇩 +880</option>
+            <option value="+92">🇵🇰 +92</option>
+            <option value="+234">🇳🇬 +234</option>
+            <option value="+254">🇰🇪 +254</option>
+          </select>
+          <input id="join-phone" type="tel" placeholder="98XXXXXXXX" style="flex:1;padding:12px 14px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box;min-width:0" onfocus="this.style.borderColor='#7c6100';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'" onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.boxShadow=''" onkeydown="if(event.key==='Enter')submitJoinForm()"/>
+        </div>
+      </div>
+
+      <div id="join-error" style="display:none;background:rgba(190,45,6,0.08);border:1px solid rgba(190,45,6,0.2);border-radius:10px;padding:8px 12px;font-size:12px;color:#be2d06;font-weight:600;text-align:center;margin:12px 0 0"></div>
+
+      <button onclick="submitJoinForm()" style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(124,97,0,0.25);display:flex;align-items:center;justify-content:center;gap:8px" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(124,97,0,0.35)'" onmouseleave="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(124,97,0,0.25)'">
+        <span style="font-size:18px">💛</span> Join Our Community
+      </button>
+
+      <p style="text-align:center;font-size:11px;color:#94918a;margin-top:12px;line-height:1.4">Your details are sent to our WhatsApp<br>for a warm, personal welcome</p>
+    </div>
+
+    <!-- Thank You state -->
+    <div id="join-thanks-state" style="display:none;text-align:center;padding:20px 0 10px">
+      <div style="width:72px;height:72px;background:linear-gradient(135deg,#34d399,#10b981);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 6px 24px rgba(16,185,129,0.3);animation:joinBounce 0.6s ease">
+        <span style="font-size:36px">✓</span>
+      </div>
+      <h3 style="font-family:'Noto Serif',serif;font-size:22px;font-weight:700;color:#383833;margin:0 0 8px">Welcome to Urjaa! 🌸</h3>
+      <p style="font-size:14px;color:#65655f;margin:0 0 6px;line-height:1.6">Thank you, <strong id="join-thanks-name"></strong>!</p>
+      <p style="font-size:13px;color:#94918a;margin:0;line-height:1.5">Your details have been received!<br>Our team will connect with you on<br>WhatsApp very soon. 💛</p>
+      <div style="margin-top:20px;padding:14px;background:rgba(252,204,56,0.12);border-radius:14px;border:1px solid rgba(252,204,56,0.25)">
+        <p style="font-size:12px;color:#7c6100;margin:0;font-weight:600">स्नेहेन वर्धते बुद्धिः</p>
+        <p style="font-size:11px;color:#94918a;margin:4px 0 0;font-style:italic">Wisdom grows through love</p>
+      </div>
+      <button onclick="closeJoinPopup()" style="margin-top:18px;padding:12px 32px;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;border-radius:12px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.2s" onmouseenter="this.style.transform='translateY(-1px)'" onmouseleave="this.style.transform=''">Continue Exploring</button>
+    </div>
+  </div>
+</div>
+<style>
+@keyframes joinBounce{0%{transform:scale(0)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+</style>
+<script>
+function openJoinPopup(){
+  var o=document.getElementById('join-popup-overlay');
+  var c=document.getElementById('join-popup-card');
+  document.getElementById('join-form-state').style.display='';
+  document.getElementById('join-thanks-state').style.display='none';
+  document.getElementById('join-error').style.display='none';
+  document.getElementById('join-name').value='';
+  document.getElementById('join-phone').value='';
+  o.style.display='flex';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    o.style.opacity='1';
+    c.style.opacity='1';
+    c.style.transform='translateY(0) scale(1)';
+  })});
+  document.body.style.overflow='hidden';
+}
+function closeJoinPopup(){
+  var o=document.getElementById('join-popup-overlay');
+  var c=document.getElementById('join-popup-card');
+  o.style.opacity='0';
+  c.style.transform='translateY(30px) scale(0.95)';
+  c.style.opacity='0';
+  setTimeout(function(){o.style.display='none';document.body.style.overflow='';},350);
+}
+function submitJoinForm(){
+  var name=document.getElementById('join-name').value.trim();
+  var code=document.getElementById('join-country').value;
+  var phone=document.getElementById('join-phone').value.trim().replace(/[\s\-()]/g,'');
+  var errEl=document.getElementById('join-error');
+  var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
+  if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';document.getElementById('join-name').focus();return}
+  if(!phone||phone.length<7){errEl.textContent='Please enter a valid WhatsApp number';errEl.style.display='block';document.getElementById('join-phone').focus();return}
+  errEl.style.display='none';
+  if(submitBtn){submitBtn.disabled=true;submitBtn.innerHTML='<span style="font-size:16px">⏳</span> Sending...';}
+  var fullPhone=code+' '+phone;
+  var data={name:name,phone:fullPhone,country_code:code,timestamp:new Date().toISOString(),source:window.location.pathname};
+  // Read webhook settings from localStorage (set via Admin Panel)
+  var wh={};try{wh=JSON.parse(localStorage.getItem('urjaa_webhook_settings')||'{}');}catch(e){}
+  if(wh.gsheet_url){fetch(wh.gsheet_url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
+  if(wh.callmebot_key){var waMsg=encodeURIComponent('🌱 New Urjaa Mindz Enquiry\n👤 Name: '+name+'\n📱 WhatsApp: '+fullPhone+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
+  setTimeout(function(){showJoinThanks(name);},1200);
+}
+function showJoinThanks(name){
+  document.getElementById('join-thanks-name').textContent=name;
+  document.getElementById('join-form-state').style.display='none';
+  document.getElementById('join-thanks-state').style.display='';
+  var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
+  if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML='<span style="font-size:18px">💛</span> Join Our Community';}
+}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('a[href="#join-cta"]').forEach(function(el){
+    el.addEventListener('click',function(e){e.preventDefault();openJoinPopup()});
+    el.removeAttribute('href');
+    el.style.cursor='pointer';
+  });
+});
+</script>
+
+
+</body>
+</html>
