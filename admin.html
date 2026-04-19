@@ -2123,6 +2123,7 @@ function updateImageUrl(imgId, url) {
   if (img) img.src = url;
   const preview = document.getElementById('preview-' + imgId);
   if (preview) preview.src = url;
+  autoSave();
 }
 
 function removeImage(imgId) {
@@ -2285,12 +2286,13 @@ function addPhilCard() {
   ], (vals) => {
     if (!vals.title) return;
     state.philCards.push({ id:Date.now(), icon:vals.icon||'star', title:vals.title, desc:vals.desc });
-    renderHome(); toast('Philosophy card added!');
+    autoSave(); renderHome(); toast('Philosophy card added!');
   });
 }
 function updatePhilCard(id, field, val) {
   const c = state.philCards.find(x => x.id === id);
   if (c) c[field] = val;
+  autoSave();
 }
 function deletePhilCard(id) {
   if (!confirm('Delete this philosophy card?')) return;
@@ -2308,12 +2310,13 @@ function addPillar() {
   ], (vals) => {
     if (!vals.title) return;
     state.pillars.push({ id:Date.now(), emoji:vals.emoji||'⭐', title:vals.title, quote:vals.quote, focus:vals.focus });
-    renderHome(); toast('Pillar added!');
+    autoSave(); renderHome(); toast('Pillar added!');
   });
 }
 function updatePillar(id, field, val) {
   const p = state.pillars.find(x => x.id === id);
   if (p) p[field] = val;
+  autoSave();
 }
 function deletePillar(id) {
   if (!confirm('Delete this pillar?')) return;
@@ -2406,7 +2409,7 @@ function addBubble() {
     const imgId = 'bubble-' + Date.now();
     state.images.push({ id:imgId, label:vals.title, page:'Programs', src:vals.img||'' });
     state.bubbles.push({ id:Date.now(), title:vals.title, desc:vals.desc, img:imgId });
-    renderPrograms(); toast('Program added!');
+    autoSave(); renderPrograms(); toast('Program added!');
   });
 }
 function updateBubble(id, field, val) { const b = state.bubbles.find(x=>x.id===id); if(b) b[field]=val; autoSave(); }
@@ -2427,7 +2430,7 @@ function addMontessori() {
     const imgId = 'mont-' + Date.now();
     state.images.push({ id:imgId, label:vals.title, page:'Programs', src:vals.img||'' });
     state.montessori.push({ id:Date.now(), title:vals.title, desc:vals.desc, img:imgId });
-    renderPrograms(); toast('Activity added!');
+    autoSave(); renderPrograms(); toast('Activity added!');
   });
 }
 function updateMontessori(id, field, val) { const m = state.montessori.find(x=>x.id===id); if(m) m[field]=val; autoSave(); }
@@ -2448,7 +2451,7 @@ function addDIY() {
     const imgId = 'diy-' + Date.now();
     state.images.push({ id:imgId, label:vals.title, page:'Programs', src:vals.img||'' });
     state.diy.push({ id:Date.now(), title:vals.title, desc:vals.desc, img:imgId });
-    renderPrograms(); toast('DIY activity added!');
+    autoSave(); renderPrograms(); toast('DIY activity added!');
   });
 }
 function updateDIY(id, field, val) { const d = state.diy.find(x=>x.id===id); if(d) d[field]=val; autoSave(); }
@@ -2552,12 +2555,13 @@ function addFocusArea(ageKey) {
   ], (vals) => {
     if (!vals.title) return;
     state.ageData[ageKey].focuses.push({ id:Date.now(), icon:vals.icon||'⭐', title:vals.title, desc:vals.desc, img:vals.img||'' });
-    renderAgeEditor(ageKey); toast('Focus area added!');
+    autoSave(); renderAgeEditor(ageKey); toast('Focus area added!');
   });
 }
 function updateFocusArea(ageKey, id, field, val) {
   const f = state.ageData[ageKey].focuses.find(x=>x.id===id);
   if (f) f[field]=val;
+  autoSave();
 }
 function deleteFocusArea(ageKey, id) {
   if (!confirm('Delete this focus area?')) return;
@@ -2571,12 +2575,13 @@ function addActivity(ageKey) {
   ], (vals) => {
     if (!vals.text) return;
     state.ageData[ageKey].activities.push({ id:Date.now(), text:vals.text, img:vals.img||'' });
-    renderAgeEditor(ageKey); toast('Activity added!');
+    autoSave(); renderAgeEditor(ageKey); toast('Activity added!');
   });
 }
 function updateActivity(ageKey, id, field, val) {
   const a = state.ageData[ageKey].activities.find(x=>x.id===id);
   if (a) a[field]=val;
+  autoSave();
 }
 function deleteActivity(ageKey, id) {
   if (!confirm('Delete this activity?')) return;
@@ -2682,13 +2687,13 @@ function addChatRoom() {
   ], (vals) => {
     if (!vals.label) return;
     state.chatRooms.push({ id:'room-'+Date.now(), icon:vals.icon||'chat', label:vals.label, desc:vals.desc, members:+vals.members||0 });
-    renderCommunity(); toast('Chat room added!');
+    autoSave(); renderCommunity(); toast('Chat room added!');
   });
 }
-function updateChatRoom(id, field, val) { const r = state.chatRooms.find(x=>x.id===id); if(r) r[field]=val; }
+function updateChatRoom(id, field, val) { const r = state.chatRooms.find(x=>x.id===id); if(r) r[field]=val; autoSave(); }
 function deleteChatRoom(id) {
   if (!confirm('Delete this chat room?')) return;
-  state.chatRooms = state.chatRooms.filter(x=>x.id!==id);
+  state.chatRooms = state.chatRooms.filter(x=>x.id!==id); autoSave();
   renderCommunity(); toast('Room deleted');
 }
 
@@ -2702,13 +2707,13 @@ function addGalleryItem() {
     const imgId = 'gallery-' + Date.now();
     state.images.push({ id:imgId, label:vals.label, page:'Community', src:vals.img||'' });
     state.gallery.push({ id:Date.now(), label:vals.label, img:imgId });
-    renderCommunity(); toast('Photo added!');
+    autoSave(); renderCommunity(); toast('Photo added!');
   });
 }
-function updateGallery(id, field, val) { const g = state.gallery.find(x=>x.id===id); if(g) g[field]=val; }
+function updateGallery(id, field, val) { const g = state.gallery.find(x=>x.id===id); if(g) g[field]=val; autoSave(); }
 function deleteGallery(id) {
   if (!confirm('Remove this photo?')) return;
-  state.gallery = state.gallery.filter(x=>x.id!==id);
+  state.gallery = state.gallery.filter(x=>x.id!==id); autoSave();
   renderCommunity(); toast('Photo removed');
 }
 
@@ -2805,13 +2810,13 @@ function addWisdom() {
   ], (vals) => {
     if (!vals.title) return;
     state.wisdom.push({ id:Date.now(), title:vals.title, desc:vals.desc });
-    renderToolkit(); toast('Wisdom card added!');
+    autoSave(); renderToolkit(); toast('Wisdom card added!');
   });
 }
-function updateWisdom(id, field, val) { const w = state.wisdom.find(x=>x.id===id); if(w) w[field]=val; }
+function updateWisdom(id, field, val) { const w = state.wisdom.find(x=>x.id===id); if(w) w[field]=val; autoSave(); }
 function deleteWisdom(id) {
   if (!confirm('Delete this wisdom card?')) return;
-  state.wisdom = state.wisdom.filter(x=>x.id!==id);
+  state.wisdom = state.wisdom.filter(x=>x.id!==id); autoSave();
   renderToolkit(); toast('Card deleted');
 }
 
@@ -2826,13 +2831,13 @@ function addPdfGuide() {
     const imgId = 'pdf-' + Date.now();
     state.images.push({ id:imgId, label:vals.title, page:'Toolkit', src:vals.img||'' });
     state.pdfGuides.push({ id:Date.now(), title:vals.title, age:vals.age, img:imgId });
-    renderToolkit(); toast('PDF guide added!');
+    autoSave(); renderToolkit(); toast('PDF guide added!');
   });
 }
-function updatePdfGuide(id, field, val) { const p = state.pdfGuides.find(x=>x.id===id); if(p) p[field]=val; }
+function updatePdfGuide(id, field, val) { const p = state.pdfGuides.find(x=>x.id===id); if(p) p[field]=val; autoSave(); }
 function deletePdfGuide(id) {
   if (!confirm('Delete this PDF guide?')) return;
-  state.pdfGuides = state.pdfGuides.filter(x=>x.id!==id);
+  state.pdfGuides = state.pdfGuides.filter(x=>x.id!==id); autoSave();
   renderToolkit(); toast('Guide deleted');
 }
 
@@ -2847,13 +2852,13 @@ function addArticle() {
     const imgId = 'article-' + Date.now();
     state.images.push({ id:imgId, label:vals.title, page:'Toolkit', src:vals.img||'' });
     state.articles.push({ id:Date.now(), title:vals.title, cat:vals.cat, img:imgId });
-    renderToolkit(); toast('Article added!');
+    autoSave(); renderToolkit(); toast('Article added!');
   });
 }
-function updateArticle(id, field, val) { const a = state.articles.find(x=>x.id===id); if(a) a[field]=val; }
+function updateArticle(id, field, val) { const a = state.articles.find(x=>x.id===id); if(a) a[field]=val; autoSave(); }
 function deleteArticle(id) {
   if (!confirm('Delete this article?')) return;
-  state.articles = state.articles.filter(x=>x.id!==id);
+  state.articles = state.articles.filter(x=>x.id!==id); autoSave();
   renderToolkit(); toast('Article deleted');
 }
 
