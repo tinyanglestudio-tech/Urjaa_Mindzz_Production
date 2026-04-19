@@ -32,7 +32,7 @@
   .gold-border{border:1.5px solid transparent;background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#fccc38,#ff9734,#a74632) border-box}
   #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
   #mobile-menu.active{transform:translateX(0)}
-  #mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:40;opacity:0;transition:opacity 0.3s ease}
+  #mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;opacity:0;transition:opacity 0.3s ease}
   #mobile-menu-backdrop.active{display:block;opacity:1}
 
   /* Merged: Community + Home extras */
@@ -125,7 +125,7 @@
   <!-- Mobile backdrop -->
   <div id="mobile-menu-backdrop" class="md:hidden"></div>
   <!-- Mobile sidebar -->
-  <div class="fixed inset-y-0 right-0 w-72 bg-white shadow-2xl z-50 md:hidden flex flex-col p-6 gap-2 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu">
+  <div class="fixed inset-y-0 right-0 w-72 bg-white shadow-2xl md:hidden flex flex-col p-6 gap-2 font-['Noto_Serif'] text-lg font-bold" id="mobile-menu" style="z-index:300">
     <div class="flex justify-between items-center mb-4">
       <img alt="Urjaa Mindz" class="h-10 w-auto object-contain" src="logo.png"/>
       <button id="menu-close" style="width:44px;height:44px;border-radius:12px;background:rgba(124,97,0,0.06);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:24px">close</span></button>
@@ -1497,9 +1497,12 @@ const menuBackdrop = document.getElementById('mobile-menu-backdrop');
 function openMobileMenu(){mobileMenu.classList.add('active');menuBackdrop.classList.add('active');document.body.style.overflow='hidden';}
 function closeMobileMenu(){mobileMenu.classList.remove('active');menuBackdrop.classList.remove('active');document.body.style.overflow='';}
 menuToggle.addEventListener('click', openMobileMenu);
+menuToggle.addEventListener('touchstart', function(e){e.preventDefault();openMobileMenu();},{passive:false});
 menuClose.addEventListener('click', closeMobileMenu);
 menuBackdrop.addEventListener('click', closeMobileMenu);
-mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMobileMenu));
+mobileMenu.querySelectorAll('a').forEach(function(l){
+  l.addEventListener('click', function(){setTimeout(closeMobileMenu, 50);});
+});
 </script>
 
 <!-- Urjaa Mindz Analytics Tracker -->
