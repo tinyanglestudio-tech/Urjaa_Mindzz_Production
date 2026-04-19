@@ -49,7 +49,7 @@
   #mobile-menu.active { display: block; }
   html { scroll-behavior: smooth; }
 </style>
-  <script type="module" crossorigin src="/assets/admin-sync-BWSZdLDR.js"></script>
+  <script type="module" crossorigin src="/assets/admin-sync-DXNuye0w.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/admin-sync-BhBMKv1-.css">
 </head>
 <body class="bg-mesh font-body text-on-surface">
@@ -95,10 +95,10 @@
     <!-- Text -->
     <div class="flex-1 space-y-6">
       <h2 class="text-secondary text-xl md:text-2xl font-['Noto_Serif'] italic">स्नेहेन वर्धते बुद्धिः</h2>
-      <h1 class="text-4xl sm:text-5xl md:text-7xl font-['Noto_Serif'] font-black text-on-surface leading-tight">
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-['Noto_Serif'] font-black text-on-surface leading-tight" data-text-key="comm_title">
         The Nurture <br/><span class="text-primary italic">Collective</span>
       </h1>
-      <p class="text-base md:text-lg text-on-surface-variant max-w-lg leading-relaxed">
+      <p class="text-base md:text-lg text-on-surface-variant max-w-lg leading-relaxed" data-text-key="comm_sub">
         A sanctuary for mindful mothers. Connect, share, and grow in a space designed to celebrate the wisdom of conscious parenting.
       </p>
       <div class="flex flex-col sm:flex-row gap-4">
@@ -114,8 +114,8 @@
       </div>
       <!-- Quote card -->
       <div class="glass-card absolute -bottom-5 -left-4 z-20 p-5 rounded-xl max-w-[220px]" style="transform:rotate(-2deg)">
-        <p class="text-secondary font-['Noto_Serif'] font-bold text-sm italic">"A community that feels like home."</p>
-        <p class="text-on-surface-variant text-xs mt-1">— Priya S., Mumbai</p>
+        <p class="text-secondary font-['Noto_Serif'] font-bold text-sm italic" data-text-key="comm_quote">"A community that feels like home."</p>
+        <p class="text-on-surface-variant text-xs mt-1" data-text-key="comm_quote_attr">— Priya S., Mumbai</p>
       </div>
     </div>
   </div>
@@ -781,8 +781,8 @@ Respond naturally as a supportive community member who also has deep expertise. 
 
   <div class="max-w-3xl mx-auto relative z-10">
     <div class="text-center mb-12">
-      <h2 class="text-3xl sm:text-5xl md:text-6xl font-['Noto_Serif'] font-black text-white mb-4">Join the Circle</h2>
-      <p class="text-lg text-white/85">Unlock exclusive workshops, community forums, and nurturing resources.</p>
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-['Noto_Serif'] font-black text-white mb-4" data-text-key="comm_cta_title">Join the Circle</h2>
+      <p class="text-lg text-white/85" data-text-key="comm_cta_sub">Unlock exclusive workshops, community forums, and nurturing resources.</p>
     </div>
 
     <div class="p-6 md:p-10 rounded-2xl" style="background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2)">
@@ -800,7 +800,7 @@ Respond naturally as a supportive community member who also has deep expertise. 
           <textarea class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="I'm a mother of two looking for..." rows="3"></textarea>
         </div>
         <div class="md:col-span-2 mt-2">
-          <button onclick="openJoinPopup()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-lg font-black hover:scale-105 transition-all">Become a Member</button>
+          <button onclick="openJoinPopup()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-lg font-black hover:scale-105 transition-all" data-text-key="comm_cta_btn">Become a Member</button>
         </div>
         <p class="md:col-span-2 text-center text-xs text-white/60">By joining, you agree to our Community Guidelines and Privacy Policy.</p>
       </div>
@@ -828,8 +828,8 @@ Respond naturally as a supportive community member who also has deep expertise. 
         </div>
       </div>
       <div class="space-y-3">
-        <h4 class="font-bold text-primary italic text-lg font-['Noto_Serif']">स्नेहेन वर्धते बुद्धिः</h4>
-        <p class="text-[#383833] text-xs">Wisdom grows through love.</p>
+        <h4 class="font-bold text-primary italic text-lg font-['Noto_Serif']" data-text-key="site_tagline">स्नेहेन वर्धते बुद्धिः</h4>
+        <p class="text-[#383833] text-xs" data-text-key="site_tagline_en">Wisdom grows through love.</p>
         <div class="flex gap-3 mt-3">
           <a class="w-9 h-9 glass-card rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all cursor-pointer" onclick="openJoinPopup()"><span class="material-symbols-outlined text-base">share</span></a>
           <a class="w-9 h-9 glass-card rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all cursor-pointer" onclick="openJoinPopup()"><span class="material-symbols-outlined text-base">groups</span></a>
@@ -838,7 +838,7 @@ Respond naturally as a supportive community member who also has deep expertise. 
     </div>
   </div>
   <div class="text-center py-5 border-t border-white/30 text-xs text-stone-400">
-    © 2025 Urjaa Mindz. Wisdom grows through love.
+    <span data-text-key="site_copyright">© 2025 Urjaa Mindz. Wisdom grows through love.</span>
   </div>
 </footer>
 

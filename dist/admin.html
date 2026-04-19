@@ -1989,6 +1989,26 @@ let state = {
       ],
     },
   },
+  texts: {},
+}
+
+// ── Text Fields (data-key) ─────────────────────────────────────────────────
+function wireTextFields() {
+  if (!state.texts) state.texts = {};
+  document.querySelectorAll('[data-key]').forEach(function(el){
+    var key = el.getAttribute('data-key');
+    if (!key) return;
+    if (key === 'admin_pwd' || key === 'admin_pwd2') return;
+    if (Object.prototype.hasOwnProperty.call(state.texts, key)) {
+      el.value = state.texts[key];
+    }
+    if (el._wiredTextKey) return;
+    el._wiredTextKey = true;
+    el.addEventListener('input', function(){
+      state.texts[key] = el.value;
+      autoSave();
+    });
+  });
 }
 
 // ── Navigation ─────────────────────────────────────────────────────────────
@@ -3558,6 +3578,7 @@ function toast(msg) {
 loadSavedState();
 showPage('dashboard');
 loadWebhookSettings();
+wireTextFields();
 
 // Pull latest from Supabase so admin edits sync across devices
 _fetchFromSupabase('admin_state').then(function(remote){
@@ -3569,6 +3590,7 @@ _fetchFromSupabase('admin_state').then(function(remote){
     }
     try { localStorage.setItem(ADMIN_STATE_KEY, JSON.stringify(state)); } catch(e){}
     try { showPage(state.currentPage || 'dashboard'); } catch(e){}
+    try { wireTextFields(); } catch(e){}
   } else {
     // First run: seed Supabase with whatever is in state
     try {
