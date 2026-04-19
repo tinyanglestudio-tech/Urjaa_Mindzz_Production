@@ -666,7 +666,7 @@ window._selectAge = function(key) {
       <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">Brain-Boosting Programs</h2>
       <p class="text-on-surface-variant max-w-lg mx-auto text-sm">Foundational curriculum for ages 1-4, focusing on holistic neural development.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10" data-sync-list="bubbles">
       <!-- Sensory Play -->
       <div class="glass-card program-bubble soft-card border border-primary-container/20">
         <div style="width:130px;height:130px;min-width:130px;min-height:130px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(124,97,0,0.15)">
@@ -714,7 +714,7 @@ window._selectAge = function(key) {
       <h2 class="font-['Noto_Serif'] text-3xl md:text-5xl font-black mb-3">Montessori Play Ideas</h2>
       <p class="text-on-surface-variant text-base max-w-lg mx-auto">Child-led exploration for independent minds.</p>
     </div>
-    <div class="space-y-24">
+    <div class="space-y-24" data-sync-list="montessori">
       <!-- Texture Sorting -->
       <div class="flex flex-col md:flex-row items-center gap-10 lg:gap-16">
         <div class="w-full md:w-1/2 flex justify-center">
@@ -783,7 +783,7 @@ window._selectAge = function(key) {
       <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-black mb-3">DIY Activities</h2>
       <p class="text-on-surface-variant max-w-lg mx-auto text-sm">Simple home experiments for big discoveries.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-sync-list="diy">
       <!-- Kitchen Science -->
       <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #fccc38">
         <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
@@ -835,7 +835,7 @@ window._selectAge = function(key) {
       View Full Calendar <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform">calendar_month</span>
     </button>
   </div>
-  <div class="space-y-5">
+  <div class="space-y-5" data-sync-list="workshops">
     <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
       <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
         <span class="block text-xs font-bold uppercase tracking-widest">Oct</span>
@@ -937,7 +937,7 @@ window._selectAge = function(key) {
     <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-bold text-primary">Sensory Play Guides</h2>
     <a class="text-primary font-bold underline underline-offset-4 decoration-2 decoration-primary-container text-sm" href="#">View All PDF Guides</a>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-5" data-sync-list="pdfGuides">
     <!-- PDF 1 -->
     <div class="pdf-card group cursor-pointer soft-card rounded-2xl overflow-hidden">
       <div style="aspect-ratio:3/4;min-height:200px;position:relative;overflow:hidden">
@@ -1004,7 +1004,7 @@ window._selectAge = function(key) {
 <!-- ARTICLES -->
 <section class="mb-20" id="articles">
   <h2 class="font-['Noto_Serif'] text-3xl md:text-4xl font-bold text-on-surface mb-10">Articles & Expert Tips</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10" data-sync-list="articles">
     <article class="flex flex-col sm:flex-row gap-6 items-start glass-card p-5 rounded-2xl soft-card">
       <div style="width:160px;height:160px;min-width:160px;border-radius:1rem;overflow:hidden;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.08)">
         <img alt="Mother and child sharing eye contact" style="width:100%;height:100%;object-fit:cover;display:block" src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80"/>
@@ -1282,98 +1282,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-<script>
-// ── Urjaa Admin Sync: Load admin-edited content from localStorage ──
-(function(){
-  var KEY = 'urjaa_admin_state';
-  var SB_URL='https://iqikqkprswelbthkuglg.supabase.co';
-  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
-  function _apply(s){
-    try {
-      if (!s) return;
-
-    // ── Testimonials ──
-    if (s.testimonials && s.testimonials.length) {
-      // Find testimonial containers on the page
-      var testContainers = document.querySelectorAll('[data-testimonial-id]');
-      // Also look for hardcoded testimonial cards by structure
-      var quoteEls = document.querySelectorAll('blockquote, [class*="testimonial"]');
-    }
-
-    // ── Founder names and photo ──
-    if (s.images) {
-      s.images.forEach(function(img) {
-        // Update any <img> whose alt or data-img-id matches
-        var targets = document.querySelectorAll('img[data-img-id="' + img.id + '"]');
-        targets.forEach(function(el) { el.src = img.src; });
-        // Also update by matching old src pattern for founders
-        if (img.id === 'founders') {
-          document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el) {
-            el.src = img.src;
-          });
-        }
-        if (img.id === 'hero-bg') {
-          document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el) {
-            el.src = img.src;
-          });
-        }
-      });
-    }
-
-    // ── Section visibility ──
-    if (s.sections) {
-      Object.keys(s.sections).forEach(function(key) {
-        if (!s.sections[key].visible) {
-          var el = document.querySelector('[data-section="' + key + '"]');
-          if (el) el.style.display = 'none';
-        }
-      });
-    }
-
-    // ── Workshops (community page) ──
-    if (s.workshops && document.getElementById('workshops')) {
-      var wsContainer = document.querySelector('#workshops .space-y-5');
-      if (wsContainer && s.workshops.length > 0) {
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        wsContainer.innerHTML = s.workshops.map(function(w) {
-          var d = new Date(w.date);
-          var mon = months[d.getMonth()] || 'TBD';
-          var day = d.getDate() || '??';
-          var badgeStyle = w.badge === 'Limited Spots' ? 'background:rgba(167,70,50,0.12);color:#a74632' :
-                          w.badge === 'Online Only' ? 'background:rgba(124,97,0,0.08);color:#7c6100' :
-                          'background:rgba(167,70,50,0.12);color:#a74632';
-          return '<div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">' +
-            '<div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">' +
-              '<span class="block text-xs font-bold uppercase tracking-widest">' + mon + '</span>' +
-              '<span class="block text-3xl font-black">' + day + '</span>' +
-            '</div>' +
-            '<div class="flex-1">' +
-              '<h4 class="font-[\'Noto_Serif\'] text-lg font-bold mb-1">' + w.title + '</h4>' +
-              '<p class="text-on-surface-variant text-sm">' + w.desc + '</p>' +
-            '</div>' +
-            '<div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">' +
-              '<span class="text-xs font-medium px-4 py-1 rounded-full" style="' + badgeStyle + '">' + (w.badge||'') + '</span>' +
-              '<button onclick="openJoinPopup()" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-      }
-    }
-
-    // ── Testimonials (community page) ──
-    if (s.testimonials && document.querySelector('.testimonial-card, [data-testimonials]')) {
-      // handled by data attributes
-    }
-
-    } catch(e) { console.error('Admin sync error:', e); }
-  }
-  try { var _l = localStorage.getItem(KEY); if (_l) _apply(JSON.parse(_l)); } catch(e){}
-  fetch(SB_URL+'/rest/v1/site_settings?id=eq.admin_state&select=data',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
-    .then(function(r){return r.ok?r.json():[];})
-    .then(function(rows){ if(rows&&rows[0]&&rows[0].data){ try{localStorage.setItem(KEY,JSON.stringify(rows[0].data));}catch(e){} _apply(rows[0].data); } })
-    .catch(function(){});
-})();
-
-</script>
+<script type="module" src="./admin-sync.js"></script>
 </body>
 </html>

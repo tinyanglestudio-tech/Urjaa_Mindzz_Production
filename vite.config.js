@@ -16,6 +16,7 @@ export default defineConfig({
         contact: 'contact.html',
         privacy: 'privacy.html',
         terms: 'terms.html',
+        programs: 'programs.html',
         admin: 'admin.html'
       }
     }
