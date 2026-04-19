@@ -29,7 +29,8 @@
   #mobile-menu{transition:transform 0.3s ease-in-out;transform:translateX(100%)}
   #mobile-menu.active{transform:translateX(0)}
 </style>
-  <link rel="stylesheet" crossorigin href="/assets/tailwind-BhBMKv1-.css">
+  <script type="module" crossorigin src="/assets/admin-sync-BWSZdLDR.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/admin-sync-BhBMKv1-.css">
 </head>
 <body class="bg-mesh text-on-surface">
 
@@ -362,98 +363,5 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-<script>
-// ── Urjaa Admin Sync: Load admin-edited content from localStorage ──
-(function(){
-  var KEY = 'urjaa_admin_state';
-  var SB_URL='https://iqikqkprswelbthkuglg.supabase.co';
-  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
-  function _apply(s){
-    try {
-      if (!s) return;
-
-    // ── Testimonials ──
-    if (s.testimonials && s.testimonials.length) {
-      // Find testimonial containers on the page
-      var testContainers = document.querySelectorAll('[data-testimonial-id]');
-      // Also look for hardcoded testimonial cards by structure
-      var quoteEls = document.querySelectorAll('blockquote, [class*="testimonial"]');
-    }
-
-    // ── Founder names and photo ──
-    if (s.images) {
-      s.images.forEach(function(img) {
-        // Update any <img> whose alt or data-img-id matches
-        var targets = document.querySelectorAll('img[data-img-id="' + img.id + '"]');
-        targets.forEach(function(el) { el.src = img.src; });
-        // Also update by matching old src pattern for founders
-        if (img.id === 'founders') {
-          document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el) {
-            el.src = img.src;
-          });
-        }
-        if (img.id === 'hero-bg') {
-          document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el) {
-            el.src = img.src;
-          });
-        }
-      });
-    }
-
-    // ── Section visibility ──
-    if (s.sections) {
-      Object.keys(s.sections).forEach(function(key) {
-        if (!s.sections[key].visible) {
-          var el = document.querySelector('[data-section="' + key + '"]');
-          if (el) el.style.display = 'none';
-        }
-      });
-    }
-
-    // ── Workshops (community page) ──
-    if (s.workshops && document.getElementById('workshops')) {
-      var wsContainer = document.querySelector('#workshops .space-y-5');
-      if (wsContainer && s.workshops.length > 0) {
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        wsContainer.innerHTML = s.workshops.map(function(w) {
-          var d = new Date(w.date);
-          var mon = months[d.getMonth()] || 'TBD';
-          var day = d.getDate() || '??';
-          var badgeStyle = w.badge === 'Limited Spots' ? 'background:rgba(167,70,50,0.12);color:#a74632' :
-                          w.badge === 'Online Only' ? 'background:rgba(124,97,0,0.08);color:#7c6100' :
-                          'background:rgba(167,70,50,0.12);color:#a74632';
-          return '<div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">' +
-            '<div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">' +
-              '<span class="block text-xs font-bold uppercase tracking-widest">' + mon + '</span>' +
-              '<span class="block text-3xl font-black">' + day + '</span>' +
-            '</div>' +
-            '<div class="flex-1">' +
-              '<h4 class="font-[\'Noto_Serif\'] text-lg font-bold mb-1">' + w.title + '</h4>' +
-              '<p class="text-on-surface-variant text-sm">' + w.desc + '</p>' +
-            '</div>' +
-            '<div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">' +
-              '<span class="text-xs font-medium px-4 py-1 rounded-full" style="' + badgeStyle + '">' + (w.badge||'') + '</span>' +
-              '<button onclick="openJoinPopup()" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-      }
-    }
-
-    // ── Testimonials (community page) ──
-    if (s.testimonials && document.querySelector('.testimonial-card, [data-testimonials]')) {
-      // handled by data attributes
-    }
-
-    } catch(e) { console.error('Admin sync error:', e); }
-  }
-  try { var _l = localStorage.getItem(KEY); if (_l) _apply(JSON.parse(_l)); } catch(e){}
-  fetch(SB_URL+'/rest/v1/site_settings?id=eq.admin_state&select=data',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
-    .then(function(r){return r.ok?r.json():[];})
-    .then(function(rows){ if(rows&&rows[0]&&rows[0].data){ try{localStorage.setItem(KEY,JSON.stringify(rows[0].data));}catch(e){} _apply(rows[0].data); } })
-    .catch(function(){});
-})();
-
-</script>
 </body>
 </html>
