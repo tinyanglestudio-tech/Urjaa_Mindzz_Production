@@ -2629,42 +2629,27 @@ function renderCommunity() {
   document.getElementById('gallery-list').innerHTML = `
     <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
       <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addGalleryItem()">
-        <span class="material-symbols-outlined" style="font-size:15px">add_photo_alternate</span> Add Photo
+        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Photo
       </button>
     </div>` +
     state.gallery.map(g => {
-      const imgData = state.images.find(i => i.id === g.img) || { src:'' };
-      const hasImg = !!imgData.src;
-      return `<div style="border:1.5px solid rgba(124,97,0,0.18);border-radius:14px;padding:16px;margin-bottom:12px;background:rgba(255,255,255,0.6)">
-        <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
-          <div style="position:relative;width:100px;height:90px;border-radius:10px;overflow:hidden;flex-shrink:0;border:2px solid rgba(124,97,0,0.18);background:#f5f0e8;cursor:pointer" onclick="document.getElementById('file-${g.img}').click()">
-            ${hasImg
-              ? `<img src="${imgData.src}" id="preview-${g.img}" style="width:100%;height:100%;object-fit:cover;display:block"/>`
-              : `<div id="preview-${g.img}" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#a08030">
-                   <span class="material-symbols-outlined" style="font-size:28px">add_photo_alternate</span>
-                   <span style="font-size:10px;font-weight:600">Upload</span>
-                 </div>`
-            }
-            <div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.15s;display:flex;align-items:center;justify-content:center;opacity:0" class="img-hover-overlay" onmouseover="this.style.opacity='1';this.style.background='rgba(0,0,0,0.35)'" onmouseout="this.style.opacity='0';this.style.background='rgba(0,0,0,0)'">
-              <span class="material-symbols-outlined" style="color:white;font-size:22px">photo_camera</span>
-            </div>
-            <input type="file" id="file-${g.img}" accept="image/*" style="display:none" onchange="replaceGalleryImage(event,'${g.img}')"/>
-          </div>
-          <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:8px">
-            <input class="field-input" id="caption-${g.id}" value="${g.label}" placeholder="Caption (e.g. Growing Together)" onchange="updateGalleryLabel(${g.id},this.value)"/>
-            <div style="display:flex;gap:6px;flex-wrap:wrap">
-              <label class="img-btn upload" style="font-size:11px;cursor:pointer">
-                <span class="material-symbols-outlined" style="font-size:13px">upload</span> ${hasImg ? 'Replace Image' : 'Upload Image'}
-                <input type="file" accept="image/*" class="img-file-input" onchange="replaceGalleryImage(event,'${g.img}')"/>
-              </label>
-              ${hasImg ? `<button class="img-btn remove" onclick="removeGalleryImage('${g.img}')" style="font-size:11px">
-                <span class="material-symbols-outlined" style="font-size:13px">hide_image</span> Remove Image
-              </button>` : ''}
-              <button class="img-btn remove" onclick="deleteGallery(${g.id})" style="font-size:11px;background:rgba(190,45,6,0.08);color:#be2d06;border-color:rgba(190,45,6,0.2)">
-                <span class="material-symbols-outlined" style="font-size:13px">delete</span> Delete Photo
-              </button>
-            </div>
-          </div>
+      const imgData = state.images.find(i => i.id === g.img) || { src:g.img||'' };
+      return `<div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,0.5)">
+        <div style="width:80px;height:70px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(124,97,0,0.15)">
+          <img src="${imgData.src}" id="preview-${g.img}" style="width:100%;height:100%;object-fit:cover"/>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <input class="field-input" value="${g.label}" placeholder="Caption" style="margin-bottom:8px" onchange="updateGallery(${g.id},'label',this.value)"/>
+          <input class="img-url-input" value="${imgData.src}" id="url-${g.img}" oninput="updateImageUrl('${g.img}', this.value)" placeholder="Image URL"/>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label class="img-btn upload" style="font-size:11px">
+            <span class="material-symbols-outlined" style="font-size:12px">upload</span> Replace
+            <input type="file" accept="image/*" class="img-file-input" onchange="handleFileUpload(event, '${g.img}')"/>
+          </label>
+          <button class="img-btn remove" onclick="deleteGallery(${g.id})" style="font-size:11px">
+            <span class="material-symbols-outlined" style="font-size:12px">delete</span> Remove
+          </button>
         </div>
       </div>`;
     }).join('');
@@ -2692,53 +2677,22 @@ function deleteChatRoom(id) {
 
 // ── Gallery CRUD ─────────────────────────────────────────────────────────
 function addGalleryItem() {
-  const imgId = 'gallery-' + Date.now();
-  const gId = Date.now();
-  state.images.push({ id:imgId, label:'New Photo', page:'Community', src:'' });
-  state.gallery.push({ id:gId, label:'New Photo', img:imgId });
-  autoSave(); renderCommunity(); toast('Photo added! Upload an image and set a caption.');
-  setTimeout(() => {
-    const el = document.getElementById('caption-' + gId);
-    if (el) el.focus();
-  }, 100);
+  openItemModal('Add Gallery Photo', [
+    { id:'label', label:'Caption',   placeholder:'e.g. Summer Bloom', value:'' },
+    { id:'img',   label:'Image URL', placeholder:'https://images.unsplash.com/…', value:'' },
+  ], (vals) => {
+    if (!vals.label) return;
+    const imgId = 'gallery-' + Date.now();
+    state.images.push({ id:imgId, label:vals.label, page:'Community', src:vals.img||'' });
+    state.gallery.push({ id:Date.now(), label:vals.label, img:imgId });
+    autoSave(); renderCommunity(); toast('Photo added!');
+  });
 }
 function updateGallery(id, field, val) { const g = state.gallery.find(x=>x.id===id); if(g) g[field]=val; autoSave(); }
-function updateGalleryLabel(gId, val) {
-  const g = state.gallery.find(x=>x.id===gId);
-  if (g) {
-    g.label = val;
-    const imgEntry = state.images.find(i => i.id === g.img);
-    if (imgEntry) imgEntry.label = val;
-  }
-  autoSave();
-}
 function deleteGallery(id) {
   if (!confirm('Remove this photo?')) return;
-  const g = state.gallery.find(x=>x.id===id);
-  if (g) state.images = state.images.filter(i => i.id !== g.img);
   state.gallery = state.gallery.filter(x=>x.id!==id); autoSave();
   renderCommunity(); toast('Photo removed');
-}
-function replaceGalleryImage(event, imgId) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const url = e.target.result;
-    const img = state.images.find(i => i.id === imgId);
-    if (img) img.src = url;
-    autoSave();
-    toast('Image updated: ' + file.name);
-    renderCommunity();
-  };
-  reader.readAsDataURL(file);
-}
-function removeGalleryImage(imgId) {
-  const img = state.images.find(i => i.id === imgId);
-  if (img) img.src = '';
-  autoSave();
-  toast('Image removed');
-  renderCommunity();
 }
 
 function renderToolkit() {
