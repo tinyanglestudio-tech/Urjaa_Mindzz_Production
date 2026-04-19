@@ -258,47 +258,7 @@
     }).join('');
   }
 
-  // ── PDF Guides (toolkit) ──────────────────────────────────────────────────
-  function applyPdfGuides(s){
-    if(!s.pdfGuides || !s.pdfGuides.length) return;
-    var container = listAt('[data-sync-list="pdfGuides"]');
-    if(!container) return;
-    container.innerHTML = s.pdfGuides.map(function(p){
-      var src = imgOf(s, p.img) || '';
-      return '<div class="pdf-card group cursor-pointer soft-card rounded-2xl overflow-hidden">'+
-        '<div style="aspect-ratio:3/4;min-height:200px;position:relative;overflow:hidden">'+
-          '<img alt="'+esc(p.title)+'" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease" src="'+esc(src)+'"/>'+
-        '</div>'+
-        '<div class="p-3">'+
-          '<h4 class="font-bold text-sm group-hover:text-primary transition-colors">'+esc(p.title)+'</h4>'+
-          '<p class="text-xs text-on-surface-variant mt-0.5">'+esc(p.age||'')+' &middot; PDF Guide</p>'+
-        '</div>'+
-      '</div>';
-    }).join('');
-  }
-
-  // ── Articles (toolkit) ────────────────────────────────────────────────────
-  function applyArticles(s){
-    if(!s.articles || !s.articles.length) return;
-    var container = listAt('[data-sync-list="articles"]');
-    if(!container) return;
-    container.innerHTML = s.articles.map(function(a){
-      var src = imgOf(s, a.img) || '';
-      return '<article class="flex flex-col sm:flex-row gap-6 items-start glass-card p-5 rounded-2xl soft-card">'+
-        '<div style="width:160px;height:160px;min-width:160px;border-radius:1rem;overflow:hidden;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.08)">'+
-          '<img alt="'+esc(a.title)+'" style="width:100%;height:100%;object-fit:cover;display:block" src="'+esc(src)+'"/>'+
-        '</div>'+
-        '<div>'+
-          '<div class="flex items-center gap-3 mb-2">'+
-            '<span class="text-secondary font-black text-xs uppercase tracking-widest">'+esc(a.cat||'')+'</span>'+
-          '</div>'+
-          '<h3 class="font-[\'Noto_Serif\'] text-lg font-bold text-on-surface mb-2">'+esc(a.title)+'</h3>'+
-        '</div>'+
-      '</article>';
-    }).join('');
-  }
-
-  function applyTexts(s){
+function applyTexts(s){
     if (!s.texts) return;
     Object.keys(s.texts).forEach(function(key){
       var val = s.texts[key];
@@ -354,8 +314,6 @@
     try { applyGallery(s); } catch(e) { console.error(e); }
     try { applyTestimonials(s); } catch(e) { console.error(e); }
     try { applyWisdom(s); } catch(e) { console.error(e); }
-    try { applyPdfGuides(s); } catch(e) { console.error(e); }
-    try { applyArticles(s); } catch(e) { console.error(e); }
     try { applyImages(s); } catch(e) { console.error(e); }
   }
 

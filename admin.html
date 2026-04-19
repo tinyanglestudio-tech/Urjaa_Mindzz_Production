@@ -1434,25 +1434,7 @@ function adminLogin() {
         <div class="card-body open" id="wisdom-cards-list"></div>
       </div>
 
-      <div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">library_books</span></div>
-          <div><div class="card-header-title">Sensory Play PDF Guides</div><div class="card-header-sub">Images and metadata for 4 PDF cards</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open" id="pdf-guides-list"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(167,70,50,0.1)"><span class="material-symbols-outlined" style="color:#a74632">article</span></div>
-          <div><div class="card-header-title">Articles & Expert Tips</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open" id="articles-list"></div>
-      </div>
-
-      <div class="card">
+<div class="card">
         <div class="card-header" onclick="toggleCard(this)">
           <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">mail</span></div>
           <div><div class="card-header-title">Newsletter CTA</div></div>
@@ -1818,8 +1800,6 @@ let state = {
     'community-cta':      { label:'Community: Join CTA',     page:'Community', icon:'campaign',     visible:true },
     'toolkit-hero':       { label:'Toolkit: Hero',           page:'Toolkit',   icon:'star',         visible:true },
     'toolkit-wisdom':     { label:'Toolkit: Sanskrit Wisdom',page:'Toolkit',   icon:'auto_stories', visible:true },
-    'toolkit-pdf':        { label:'Toolkit: PDF Guides',     page:'Toolkit',   icon:'library_books',visible:true },
-    'toolkit-articles':   { label:'Toolkit: Articles',       page:'Toolkit',   icon:'article',      visible:true },
     'toolkit-newsletter': { label:'Toolkit: Newsletter CTA', page:'Toolkit',   icon:'mail',         visible:true },
   },
   images: [
@@ -1843,12 +1823,6 @@ let state = {
     { id:'nurture-circle',label:'Our Nurture Circle',   page:'Community', src:'https://images.unsplash.com/photo-1536321115970-5dfa13356211?w=500&q=80' },
     { id:'wisdom-comm',  label:'Wisdom in Community',   page:'Community', src:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80' },
     { id:'toolkit-hero', label:'Toolkit Hero',          page:'Toolkit',   src:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=700&q=80' },
-    { id:'pdf-sensory',  label:'PDF: Sensory',          page:'Toolkit',   src:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=600&q=80' },
-    { id:'pdf-edible',   label:'PDF: Edible Color',     page:'Toolkit',   src:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=600&q=80' },
-    { id:'pdf-stacking', label:'PDF: Stacking',         page:'Toolkit',   src:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&q=80' },
-    { id:'pdf-nature',   label:'PDF: Nature Canvas',    page:'Toolkit',   src:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80' },
-    { id:'article-eye',  label:'Article: Eye Contact',  page:'Toolkit',   src:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
-    { id:'article-food', label:'Article: Food/Herbs',   page:'Toolkit',   src:'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&q=80' },
   ],
   workshops: [
     { id:1, date:'2025-10-12', title:'Mindful Motherhood: The First 500 Days', desc:'Understanding the emotional and neurological shifts in you and your baby.', badge:'Limited Spots' },
@@ -1909,16 +1883,8 @@ let state = {
     '12-24':{ level:3, name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.', focusAreas:['Cognitive Development','Fine Motor Skills','Visual Development','Language Development','Coordination (Bilateral)','Attention & Focus','Sensory Exploration'] },
     '24-36':{ level:4, name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.', focusAreas:['Cognitive & Logical Development','Fine Motor Skills','Creativity & Imagination','Language & Communication','Visual Skills','Focus & Attention','Sensory Play','Early Maths Skills'] },
   },
-  pdfGuides: [
-    { id:1, title:'Texture Exploration', age:'0-12 Months', img:'pdf-sensory' },
-    { id:2, title:'Edible Color Magic',  age:'1-2 Years',   img:'pdf-edible' },
-    { id:3, title:'Stacking & Balance',  age:'2-3 Years',   img:'pdf-stacking' },
-    { id:4, title:"Nature's Canvas",     age:'All Ages',    img:'pdf-nature' },
-  ],
-  articles: [
-    { id:1, title:"Why Eye Contact is Your Toddler's First Love Language", cat:'Psychology', img:'article-eye' },
-    { id:2, title:'The Mind-Gut Link: Ayurvedic Superfoods for Brain Power', cat:'Nutrition', img:'article-food' },
-  ],
+  pdfGuides: [],
+  articles: [],
   ageData: {
     '0-6':  {
       milestone: { title:'Sensory Awakening & Bonding', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80', desc:'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling.' },
@@ -2759,67 +2725,6 @@ function renderToolkit() {
         </div>
       </div>`).join('');
 
-  // PDF guides — CRUD
-  document.getElementById('pdf-guides-list').innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addPdfGuide()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add PDF Guide
-      </button>
-    </div>` +
-    state.pdfGuides.map(p => {
-      const imgData = state.images.find(i => i.id === p.img) || { src:'' };
-      return `<div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-          <div style="width:70px;height:90px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(124,97,0,0.15)">
-            <img src="${imgData.src}" id="preview-${p.img}" style="width:100%;height:100%;object-fit:cover"/>
-          </div>
-          <div style="flex:1;min-width:200px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;flex:1">${p.title}</span>
-              <button class="ws-btn delete" onclick="deletePdfGuide(${p.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-            </div>
-            <div class="field-row" style="margin-bottom:8px">
-              <input class="field-input" value="${p.title}" placeholder="Guide title" onchange="updatePdfGuide(${p.id},'title',this.value)"/>
-              <input class="field-input" value="${p.age}" placeholder="Age range" onchange="updatePdfGuide(${p.id},'age',this.value)"/>
-            </div>
-            <input class="img-url-input" value="${imgData.src}" id="url-${p.img}" oninput="updateImageUrl('${p.img}',this.value)" placeholder="Image URL"/>
-            <label class="img-btn upload" style="display:inline-flex;margin-top:6px;font-size:11px;padding:4px 8px">
-              <span class="material-symbols-outlined" style="font-size:12px">upload</span> Replace Image
-              <input type="file" accept="image/*" class="img-file-input" onchange="handleFileUpload(event,'${p.img}')"/>
-            </label>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-
-  // Articles — CRUD
-  document.getElementById('articles-list').innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addArticle()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Article
-      </button>
-    </div>` +
-    state.articles.map(a => {
-      const imgData = state.images.find(i => i.id === a.img) || { src:'' };
-      return `<div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-          <div style="width:80px;height:70px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(124,97,0,0.15)">
-            <img src="${imgData.src}" id="preview-${a.img}" style="width:100%;height:100%;object-fit:cover"/>
-          </div>
-          <div style="flex:1;min-width:200px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-              <span style="font-size:13px;font-weight:700;flex:1">${a.title}</span>
-              <button class="ws-btn delete" onclick="deleteArticle(${a.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-            </div>
-            <input class="field-input" value="${a.title}" placeholder="Article title" style="margin-bottom:8px" onchange="updateArticle(${a.id},'title',this.value)"/>
-            <div class="field-row">
-              <input class="field-input" value="${a.cat}" placeholder="Category" onchange="updateArticle(${a.id},'cat',this.value)"/>
-              <input class="img-url-input" value="${imgData.src}" id="url-${a.img}" oninput="updateImageUrl('${a.img}',this.value)" placeholder="Image URL"/>
-            </div>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
 }
 
 // ── Wisdom CRUD ──────────────────────────────────────────────────────────
@@ -2838,48 +2743,6 @@ function deleteWisdom(id) {
   if (!confirm('Delete this wisdom card?')) return;
   state.wisdom = state.wisdom.filter(x=>x.id!==id); autoSave();
   renderToolkit(); toast('Card deleted');
-}
-
-// ── PDF Guide CRUD ───────────────────────────────────────────────────────
-function addPdfGuide() {
-  openItemModal('Add PDF Guide', [
-    { id:'title', label:'Guide Title',  placeholder:'e.g. Colour Mixing',  value:'' },
-    { id:'age',   label:'Age Range',    placeholder:'e.g. 1-2 Years',      value:'' },
-    { id:'img',   label:'Cover Image URL', placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    const imgId = 'pdf-' + Date.now();
-    state.images.push({ id:imgId, label:vals.title, page:'Toolkit', src:vals.img||'' });
-    state.pdfGuides.push({ id:Date.now(), title:vals.title, age:vals.age, img:imgId });
-    autoSave(); renderToolkit(); toast('PDF guide added!');
-  });
-}
-function updatePdfGuide(id, field, val) { const p = state.pdfGuides.find(x=>x.id===id); if(p) p[field]=val; autoSave(); }
-function deletePdfGuide(id) {
-  if (!confirm('Delete this PDF guide?')) return;
-  state.pdfGuides = state.pdfGuides.filter(x=>x.id!==id); autoSave();
-  renderToolkit(); toast('Guide deleted');
-}
-
-// ── Article CRUD ─────────────────────────────────────────────────────────
-function addArticle() {
-  openItemModal('Add Article', [
-    { id:'title', label:'Article Title', placeholder:'e.g. The Power of Storytelling', value:'' },
-    { id:'cat',   label:'Category',      placeholder:'e.g. Parenting, Nutrition',      value:'' },
-    { id:'img',   label:'Image URL',     placeholder:'https://images.unsplash.com/…',  value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    const imgId = 'article-' + Date.now();
-    state.images.push({ id:imgId, label:vals.title, page:'Toolkit', src:vals.img||'' });
-    state.articles.push({ id:Date.now(), title:vals.title, cat:vals.cat, img:imgId });
-    autoSave(); renderToolkit(); toast('Article added!');
-  });
-}
-function updateArticle(id, field, val) { const a = state.articles.find(x=>x.id===id); if(a) a[field]=val; autoSave(); }
-function deleteArticle(id) {
-  if (!confirm('Delete this article?')) return;
-  state.articles = state.articles.filter(x=>x.id!==id); autoSave();
-  renderToolkit(); toast('Article deleted');
 }
 
 function renderSections() {
