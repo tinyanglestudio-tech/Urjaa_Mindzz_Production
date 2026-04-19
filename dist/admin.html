@@ -597,7 +597,7 @@ body{
       <label style="display:block;font-size:11px;font-weight:700;color:#65655f;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px">Username</label>
       <div style="position:relative">
         <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:#7c6100" class="material-symbols-outlined">person</span>
-        <input id="login-user" type="text" placeholder="Enter username" value="Urjaa_Admin"
+        <input id="login-user" type="text" placeholder="Enter username" value=""
           style="width:100%;padding:11px 14px 11px 40px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.75);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box"
           onfocus="this.style.borderColor='#7c6100';this.style.background='rgba(255,255,255,0.95)';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'"
           onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.background='rgba(255,255,255,0.75)';this.style.boxShadow=''"
@@ -609,7 +609,7 @@ body{
       <label style="display:block;font-size:11px;font-weight:700;color:#65655f;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px">Password</label>
       <div style="position:relative">
         <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:#7c6100" class="material-symbols-outlined">lock</span>
-        <input id="login-pass" type="password" placeholder="Enter password" value="Admin1234"
+        <input id="login-pass" type="password" placeholder="Enter password" value=""
           style="width:100%;padding:11px 40px 11px 40px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.75);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box"
           onfocus="this.style.borderColor='#7c6100';this.style.background='rgba(255,255,255,0.95)';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'"
           onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.background='rgba(255,255,255,0.75)';this.style.boxShadow=''"
@@ -643,7 +643,7 @@ body{
 
     <!-- Footer note -->
     <div style="text-align:center;margin-top:20px">
-      <a href="home.html" style="font-size:12px;color:#65655f;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color 0.2s"
+      <a href="index.html" style="font-size:12px;color:#65655f;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color 0.2s"
         onmouseenter="this.style.color='#7c6100'" onmouseleave="this.style.color='#65655f'">
         <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span>
         Back to website
@@ -1229,7 +1229,6 @@ function adminLogin() {
         <button class="tab active" onclick="switchTab('programs','hero')"><span class="material-symbols-outlined">star</span> Hero</button>
         <button class="tab" onclick="switchTab('programs','levels')"><span class="material-symbols-outlined">school</span> Levels</button>
         <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">child_care</span> Age Selector</button>
-        <button class="tab" onclick="switchTab('programs','bubbles')"><span class="material-symbols-outlined">bubble_chart</span> Programs</button>
         <button class="tab" onclick="switchTab('programs','montessori')"><span class="material-symbols-outlined">nature</span> Montessori</button>
         <button class="tab" onclick="switchTab('programs','diy')"><span class="material-symbols-outlined">construction</span> DIY</button>
       </div>
@@ -1290,17 +1289,6 @@ function adminLogin() {
         </div>
       </div>
 
-      <div id="programs-tab-bubbles" style="display:none">
-        <div class="card">
-          <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">bubble_chart</span></div>
-            <div><div class="card-header-title">Brain-Boosting Programs</div></div>
-            <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-          </div>
-          <div class="card-body open" id="bubbles-list"></div>
-        </div>
-      </div>
-
       <div id="programs-tab-montessori" style="display:none">
         <div class="card">
           <div class="card-header" onclick="toggleCard(this)">
@@ -1354,15 +1342,6 @@ function adminLogin() {
             <div id="img-comm-hero"></div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">chat</span></div>
-          <div><div class="card-header-title">Discussion Forums / Chat</div><div class="card-header-sub">Manage chat room topics</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open" id="chat-rooms-list"></div>
       </div>
 
       <div class="card">
@@ -1815,10 +1794,10 @@ let state = {
     { id:'texture',      label:'Texture Sorting',        page:'Programs',  src:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80' },
     { id:'mandalas',     label:'Nature Mandalas',        page:'Programs',  src:'https://images.unsplash.com/photo-1555685812-4b8f59697ef3?w=600&q=80' },
     { id:'water',        label:'Water Pouring',          page:'Programs',  src:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&q=80' },
-    { id:'kitchen',      label:'Kitchen Science',        page:'Programs',  src:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=600&q=80' },
-    { id:'cardboard',    label:'Cardboard Castles',      page:'Programs',  src:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80' },
-    { id:'shakers',      label:'Homemade Shakers',       page:'Programs',  src:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80' },
-    { id:'comm-hero',    label:'Community Hero',         page:'Community', src:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80' },
+    { id:'kitchen',      label:'Kitchen Science',        page:'Programs',  src:'/diy-kitchen-science.png' },
+    { id:'cardboard',    label:'Cardboard Castles',      page:'Programs',  src:'/diy-cardboard-castles.png' },
+    { id:'shakers',      label:'Homemade Shakers',       page:'Programs',  src:'/diy-homemade-shakers.png' },
+    { id:'comm-hero',    label:'Community Hero',         page:'Community', src:'/ChatGPT_Image_Apr_19,_2026,_12_49_47_AM.png' },
     { id:'growing',      label:'Growing Together',       page:'Community', src:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=500&q=80' },
     { id:'nurture-circle',label:'Our Nurture Circle',   page:'Community', src:'https://images.unsplash.com/photo-1536321115970-5dfa13356211?w=500&q=80' },
     { id:'wisdom-comm',  label:'Wisdom in Community',   page:'Community', src:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80' },
