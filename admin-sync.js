@@ -35,11 +35,7 @@
     Object.keys(s.sections).forEach(function(key){
       var el = document.querySelector('[data-section="' + key + '"]');
       if (!el) return;
-      if (!s.sections[key].visible) {
-        el.style.display = 'none';
-      } else {
-        el.style.removeProperty('display');
-      }
+      el.style.display = s.sections[key].visible ? '' : 'none';
     });
   }
 
@@ -120,28 +116,15 @@
     var container = listAt('[data-sync-list="diy"]');
     if(!container) return;
     var borders = ['#fccc38','#a74632','#ff9734'];
-    var btnStyles = [
-      'btn-gold text-on-primary-container',
-      'text-white" style="background:#a74632',
-      'text-[#4d2600]" style="background:#ff9734'
-    ];
-    var btnIcons = ['draw', 'auto_fix_high', 'music_note'];
     container.innerHTML = s.diy.map(function(d,i){
       var src = imgOf(s, d.img) || '';
       var border = borders[i % borders.length];
-      var btnCls = btnStyles[i % btnStyles.length];
-      var icon = btnIcons[i % btnIcons.length];
-      var diyBadge = i === 0 ? '<div style="position:relative"><div style="position:absolute;top:-56px;right:-8px;width:40px;height:40px;background:#fccc38;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#594500;transform:rotate(12deg)">DIY</div></div>' : '';
       return '<div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid '+border+'">'+
         '<div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">'+
-          '<img alt="'+esc(d.title)+'" style="width:100%;height:180px;object-fit:cover;display:block" src="'+src+'"/>'+
+          '<img alt="'+esc(d.title)+'" style="width:100%;height:180px;object-fit:cover;display:block" src="'+esc(src)+'"/>'+
         '</div>'+
-        diyBadge+
         '<h3 class="font-[\'Noto_Serif\'] text-xl font-bold mb-3 text-primary">'+esc(d.title)+'</h3>'+
         '<p class="text-on-surface-variant text-sm mb-6">'+esc(d.desc)+'</p>'+
-        '<button class="w-full flex items-center justify-center gap-2 '+btnCls+' px-6 py-3 rounded-full font-black text-sm" style="min-height:48px">'+
-          '<span class="material-symbols-outlined text-base">'+icon+'</span> Download PDF Guide <span style="font-weight:400;font-size:11px;opacity:0.8">(coming soon)</span>'+
-        '</button>'+
       '</div>';
     }).join('');
   }
