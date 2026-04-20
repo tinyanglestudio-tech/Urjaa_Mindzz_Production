@@ -1762,7 +1762,7 @@ function loadSavedState() {
     if (saved) {
       const parsed = JSON.parse(saved);
       for (const key in parsed) {
-        if (parsed.hasOwnProperty(key) && key !== 'currentPage') {
+        if (parsed.hasOwnProperty(key) && key !== 'currentPage' && key !== 'images') {
           state[key] = parsed[key];
         }
       }
@@ -1795,26 +1795,16 @@ let state = {
     'toolkit-newsletter': { label:'Toolkit: Newsletter CTA', page:'Toolkit',   icon:'mail',         visible:true },
   },
   images: [
-    { id:'hero-bg',      label:'Home Hero Background',   page:'Home',      src:'https://images.unsplash.com/photo-1566004100631-35d015d6a491?w=1200&q=80' },
-    { id:'phil-1',       label:'Philosophy — Image 1',   page:'Home',      src:'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=80' },
-    { id:'phil-2',       label:'Philosophy — Image 2',   page:'Home',      src:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80' },
-    { id:'phil-3',       label:'Philosophy — Image 3',   page:'Home',      src:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80' },
-    { id:'founders',     label:'Founders Photo',          page:'Home',      src:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80' },
-    { id:'prog-hero',    label:'Programs Hero',           page:'Programs',  src:'https://lh3.googleusercontent.com/aida-public/AB6AXuC7JPJuEcyzNL2mpgcaETXGI7s7pQe3MFj8d4784jLK7JHk3odGjGyO7M0QZl0ords8XFIJaosmezpAr_Sv9gzikSE9NAzbXz8AXmjLoA2TN1UphG4bICDyZkEf8eh0N_M6ayvmHR7fJYC7y1u02VXkiz4XK_QOIM5OISDTdAySEr-QSKPiBumac73JEmp3hB7POVjZYzkcwixD4j8C0HL73XVbkWV-y5D2shT8xeXC9QZMF0ab4BbhWZ1iUO081s-gZN68dsErVp-0' },
-    { id:'sensory-play', label:'Sensory Play',            page:'Programs',  src:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80' },
-    { id:'memory-focus', label:'Memory & Focus',          page:'Programs',  src:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
-    { id:'cognitive',    label:'Cognitive Activation',   page:'Programs',  src:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80' },
-    { id:'texture',      label:'Texture Sorting',        page:'Programs',  src:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80' },
-    { id:'mandalas',     label:'Nature Mandalas',        page:'Programs',  src:'https://images.unsplash.com/photo-1555685812-4b8f59697ef3?w=600&q=80' },
-    { id:'water',        label:'Water Pouring',          page:'Programs',  src:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&q=80' },
-    { id:'kitchen',      label:'Kitchen Science',        page:'Programs',  src:'/ChatGPT_Image_Apr_19,_2026,_01_02_53_AM copy.png' },
-    { id:'cardboard',   label:'Cardboard Castles',      page:'Programs',  src:'/ChatGPT_Image_Apr_19,_2026,_12_59_30_AM copy.png' },
-    { id:'shakers',     label:'Homemade Shakers',       page:'Programs',  src:'/ChatGPT_Image_Apr_19,_2026,_12_58_17_AM copy.png' },
-    { id:'comm-hero',    label:'Community Hero',         page:'Community', src:'/ChatGPT_Image_Apr_19,_2026,_12_49_47_AM.png' },
-    { id:'growing',      label:'Growing Together',       page:'Community', src:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=500&q=80' },
-    { id:'nurture-circle',label:'Our Nurture Circle',   page:'Community', src:'https://images.unsplash.com/photo-1536321115970-5dfa13356211?w=500&q=80' },
-    { id:'wisdom-comm',  label:'Wisdom in Community',   page:'Community', src:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80' },
-    { id:'toolkit-hero', label:'Toolkit Hero',          page:'Toolkit',   src:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=700&q=80' },
+    { id:'hero-bg',        label:'Home — Hero Background',          page:'Home',      src:'' },
+    { id:'founders',       label:'Home — Founders Photo',           page:'Home',      src:'' },
+    { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'' },
+    { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'' },
+    { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'' },
+    { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'' },
+    { id:'prog-hero',      label:'Programs — Hero Banner',          page:'Programs',  src:'' },
+    { id:'cardboard',      label:'Programs — Cardboard Castles',    page:'Programs',  src:'' },
+    { id:'kitchen',        label:'Programs — Kitchen Science',      page:'Programs',  src:'' },
+    { id:'shakers',        label:'Programs — Homemade Shakers',     page:'Programs',  src:'' },
   ],
   workshops: [
     { id:1, date:'2025-10-12', title:'Mindful Motherhood: The First 500 Days', desc:'Understanding the emotional and neurological shifts in you and your baby.', badge:'Limited Spots' },
@@ -3440,14 +3430,28 @@ _fetchFromSupabase('admin_state').then(function(remote){
   if (remote && typeof remote === 'object') {
     for (var k in remote) {
       if (Object.prototype.hasOwnProperty.call(remote, k) && k !== 'currentPage') {
-        state[k] = remote[k];
+        if (k === 'images') {
+          var remoteImgMap = {};
+          (remote.images || []).forEach(function(img){ remoteImgMap[img.id] = img; });
+          state.images = state.images.map(function(defaultImg){
+            return remoteImgMap[defaultImg.id]
+              ? Object.assign({}, defaultImg, remoteImgMap[defaultImg.id])
+              : defaultImg;
+          });
+          (remote.images || []).forEach(function(img){
+            if (!state.images.find(function(i){ return i.id === img.id; })) {
+              state.images.push(img);
+            }
+          });
+        } else {
+          state[k] = remote[k];
+        }
       }
     }
     try { localStorage.setItem(ADMIN_STATE_KEY, JSON.stringify(state)); } catch(e){}
     try { showPage(state.currentPage || 'dashboard'); } catch(e){}
     try { wireTextFields(); } catch(e){}
   } else {
-    // First run: seed Supabase with whatever is in state
     try {
       var toSeed = JSON.parse(JSON.stringify(state));
       delete toSeed.currentPage;
