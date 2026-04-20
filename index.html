@@ -143,7 +143,7 @@
 <div id="programs"></div>
 <!-- HERO -->
 <section class="max-w-7xl mx-auto px-4 md:px-8 mb-10 md:mb-20 relative overflow-hidden pt-4 md:pt-6">
-  <img src="/ChatGPT_Image_Apr_19,_2026,_07_04_18_PM.png" alt="Every mother wonders how to nurture her child" loading="lazy" style="width:100%;height:auto;display:block;border-radius:1rem;box-shadow:0 20px 60px rgba(0,0,0,0.12)"/>
+  <img data-img-id="hero-banner" alt="Every mother wonders how to nurture her child" loading="lazy" style="width:100%;height:auto;display:block;border-radius:1rem;box-shadow:0 20px 60px rgba(0,0,0,0.12)"/>
 </section>
 
 <!-- AGE SELECTOR -->
@@ -568,9 +568,8 @@ btnGroup.innerHTML = AGES.map(a => `
 const FOCUS_ICONS = {'Visual Development':'👁️','Auditory Development':'👂','Sensory Exploration':'🤲','Brain Stimulation':'🧠','Motor Skills (Tummy Time)':'💪','Emotional Bonding':'💞','Cognitive Development':'🧩','Language Development':'🗣️','Attention & Focus':'🎯','Early Knowledge Building':'📚','Fine Motor Skills':'✋','Coordination (Bilateral)':'🤸','Cognitive & Logical Development':'🧠','Creativity & Imagination':'🎨','Language & Communication':'🗣️','Visual Skills':'👁️','Focus & Attention':'🎯','Sensory Play':'🤲','Early Maths Skills':'🔢'};
 const FOCUS_BGS = ['rgba(252,204,56,0.15)','rgba(167,70,50,0.08)','rgba(255,151,52,0.1)','rgba(124,97,0,0.08)','rgba(16,185,129,0.08)','rgba(252,204,56,0.12)','rgba(167,70,50,0.06)','rgba(124,97,0,0.06)'];
 
-// Load from admin state if available
-var LEVEL_DATA = (function(){
-  var defaults = {
+// Level data — populated from Supabase via admin-sync.js
+var LEVEL_DATA = {
   '0-6':  { level:1, name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.',
             focusAreas:[
               {icon:'👁️',title:'Visual Development',bg:'rgba(252,204,56,0.15)'},
@@ -610,27 +609,23 @@ var LEVEL_DATA = (function(){
               {icon:'🤲',title:'Sensory Play',bg:'rgba(167,70,50,0.06)'},
               {icon:'🔢',title:'Early Maths Skills',bg:'rgba(124,97,0,0.06)'},
             ]},
-  };
-  // Merge admin-edited level data from localStorage
-  try {
-    var adminState = JSON.parse(localStorage.getItem('urjaa_admin_state') || '{}');
-    if (adminState.levelPrograms) {
-      Object.keys(adminState.levelPrograms).forEach(function(key) {
-        if (defaults[key]) {
-          var lp = adminState.levelPrograms[key];
-          defaults[key].name = lp.name || defaults[key].name;
-          defaults[key].tagline = lp.tagline || defaults[key].tagline;
-          if (lp.focusAreas && lp.focusAreas.length) {
-            defaults[key].focusAreas = lp.focusAreas.map(function(title, i) {
-              return {icon: FOCUS_ICONS[title] || '✨', title: title, bg: FOCUS_BGS[i % FOCUS_BGS.length]};
-            });
-          }
-        }
+};
+
+// Allow admin-sync.js to update level data from Supabase
+window.__urjaaApplyLevelPrograms = function(levelPrograms) {
+  if (!levelPrograms) return;
+  Object.keys(levelPrograms).forEach(function(key) {
+    if (!LEVEL_DATA[key]) return;
+    var lp = levelPrograms[key];
+    if (lp.name) LEVEL_DATA[key].name = lp.name;
+    if (lp.tagline) LEVEL_DATA[key].tagline = lp.tagline;
+    if (lp.focusAreas && lp.focusAreas.length) {
+      LEVEL_DATA[key].focusAreas = lp.focusAreas.map(function(title, i) {
+        return {icon: FOCUS_ICONS[title] || '✨', title: title, bg: FOCUS_BGS[i % FOCUS_BGS.length]};
       });
     }
-  } catch(e) {}
-  return defaults;
-})();
+  });
+};
 
 // ── Select age ───────────────────────────────────────────────────────────
 window._selectAge = function(key) {
@@ -798,42 +793,6 @@ window._selectAge = function(key) {
       <p class="text-on-surface-variant max-w-lg mx-auto text-sm">Simple home experiments for big discoveries.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-sync-list="diy">
-      <!-- Kitchen Science -->
-      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #fccc38">
-        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
-          <img data-img-id="kitchen" alt="Kitchen Science" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block" src="/ChatGPT_Image_Apr_19,_2026,_01_02_53_AM copy.png"/>
-        </div>
-        <div style="position:relative">
-          <div style="position:absolute;top:-56px;right:-8px;width:40px;height:40px;background:#fccc38;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#594500;transform:rotate(12deg)">DIY</div>
-        </div>
-        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-primary">Kitchen Science</h3>
-        <p class="text-on-surface-variant text-sm mb-6">Turn everyday pantry staples into exciting chemical reactions and sensory wonders.</p>
-        <button class="w-full flex items-center justify-center gap-2 btn-gold text-on-primary-container px-6 py-3 rounded-full font-black text-sm" style="min-height:48px">
-          <span class="material-symbols-outlined text-base">draw</span> Download PDF Guide
-        </button>
-      </div>
-      <!-- Cardboard Castles -->
-      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #a74632">
-        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
-          <img data-img-id="cardboard" alt="Cardboard Castles" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block" src="/ChatGPT_Image_Apr_19,_2026,_12_59_30_AM copy.png"/>
-        </div>
-        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-secondary">Cardboard Castles</h3>
-        <p class="text-on-surface-variant text-sm mb-6">Unlock engineering skills by transforming shipping boxes into grand imaginative fortresses.</p>
-        <button class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-black text-sm text-white" style="background:#a74632;min-height:48px">
-          <span class="material-symbols-outlined text-base">auto_fix_high</span> Download PDF Guide
-        </button>
-      </div>
-      <!-- Homemade Shakers -->
-      <div class="glass-card rounded-2xl p-5 soft-card" style="border:3px solid #ff9734">
-        <div style="width:100%;height:180px;border-radius:1rem;overflow:hidden;margin-bottom:1.25rem">
-          <img data-img-id="shakers" alt="Homemade Shakers" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block" src="/ChatGPT_Image_Apr_19,_2026,_12_58_17_AM copy.png"/>
-        </div>
-        <h3 class="font-['Noto_Serif'] text-xl font-bold mb-3 text-tertiary">Homemade Shakers</h3>
-        <p class="text-on-surface-variant text-sm mb-6">Explore rhythm and sound by crafting custom musical instruments from recycled materials.</p>
-        <button class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-black text-sm text-[#4d2600]" style="background:#ff9734;min-height:48px">
-          <span class="material-symbols-outlined text-base">music_note</span> Download PDF Guide
-        </button>
-      </div>
     </div>
   </div>
 </section>
@@ -914,7 +873,7 @@ window._selectAge = function(key) {
     <div class="flex-1 relative w-full max-w-lg mx-auto lg:mx-0">
       <div class="blob1" style="position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:rgba(252,204,56,0.2);z-index:0"></div>
       <div style="position:relative;z-index:1;border-radius:1rem;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15);transform:rotate(2deg);transition:transform 0.5s ease">
-        <img data-img-id="comm-hero" alt="Welcome to Our Community - mothers connecting and sharing" loading="lazy" style="width:100%;height:auto;max-height:420px;object-fit:cover;display:block" src="/ChatGPT_Image_Apr_19,_2026,_12_49_47_AM.png"/>
+        <img data-img-id="comm-hero" alt="Welcome to Our Community - mothers connecting and sharing" loading="lazy" style="width:100%;height:auto;max-height:420px;object-fit:cover;display:block" src=""/>
       </div>
       <!-- Quote card -->
       <div class="glass-card absolute -bottom-5 -left-4 z-20 p-5 rounded-xl max-w-[220px]" style="transform:rotate(-2deg)">
@@ -936,67 +895,10 @@ window._selectAge = function(key) {
 
     <!-- Scrapbook photos -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-20 items-start" data-sync-list="gallery">
-      <div class="af flex justify-center">
-        <div class="scrapbook w-full max-w-xs" style="transform:rotate(-2deg)">
-          <img data-img-id="growing" alt="Growing Together" loading="lazy" style="width:100%;height:200px;object-fit:cover;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=500&q=80"/>
-          <p class="mt-3 text-center font-['Noto_Serif'] italic text-sm text-on-surface-variant">Growing Together</p>
-        </div>
-      </div>
-      <div class="af2 flex justify-center" style="animation-delay:-1s">
-        <div class="scrapbook w-full max-w-xs" style="transform:rotate(1deg)">
-          <img data-img-id="nurture-circle" alt="Our Nurture Circle" style="width:100%;height:200px;object-fit:cover;object-position:top;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1536321115970-5dfa13356211?w=500&q=80"/>
-          <p class="mt-3 text-center font-['Noto_Serif'] italic text-base text-primary font-bold">Our Nurture Circle</p>
-        </div>
-      </div>
-      <div class="af flex justify-center" style="animation-delay:-2s">
-        <div class="scrapbook w-full max-w-xs" style="transform:rotate(3deg)">
-          <img data-img-id="wisdom-comm" alt="Wisdom in Community" loading="lazy" style="width:100%;height:200px;object-fit:cover;display:block;border-radius:2px" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&q=80"/>
-          <p class="mt-3 text-center font-['Noto_Serif'] italic text-sm text-on-surface-variant">Wisdom in Community</p>
-        </div>
-      </div>
     </div>
 
     <!-- Testimonials -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start" data-sync-list="testimonials">
-      <!-- Story 1 -->
-      <div class="glass-card p-8 rounded-2xl soft-card relative gold-border">
-        <span class="text-6xl text-primary opacity-15 font-serif leading-none absolute top-4 left-4">"</span>
-        <p class="text-on-surface relative z-10 leading-relaxed italic text-base mb-6">
-          Urjaa Mindz helped me find the balance between my career and being the present mother I always wanted to be. The community support is unparalleled.
-        </p>
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-1 bg-secondary rounded-full"></div>
-          <span class="font-bold text-sm">Ananya Verma, Bangalore</span>
-        </div>
-      </div>
-
-      <!-- Stories 2 & 3 -->
-      <div class="flex flex-col gap-6">
-        <div class="glass-card p-6 rounded-2xl soft-card border-l-4 border-primary">
-          <p class="text-base leading-relaxed text-on-surface mb-5">
-            The 'Sensory Play' workshops gave me practical tools to connect with my son's unique learning style. We are growing together every day.
-          </p>
-          <div class="flex items-center gap-3">
-            <div style="width:52px;height:52px;border-radius:50%;background:#a74632;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">MK</div>
-            <div>
-              <h4 class="font-bold text-sm">Meera Kapur</h4>
-              <p class="text-xs text-on-surface-variant">Early Childhood Educator & Mom</p>
-            </div>
-          </div>
-        </div>
-        <div class="glass-card p-6 rounded-2xl soft-card border-l-4 border-secondary">
-          <p class="text-base leading-relaxed text-on-surface mb-5">
-            Finally, a space that understands the cultural nuances of raising a child in an Indian household while embracing modern mindful practices.
-          </p>
-          <div class="flex items-center gap-3">
-            <div style="width:52px;height:52px;border-radius:50%;background:#995200;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">SS</div>
-            <div>
-              <h4 class="font-bold text-sm">Srishti Shah</h4>
-              <p class="text-xs text-on-surface-variant">Mumbai Community Leader</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1011,48 +913,7 @@ window._selectAge = function(key) {
     </div>
   </div>
   <div class="space-y-5" data-sync-list="workshops">
-    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
-      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
-        <span class="block text-xs font-bold uppercase tracking-widest">May</span>
-        <span class="block text-3xl font-black">12</span>
-      </div>
-      <div class="flex-1">
-        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Mindful Motherhood: The First 500 Days</h4>
-        <p class="text-on-surface-variant text-sm">Understanding the emotional and neurological shifts in you and your baby.</p>
-      </div>
-      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
-        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Limited Spots</span>
-        <button onclick="openJoinPopup()" class="btn-primary px-5 py-3 rounded-xl font-bold text-sm" style="min-height:44px">Register</button>
-      </div>
-    </div>
-    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
-      <div class="text-on-secondary p-5 rounded-xl text-center min-w-[100px]" style="background:#a74632">
-        <span class="block text-xs font-bold uppercase tracking-widest">Jun</span>
-        <span class="block text-3xl font-black">18</span>
-      </div>
-      <div class="flex-1">
-        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Sanskrit Mantras & Baby Brain Development</h4>
-        <p class="text-on-surface-variant text-sm">Exploring the resonance and cognitive benefits of ancient sound vibrations.</p>
-      </div>
-      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
-        <span class="text-xs font-medium bg-surface-container-highest px-4 py-1 rounded-full">Online Only</span>
-        <button onclick="openJoinPopup()" class="btn-primary px-5 py-3 rounded-xl font-bold text-sm" style="min-height:44px">Register</button>
-      </div>
-    </div>
-    <div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">
-      <div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">
-        <span class="block text-xs font-bold uppercase tracking-widest">Jul</span>
-        <span class="block text-3xl font-black">25</span>
-      </div>
-      <div class="flex-1">
-        <h4 class="font-['Noto_Serif'] text-lg font-bold mb-1">Feeding Curiosity: Nutrition for Smart Minds</h4>
-        <p class="text-on-surface-variant text-sm">Science-backed dietary guides for toddlers during peak brain growth periods.</p>
-      </div>
-      <div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">
-        <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full">Free Webinar</span>
-        <button onclick="openJoinPopup()" class="btn-primary px-5 py-3 rounded-xl font-bold text-sm" style="min-height:44px">Register</button>
-      </div>
-    </div>
+    <div class="text-center py-10 text-on-surface-variant text-sm">Loading workshops...</div>
   </div>
 </section>
 
@@ -1140,7 +1001,7 @@ window._selectAge = function(key) {
 
   <!-- Hero Image bg -->
   <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;overflow:hidden">
-    <img data-img-id="hero-bg" alt="Mother and toddler laughing" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:0.12;display:block" src="https://images.unsplash.com/photo-1566004100631-35d015d6a491?w=1200&q=80"/>
+    <img data-img-id="hero-bg" alt="Mother and toddler laughing" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:0.12;display:block" src=""/>
     <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom, rgba(254,252,244,0.1) 0%, rgba(254,252,244,0.55) 60%, #fefcf4 100%)"></div>
   </div>
 
@@ -1387,7 +1248,7 @@ window._selectAge = function(key) {
 
       <div class="relative max-w-2xl mx-auto mb-14">
         <div class="blob1 anim-float" style="position:absolute;top:-20px;left:-20px;width:120px;height:120px;background:rgba(252,204,56,0.15);z-index:0;pointer-events:none"></div>
-        <img alt="Jayashree Jain and Reema Tayshete - Founders of Urjaa Mindz" data-img-id="founders" loading="lazy" style="width:100%;height:auto;border-radius:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,0.12);border:4px solid rgba(255,255,255,0.6);display:block;position:relative;z-index:1" src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80"/>
+        <img alt="Jayashree Jain and Reema Tayshete - Founders of Urjaa Mindz" data-img-id="founders" loading="lazy" style="width:100%;height:auto;border-radius:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,0.12);border:4px solid rgba(255,255,255,0.6);display:block;position:relative;z-index:1" src=""/>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -1502,70 +1363,6 @@ menuBackdrop.addEventListener('click', closeMobileMenu);
 mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click', closeMobileMenu);});
 </script>
 
-<!-- Urjaa Mindz Analytics Tracker -->
-<script>
-(function(){
-  const KEY = 'urjaa_analytics';
-  function loadData(){ try{ return JSON.parse(localStorage.getItem(KEY))||{visits:[],formSubmits:[]}; }catch(e){return{visits:[],formSubmits:[]};} }
-  function saveData(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
-
-  // Record page visit
-  function recordVisit(){
-    const data = loadData();
-    const device = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : /iPad|Tablet/i.test(navigator.userAgent) ? 'Tablet' : 'Desktop';
-    const page = location.pathname.split('/').pop() || 'index.html';
-    const labels = { 'home.html':'Home', 'index.html':'Programs', 'community.html':'Community', 'story.html':'Our Story' };
-    const session = sessionStorage.getItem('urjaa_session') || ('sess_'+Date.now()+'_'+Math.floor(Math.random()*9999));
-    sessionStorage.setItem('urjaa_session', session);
-    const entry = { ts:Date.now(), page, label:labels[page]||page, device, session, duration:0 };
-    data.visits.push(entry);
-    if (data.visits.length > 2000) data.visits = data.visits.slice(-2000);
-    saveData(data);
-
-    // Update duration on unload
-    const start = Date.now();
-    window.addEventListener('visibilitychange', function(){
-      if(document.visibilityState==='hidden'){
-        const d2 = loadData();
-        const v = d2.visits.find(v=>v.session===session && v.page===page && v.ts===entry.ts);
-        if(v) v.duration = Math.round((Date.now()-start)/1000);
-        saveData(d2);
-      }
-    });
-  }
-
-  // Intercept form submits
-  function recordForm(formName, page){
-    const data = loadData();
-    data.formSubmits = data.formSubmits || [];
-    data.formSubmits.push({ ts:Date.now(), form:formName, page });
-    if (data.formSubmits.length > 500) data.formSubmits = data.formSubmits.slice(-500);
-    saveData(data);
-  }
-
-  // Hook into CTA buttons / forms
-  function hookForms(){
-    const page = location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('a[href="#join-cta"],button').forEach(el=>{
-      if(el.textContent.trim().match(/join|subscribe|submit|send|register|become/i)){
-        el.addEventListener('click', ()=>recordForm('Join / CTA', page), {once:true});
-      }
-    });
-    document.querySelectorAll('form').forEach(f=>{
-      f.addEventListener('submit', ()=>recordForm('Contact Form', page), {once:true});
-    });
-    // Community join button
-    document.querySelectorAll('[href="#join-cta"]').forEach(el=>{
-      el.addEventListener('click', ()=>recordForm('Join Community', page), {once:true});
-    });
-
-  }
-
-  recordVisit();
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', hookForms);
-  else hookForms();
-})();
-</script>
 
 
 <!-- ═══ Join Now Popup ═══ -->
@@ -1712,10 +1509,6 @@ function submitJoinForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:window.location.pathname})}).catch(function(){});
   }
-  var data={name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,timestamp:new Date().toISOString(),source:window.location.pathname};
-  var wh={};try{wh=JSON.parse(localStorage.getItem('urjaa_webhook_settings')||'{}');}catch(e){}
-  if(wh.gsheet_url){fetch(wh.gsheet_url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
-  if(wh.callmebot_key){var waMsg=encodeURIComponent('New Urjaa Mindz Enquiry\nName: '+name+'\nWhatsApp: '+fullPhone+'\nChild Age: '+childAge+'\nLocation: '+location+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
   setTimeout(function(){showJoinThanks(name);},1200);
 }
 function showJoinThanks(name){
@@ -1745,10 +1538,6 @@ function submitCircleForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:window.location.pathname})}).catch(function(){});
   }
-  var data={name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,timestamp:new Date().toISOString(),source:window.location.pathname};
-  var wh={};try{wh=JSON.parse(localStorage.getItem('urjaa_webhook_settings')||'{}');}catch(e){}
-  if(wh.gsheet_url){fetch(wh.gsheet_url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(function(){});}
-  if(wh.callmebot_key){var waMsg=encodeURIComponent('New Urjaa Mindz Enquiry\nName: '+name+'\nWhatsApp: '+fullPhone+'\nChild Age: '+childAge+'\nLocation: '+loc+'\nSent from urjaamindz.com');fetch('https://api.callmebot.com/whatsapp.php?phone=919529190553&text='+waMsg+'&apikey='+wh.callmebot_key,{mode:'no-cors'}).catch(function(){});}
   setTimeout(function(){
     document.getElementById('circle-thanks-name').textContent=name;
     document.getElementById('circle-form-state').style.display='none';

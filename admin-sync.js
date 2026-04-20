@@ -1,5 +1,4 @@
 (function(){
-  var KEY = 'urjaa_admin_state';
   var SB_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
   var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
 
@@ -19,13 +18,13 @@
     if(!s.images) return;
     s.images.forEach(function(img){
       document.querySelectorAll('img[data-img-id="'+img.id+'"]').forEach(function(el){
-        el.src = img.src;
+        if(img.src) el.src = img.src;
       });
       if (img.id === 'founders') {
-        document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ el.src = img.src; });
+        document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ if(img.src) el.src = img.src; });
       }
       if (img.id === 'hero-bg') {
-        document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el){ el.src = img.src; });
+        document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el){ if(img.src) el.src = img.src; });
       }
     });
   }
@@ -133,6 +132,10 @@
     if(!s.workshops) return;
     var wsContainer = listAt('[data-sync-list="workshops"]') || (document.getElementById('workshops') && document.querySelector('#workshops .space-y-5'));
     if(!wsContainer) return;
+    if(!s.workshops.length){
+      wsContainer.innerHTML = '<div class="text-center py-10 text-on-surface-variant text-sm">No upcoming workshops. Check back soon!</div>';
+      return;
+    }
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     wsContainer.innerHTML = s.workshops.map(function(w){
       var d = new Date(w.date);
@@ -284,6 +287,13 @@
     });
   }
 
+  function applyLevelPrograms(s){
+    if (!s.levelPrograms) return;
+    if (window.__urjaaApplyLevelPrograms) {
+      window.__urjaaApplyLevelPrograms(s.levelPrograms);
+    }
+  }
+
   function apply(s){
     if (!s) return;
     try { applyTexts(s); } catch(e) { console.error(e); }
@@ -300,6 +310,7 @@
     try { applyTestimonials(s); } catch(e) { console.error(e); }
     try { applyWisdom(s); } catch(e) { console.error(e); }
     try { applyImages(s); } catch(e) { console.error(e); }
+    try { applyLevelPrograms(s); } catch(e) { console.error(e); }
   }
 
   function fetchAndApply() {
@@ -316,7 +327,6 @@
       .then(function(r){ return r.ok ? r.json() : []; })
       .then(function(rows){
         if (rows && rows[0] && rows[0].data) {
-          try { localStorage.setItem(KEY, JSON.stringify(rows[0].data)); } catch(e) {}
           apply(rows[0].data);
         }
       })
@@ -365,9 +375,7 @@
         if (msg.event === 'postgres_changes') {
           var payload = msg.payload;
           if (payload && payload.data && payload.data.record && payload.data.record.data) {
-            var newState = payload.data.record.data;
-            try { localStorage.setItem(KEY, JSON.stringify(newState)); } catch(e) {}
-            apply(newState);
+            apply(payload.data.record.data);
           } else {
             fetchAndApply();
           }
@@ -386,11 +394,6 @@
   }
 
   function run(){
-    try {
-      var cached = localStorage.getItem(KEY);
-      if (cached) apply(JSON.parse(cached));
-    } catch(e) {}
-
     fetchAndApply().then(function() {
       connectRealtime();
     });
