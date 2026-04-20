@@ -17,14 +17,15 @@
   function applyImages(s){
     if(!s.images) return;
     s.images.forEach(function(img){
+      if(!img.src || img.src.indexOf('data:') === 0) return;
       document.querySelectorAll('img[data-img-id="'+img.id+'"]').forEach(function(el){
-        if(img.src) el.src = img.src;
+        el.src = img.src;
       });
       if (img.id === 'founders') {
-        document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ if(img.src) el.src = img.src; });
+        document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ el.src = img.src; });
       }
       if (img.id === 'hero-bg') {
-        document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el){ if(img.src) el.src = img.src; });
+        document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el){ el.src = img.src; });
       }
     });
   }
@@ -184,9 +185,12 @@
     if(!s.gallery || !s.gallery.length) return;
     var container = listAt('[data-sync-list="gallery"]');
     if(!container) return;
+    var hasAnySrc = s.gallery.some(function(g){ return !!imgOf(s, g.img); });
+    if(!hasAnySrc && container.children.length > 0) return;
     var rotations = ['-2deg','1deg','3deg','-1deg','2deg','-3deg'];
     container.innerHTML = s.gallery.map(function(g,i){
       var src = imgOf(s, g.img) || '';
+      if(!src) return '';
       return '<div class="af flex justify-center">'+
         '<div class="scrapbook w-full max-w-xs" style="transform:rotate('+rotations[i%rotations.length]+')">'+
           '<img alt="'+esc(g.label)+'" style="width:100%;height:200px;object-fit:cover;display:block;border-radius:2px" src="'+esc(src)+'"/>'+

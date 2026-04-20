@@ -1,10 +1,29 @@
 import { defineConfig } from 'vite';
-import { copyFileSync, readdirSync, mkdirSync, statSync } from 'fs';
+import { copyFileSync, readdirSync, readFileSync, existsSync } from 'fs';
 import { join, extname } from 'path';
 
 function copyPublicFilesPlugin() {
   return {
     name: 'copy-safe-public-files',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url.split('?')[0];
+        const filePath = join('public', url);
+        if (!url.includes(' ') && existsSync(filePath)) {
+          try {
+            const data = readFileSync(filePath);
+            const ext = extname(url).toLowerCase();
+            const types = { '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
+            if (types[ext]) {
+              res.setHeader('Content-Type', types[ext]);
+              res.end(data);
+              return;
+            }
+          } catch(e) {}
+        }
+        next();
+      });
+    },
     closeBundle() {
       const srcDir = 'public';
       const destDir = 'dist';
