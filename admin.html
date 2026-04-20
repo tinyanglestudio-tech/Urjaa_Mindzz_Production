@@ -1662,7 +1662,7 @@ function loadSavedState() {
     if (saved) {
       const parsed = JSON.parse(saved);
       for (const key in parsed) {
-        if (parsed.hasOwnProperty(key) && key !== 'currentPage' && key !== 'images') {
+        if (parsed.hasOwnProperty(key) && key !== 'currentPage') {
           state[key] = parsed[key];
         }
       }
@@ -1688,14 +1688,14 @@ let state = {
     'community-cta':      { label:'Community: Join CTA',     page:'Community', icon:'campaign',     visible:true },
   },
   images: [
-    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'' },
-    { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'' },
-    { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'' },
-    { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'' },
-    { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'' },
-    { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'' },
-    { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'' },
-    { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'' },
+    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
+    { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'4.jpeg' },
+    { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'12.jpeg' },
+    { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'1.jpeg' },
+    { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'3.jpeg' },
+    { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'0.png' },
+    { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'8.png' },
+    { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'2.jpeg' },
   ],
   workshops: [
     { id:1, date:'2025-10-12', title:'Mindful Motherhood: The First 500 Days', desc:'Understanding the emotional and neurological shifts in you and your baby.', badge:'Limited Spots' },
