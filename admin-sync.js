@@ -314,7 +314,7 @@
   }
 
   function fetchAndApply() {
-    var url = SB_URL + '/rest/v1/site_settings?id=eq.admin_state&select=data&_=' + Date.now();
+    var url = SB_URL + '/rest/v1/site_settings?id=eq.admin_state&select=data';
     return fetch(url, {
       cache: 'no-store',
       headers: {
