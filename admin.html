@@ -737,8 +737,8 @@ function adminLogin() {
 
   <div class="sidebar-section-label">Pages</div>
   <div class="nav-item" onclick="showPage('home')">
-    <span class="material-symbols-outlined">home</span>
-    <span class="nav-item-label">Home Page</span>
+    <span class="material-symbols-outlined">auto_stories</span>
+    <span class="nav-item-label">Our Story</span>
   </div>
   <div class="nav-item" onclick="showPage('programs')">
     <span class="material-symbols-outlined">school</span>
@@ -747,10 +747,6 @@ function adminLogin() {
   <div class="nav-item" onclick="showPage('community')">
     <span class="material-symbols-outlined">groups</span>
     <span class="nav-item-label">Community</span>
-  </div>
-  <div class="nav-item" onclick="showPage('toolkit')">
-    <span class="material-symbols-outlined">auto_stories</span>
-    <span class="nav-item-label">Toolkit</span>
   </div>
 
   <div class="sidebar-section-label">Global</div>
@@ -810,12 +806,12 @@ function adminLogin() {
     <!-- ════════ DASHBOARD ════════ -->
     <div id="page-dashboard">
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-num">5</div><div class="stat-label">Pages</div></div>
-        <div class="stat-card"><div class="stat-icon">🖼️</div><div class="stat-num">43</div><div class="stat-label">Images</div></div>
-        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">24</div><div class="stat-label">Sections</div></div>
-        <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num">3</div><div class="stat-label">Workshops</div></div>
+        <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-num">3</div><div class="stat-label">Pages</div></div>
+        <div class="stat-card"><div class="stat-icon">🖼️</div><div class="stat-num" id="stat-images">8</div><div class="stat-label">Images</div></div>
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-num">11</div><div class="stat-label">Sections</div></div>
+        <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num" id="stat-workshops">3</div><div class="stat-label">Workshops</div></div>
         <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-num">4</div><div class="stat-label">Testimonials</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num">5/5</div><div class="stat-label">Pages Live</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num">3/3</div><div class="stat-label">Pages Live</div></div>
       </div>
 
       <div class="card">
@@ -837,12 +833,12 @@ function adminLogin() {
         </div>
         <div class="card-body open">
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
-            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('home')"><span class="material-symbols-outlined" style="font-size:16px">edit</span> Edit Home Hero</button>
+            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('home')"><span class="material-symbols-outlined" style="font-size:16px">edit</span> Edit Our Story</button>
+            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('programs')"><span class="material-symbols-outlined" style="font-size:16px">school</span> Edit Programs</button>
+            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('community')"><span class="material-symbols-outlined" style="font-size:16px">groups</span> Edit Community</button>
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('workshops')"><span class="material-symbols-outlined" style="font-size:16px">event_available</span> Add Workshop</button>
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('images')"><span class="material-symbols-outlined" style="font-size:16px">add_photo_alternate</span> Manage Images</button>
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('sections')"><span class="material-symbols-outlined" style="font-size:16px">visibility</span> Toggle Sections</button>
-            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('testimonials')"><span class="material-symbols-outlined" style="font-size:16px">rate_review</span> Edit Testimonials</button>
-            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('settings')"><span class="material-symbols-outlined" style="font-size:16px">palette</span> Site Settings</button>
           </div>
         </div>
       </div>
@@ -1027,7 +1023,6 @@ function adminLogin() {
     <div id="page-home" style="display:none">
       <div class="tabs" id="home-tabs">
         <button class="tab active" onclick="switchTab('home','hero')"><span class="material-symbols-outlined">auto_awesome</span> Hero</button>
-        <button class="tab" onclick="switchTab('home','philosophy')"><span class="material-symbols-outlined">psychology</span> Philosophy</button>
         <button class="tab" onclick="switchTab('home','pillars')"><span class="material-symbols-outlined">view_column</span> 5 Pillars</button>
         <button class="tab" onclick="switchTab('home','story')"><span class="material-symbols-outlined">auto_stories</span> Our Story</button>
         <button class="tab" onclick="switchTab('home','vision')"><span class="material-symbols-outlined">visibility</span> Vision & Mission</button>
@@ -1076,32 +1071,6 @@ function adminLogin() {
         </div>
       </div>
 
-      <!-- Philosophy tab -->
-      <div id="home-tab-philosophy" style="display:none">
-        <div class="card">
-          <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">psychology</span></div>
-            <div><div class="card-header-title">Philosophy Section</div><div class="card-header-sub">Tagline and philosophy cards</div></div>
-            <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-          </div>
-          <div class="card-body open">
-            <div class="field">
-              <div class="field-label">Section Title</div>
-              <input class="field-input" value="स्नेहेन वर्धते बुद्धिः" data-key="phil_title"/>
-            </div>
-            <div class="field">
-              <div class="field-label">Tagline</div>
-              <input class="field-input" value='"Wisdom grows through love."' data-key="phil_tagline"/>
-            </div>
-            <div id="philosophy-cards-list"></div>
-            <div class="field">
-              <div class="field-label">Philosophy Images (3-image mosaic)</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px" id="phil-imgs"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Pillars tab -->
       <div id="home-tab-pillars" style="display:none">
         <div class="card">
@@ -1114,6 +1083,10 @@ function adminLogin() {
             <div class="field">
               <div class="field-label">Section Heading</div>
               <input class="field-input" value="Our Nurturing Pillars" data-key="pillars_title"/>
+            </div>
+            <div class="field">
+              <div class="field-label">Centre Pillar Image</div>
+              <div id="img-pillar-center"></div>
             </div>
             <div id="pillars-list"></div>
           </div>
@@ -1226,12 +1199,11 @@ function adminLogin() {
 
     <!-- ════════ PROGRAMS PAGE ════════ -->
     <div id="page-programs" style="display:none">
-      <div class="tabs">
+      <div class="tabs" id="programs-tabs">
         <button class="tab active" onclick="switchTab('programs','hero')"><span class="material-symbols-outlined">star</span> Hero</button>
         <button class="tab" onclick="switchTab('programs','levels')"><span class="material-symbols-outlined">school</span> Levels</button>
         <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">child_care</span> Age Selector</button>
-        <button class="tab" onclick="switchTab('programs','montessori')"><span class="material-symbols-outlined">nature</span> Montessori</button>
-        <button class="tab" onclick="switchTab('programs','diy')"><span class="material-symbols-outlined">construction</span> DIY</button>
+        <button class="tab" onclick="switchTab('programs','bubbles')"><span class="material-symbols-outlined">bubble_chart</span> Brain Programs</button>
       </div>
 
       <div id="programs-tab-hero">
@@ -1290,25 +1262,14 @@ function adminLogin() {
         </div>
       </div>
 
-      <div id="programs-tab-montessori" style="display:none">
+      <div id="programs-tab-bubbles" style="display:none">
         <div class="card">
           <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">nature</span></div>
-            <div><div class="card-header-title">Montessori Play Ideas</div></div>
+            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">bubble_chart</span></div>
+            <div><div class="card-header-title">Brain-Boosting Programs</div><div class="card-header-sub">Manage program cards shown on the Programs section</div></div>
             <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
           </div>
-          <div class="card-body open" id="montessori-list"></div>
-        </div>
-      </div>
-
-      <div id="programs-tab-diy" style="display:none">
-        <div class="card">
-          <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(255,151,52,0.15)"><span class="material-symbols-outlined" style="color:#995200">construction</span></div>
-            <div><div class="card-header-title">DIY Activities</div></div>
-            <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-          </div>
-          <div class="card-body open" id="diy-list"></div>
+          <div class="card-body open" id="bubbles-list"></div>
         </div>
       </div>
     </div>
@@ -1377,66 +1338,6 @@ function adminLogin() {
       </div>
     </div>
 
-    <!-- ════════ TOOLKIT PAGE ════════ -->
-    <div id="page-toolkit" style="display:none">
-      <div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(252,204,56,0.2)"><span class="material-symbols-outlined" style="color:#7c6100">star</span></div>
-          <div><div class="card-header-title">Toolkit Hero</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open">
-          <div class="field">
-            <div class="field-label">Page Title</div>
-            <input class="field-input" value="The 'Urjaa' Toolkit" data-key="toolkit_title"/>
-          </div>
-          <div class="field">
-            <div class="field-label">Hero Description</div>
-            <textarea class="field-input field-textarea" data-key="toolkit_desc">Whether you're on Zoom calls all day or home 24/7… it's the same loop in our heads. Guilt when we're working. That constant worry — 'Am I doing enough?'</textarea>
-          </div>
-          <div class="field">
-            <div class="field-label">Resource Count Badge</div>
-            <input class="field-input" value="50+ New Resources" data-key="toolkit_badge"/>
-          </div>
-          <div class="field">
-            <div class="field-label">Hero Image</div>
-            <div id="img-toolkit-hero"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">auto_stories</span></div>
-          <div><div class="card-header-title">Sanskrit Wisdom Cards</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open" id="wisdom-cards-list"></div>
-      </div>
-
-<div class="card">
-        <div class="card-header" onclick="toggleCard(this)">
-          <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">mail</span></div>
-          <div><div class="card-header-title">Newsletter CTA</div></div>
-          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-        </div>
-        <div class="card-body open">
-          <div class="field">
-            <div class="field-label">Headline</div>
-            <input class="field-input" value="Unlock the Weekly Wisdom" data-key="nl_title"/>
-          </div>
-          <div class="field">
-            <div class="field-label">Subtitle</div>
-            <input class="field-input" value="Join 5,000+ mindful parents receiving weekly tips and toolkit updates." data-key="nl_sub"/>
-          </div>
-          <div class="field">
-            <div class="field-label">Button Text</div>
-            <input class="field-input" value="Subscribe Free" data-key="nl_btn"/>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- ════════ SECTION VISIBILITY ════════ -->
     <div id="page-sections" style="display:none">
       <p style="color:#666;font-size:13px;margin-bottom:16px">Toggle sections on/off across all pages. Hidden sections will not appear on the live site.</p>
@@ -1449,10 +1350,9 @@ function adminLogin() {
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
         <div class="tabs" style="flex:1;margin-bottom:0" id="images-tabs">
           <button class="tab active" onclick="switchImgTab('all')"><span class="material-symbols-outlined">photo_library</span> All Images</button>
-          <button class="tab" onclick="switchImgTab('Home')"><span class="material-symbols-outlined">home</span> Home</button>
+          <button class="tab" onclick="switchImgTab('Home')"><span class="material-symbols-outlined">home</span> Our Story</button>
           <button class="tab" onclick="switchImgTab('Programs')"><span class="material-symbols-outlined">school</span> Programs</button>
           <button class="tab" onclick="switchImgTab('Community')"><span class="material-symbols-outlined">groups</span> Community</button>
-          <button class="tab" onclick="switchImgTab('Toolkit')"><span class="material-symbols-outlined">auto_stories</span> Toolkit</button>
         </div>
         <button class="topbar-btn primary" onclick="addNewImage()" style="flex-shrink:0">
           <span class="material-symbols-outlined" style="font-size:16px">add_photo_alternate</span>
@@ -1775,36 +1675,27 @@ function loadSavedState() {
 let state = {
   currentPage: 'dashboard',
   sections: {
-    'home-hero':          { label:'Home: Hero',              page:'Home',      icon:'auto_awesome', visible:true },
-    'home-philosophy':    { label:'Home: Philosophy',        page:'Home',      icon:'psychology',   visible:true },
-    'home-pillars':       { label:'Home: 5 Pillars',         page:'Home',      icon:'view_column',  visible:true },
-    'home-story':         { label:'Home: Our Story',         page:'Home',      icon:'auto_stories', visible:true },
-    'home-vision':        { label:'Home: Vision & Mission',  page:'Home',      icon:'visibility',   visible:true },
-    'home-cta':           { label:'Home: Join CTA',          page:'Home',      icon:'campaign',     visible:true },
+    'home-hero':          { label:'Our Story: Hero',         page:'Our Story', icon:'auto_awesome', visible:true },
+    'home-pillars':       { label:'Our Story: 5 Pillars',    page:'Our Story', icon:'view_column',  visible:true },
+    'home-story':         { label:'Our Story: Founders',     page:'Our Story', icon:'auto_stories', visible:true },
+    'home-vision':        { label:'Our Story: Vision & Mission', page:'Our Story', icon:'visibility', visible:true },
+    'home-cta':           { label:'Our Story: Join CTA',     page:'Our Story', icon:'campaign',     visible:true },
     'programs-age':       { label:'Programs: Age Selector',  page:'Programs',  icon:'child_care',   visible:false },
     'programs-bubbles':   { label:'Programs: Brain Programs',page:'Programs',  icon:'bubble_chart', visible:true },
-    'programs-montessori':{ label:'Programs: Montessori',    page:'Programs',  icon:'nature',       visible:false },
-    'programs-diy':       { label:'Programs: DIY Activities',page:'Programs',  icon:'construction', visible:true },
     'programs-workshops': { label:'Programs: Workshops',     page:'Programs',  icon:'event',        visible:true },
     'community-hero':     { label:'Community: Hero',         page:'Community', icon:'star',         visible:true },
-    'community-chat':     { label:'Community: Chat Forums',  page:'Community', icon:'chat',         visible:true },
-    'community-bloom':    { label:'Community: Who Bloom',    page:'Community', icon:'photo_camera', visible:true },
+    'community-bloom':    { label:'Community: Mothers Gallery', page:'Community', icon:'photo_camera', visible:true },
     'community-cta':      { label:'Community: Join CTA',     page:'Community', icon:'campaign',     visible:true },
-    'toolkit-hero':       { label:'Toolkit: Hero',           page:'Toolkit',   icon:'star',         visible:true },
-    'toolkit-wisdom':     { label:'Toolkit: Sanskrit Wisdom',page:'Toolkit',   icon:'auto_stories', visible:true },
-    'toolkit-newsletter': { label:'Toolkit: Newsletter CTA', page:'Toolkit',   icon:'mail',         visible:true },
   },
   images: [
-    { id:'hero-bg',        label:'Home — Hero Background',          page:'Home',      src:'' },
-    { id:'founders',       label:'Home — Founders Photo',           page:'Home',      src:'' },
+    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'' },
+    { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'' },
+    { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'' },
+    { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'' },
     { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'' },
     { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'' },
     { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'' },
     { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'' },
-    { id:'prog-hero',      label:'Programs — Hero Banner',          page:'Programs',  src:'' },
-    { id:'cardboard',      label:'Programs — Cardboard Castles',    page:'Programs',  src:'' },
-    { id:'kitchen',        label:'Programs — Kitchen Science',      page:'Programs',  src:'' },
-    { id:'shakers',        label:'Programs — Homemade Shakers',     page:'Programs',  src:'' },
   ],
   workshops: [
     { id:1, date:'2025-10-12', title:'Mindful Motherhood: The First 500 Days', desc:'Understanding the emotional and neurological shifts in you and your baby.', badge:'Limited Spots' },
@@ -1817,21 +1708,10 @@ let state = {
     { id:3, name:'Srishti Shah', location:'Mumbai',    role:'Community Leader', quote:'Finally, a space that understands the cultural nuances of raising a child in an Indian household while embracing modern mindful practices.', initials:'SS', color:'#995200' },
     { id:4, name:'Priya S.',     location:'Mumbai',    role:'Community Member', quote:'"A community that feels like home."', initials:'PS', color:'#7c6100' },
   ],
-  chatRooms: [
-    { id:'parenting', icon:'child_care',      label:'Conscious Parenting',  desc:'Nurturing emotional intelligence and mindful discipline', members:124 },
-    { id:'sensory',   icon:'toys',            label:'Sensory Play Ideas',   desc:'DIY activities and traditional Indian play styles',       members:89 },
-    { id:'wellness',  icon:'self_improvement',label:'Mom Wellness',         desc:'Self-care, mental health, and the journey of motherhood', members:76 },
-    { id:'ayurveda',  icon:'spa',             label:'Ayurvedic Rituals',    desc:'Ancient wisdom woven into modern parenting schedules',    members:57 },
-  ],
   gallery: [
     { id:1, label:'Growing Together',      img:'growing' },
     { id:2, label:'Our Nurture Circle',    img:'nurture-circle' },
     { id:3, label:'Wisdom in Community',   img:'wisdom-comm' },
-  ],
-  philCards: [
-    { id:1, icon:'psychology',   title:'Cognitive Empathy',    desc:'Learning is about feeling the connection between facts and the heart.' },
-    { id:2, icon:'groups',       title:'Village-Led Growth',   desc:'Every child is surrounded by Urjaa mentors who lead with presence and patience.' },
-    { id:3, icon:'auto_awesome', title:'Joyful Rigor',         desc:"We challenge the mind through play, curiosity, and belief in every child's innate wisdom." },
   ],
   pillars: [
     { id:1, emoji:'💞', title:'Love',      quote:'The foundation of every brilliant mind',    focus:'Emotional bonding, Safe environment, Positive reinforcement' },
@@ -1844,20 +1724,6 @@ let state = {
     { id:1, title:'Sensory Play',          desc:'Exploration through touch, sound, and sight to build strong neural pathways.',       img:'sensory-play' },
     { id:2, title:'Memory & Focus',        desc:'Playful activities to improve retention and lengthen attention spans.',              img:'memory-focus' },
     { id:3, title:'Cognitive Activation',  desc:'Advanced problem-solving games that stimulate critical thinking.',                   img:'cognitive' },
-  ],
-  montessori: [
-    { id:1, title:'Texture Sorting',  desc:'Engage tactile senses by organizing natural objects by their unique surface patterns.',      img:'texture' },
-    { id:2, title:'Nature Mandalas',  desc:'Create beautiful symmetrical patterns using leaves, stones, and petals.',                   img:'mandalas' },
-    { id:3, title:'Water Pouring',    desc:'Develop fine motor control and concentration through mindful liquid transfer exercises.',   img:'water' },
-  ],
-  diy: [
-    { id:1, title:'Kitchen Science',   desc:'Turn everyday pantry staples into exciting chemical reactions and sensory wonders.',       img:'kitchen' },
-    { id:2, title:'Cardboard Castles', desc:'Unlock engineering skills by transforming shipping boxes into grand fortresses.',          img:'cardboard' },
-    { id:3, title:'Homemade Shakers',  desc:'Explore rhythm and sound by crafting custom musical instruments from recycled materials.', img:'shakers' },
-  ],
-  wisdom: [
-    { id:1, title:'Pancha Kosha',  desc:'Explore the five sheaths of human personality and how they manifest in early childhood.' },
-    { id:2, title:'Ritucharya',    desc:'Seasonal routines for toddlers inspired by Ayurvedic principles.' },
   ],
   levelPrograms: {
     '0-6':  { level:1, name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.', focusAreas:['Visual Development','Auditory Development','Sensory Exploration','Brain Stimulation','Motor Skills (Tummy Time)','Emotional Bonding'] },
@@ -1979,8 +1845,8 @@ function showPage(name) {
   });
 
   // Update topbar
-  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Home Page', programs:'Programs Page', community:'Community Page', toolkit:'Toolkit Page', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings' };
-  const badges = { dashboard:'Overview', analytics:'Live Data', home:'home.html', programs:'index.html', community:'community.html', toolkit:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'community.html', settings:'Global' };
+  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings' };
+  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
   document.getElementById('topbar-badge').textContent = badges[name] || '';
 
@@ -2128,7 +1994,6 @@ function renderPage(name) {
   else if (name === 'home') renderHome();
   else if (name === 'programs') renderPrograms();
   else if (name === 'community') renderCommunity();
-  else if (name === 'toolkit') renderToolkit();
   else if (name === 'sections') renderSections();
   else if (name === 'images') renderImages();
   else if (name === 'workshops') {
@@ -2153,11 +2018,9 @@ function renderPage(name) {
 
 function renderDashboard() {
   const pages = [
-    { name:'home.html', label:'Home', url:'home.html', live:true },
     { name:'index.html', label:'Programs', url:'index.html', live:true },
-    { name:'community.html', label:'Community', url:'community.html', live:true },
-    { name:'index.html', label:'Programs & Toolkit', url:'index.html', live:true },
-    { name:'story.html', label:'Our Story (legacy)', url:'story.html', live:true },
+    { name:'index.html#community', label:'Community', url:'index.html#community', live:true },
+    { name:'index.html#home', label:'Our Story', url:'index.html#home', live:true },
   ];
   document.getElementById('pages-status-list').innerHTML = pages.map(p => `
     <div class="page-vis-row">
@@ -2178,44 +2041,7 @@ function renderDashboard() {
 function renderHome() {
   makeImageField('hero-bg', 'img-hero-bg');
   makeImageField('founders', 'img-founders');
-
-  // Philosophy images mosaic
-  const philContainer = document.getElementById('phil-imgs');
-  if (philContainer) philContainer.innerHTML = ['phil-1','phil-2','phil-3'].map(id => {
-    const img = state.images.find(i => i.id === id) || { label:id, src:'' };
-    return `<div>
-      <div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px">${img.label}</div>
-      <div class="img-preview-wrap" style="width:100%;height:80px">
-        <img src="${img.src}" id="preview-${id}" style="width:100%;height:100%;object-fit:cover"/>
-        <div class="img-remove" onclick="removeImage('${id}')"><span class="material-symbols-outlined">close</span></div>
-      </div>
-      <input class="img-url-input" style="margin-top:6px" value="${img.src}" id="url-${id}" oninput="updateImageUrl('${id}', this.value)"/>
-    </div>`;
-  }).join('');
-
-  // Philosophy cards — CRUD
-  const philList = document.getElementById('philosophy-cards-list');
-  if (philList) {
-    philList.innerHTML = `
-      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addPhilCard()">
-          <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Card
-        </button>
-      </div>` +
-      state.philCards.map(card => `
-        <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-            <span class="material-symbols-outlined" style="color:#7c6100;font-size:18px">${card.icon}</span>
-            <span style="font-size:13px;font-weight:700;color:#383833;flex:1">${card.title}</span>
-            <button class="ws-btn delete" onclick="deletePhilCard(${card.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-          </div>
-          <div class="field-row">
-            <input class="field-input" value="${card.title}" placeholder="Title" onchange="updatePhilCard(${card.id},'title',this.value)"/>
-            <input class="field-input" value="${card.desc}" placeholder="Description" onchange="updatePhilCard(${card.id},'desc',this.value)"/>
-          </div>
-          <input class="field-input" value="${card.icon}" placeholder="Material icon name (e.g. psychology)" style="margin-top:8px" onchange="updatePhilCard(${card.id},'icon',this.value)"/>
-        </div>`).join('');
-  }
+  makeImageField('pillar-center', 'img-pillar-center');
 
   // Pillars — CRUD
   const pillarsList = document.getElementById('pillars-list');
@@ -2245,28 +2071,6 @@ function renderHome() {
   }
 }
 
-// ── Phil Card CRUD ─────────────────────────────────────────────────────────
-function addPhilCard() {
-  openItemModal('Add Philosophy Card', [
-    { id:'icon',  label:'Icon (Material Symbol)', placeholder:'e.g. psychology', value:'' },
-    { id:'title', label:'Card Title',             placeholder:'e.g. Joyful Rigor', value:'' },
-    { id:'desc',  label:'Description',            placeholder:'Card description…', value:'', textarea:true },
-  ], (vals) => {
-    if (!vals.title) return;
-    state.philCards.push({ id:Date.now(), icon:vals.icon||'star', title:vals.title, desc:vals.desc });
-    autoSave(); renderHome(); toast('Philosophy card added!');
-  });
-}
-function updatePhilCard(id, field, val) {
-  const c = state.philCards.find(x => x.id === id);
-  if (c) c[field] = val;
-  autoSave();
-}
-function deletePhilCard(id) {
-  if (!confirm('Delete this philosophy card?')) return;
-  state.philCards = state.philCards.filter(x => x.id !== id); autoSave();
-  renderHome(); toast('Card deleted');
-}
 
 // ── Pillar CRUD ────────────────────────────────────────────────────────────
 function addPillar() {
@@ -2293,7 +2097,7 @@ function deletePillar(id) {
 }
 
 function renderPrograms() {
-  makeImageField('prog-hero', 'img-prog-hero');
+  makeImageField('hero-banner', 'img-prog-hero');
 
   // Brain-Boosting Programs — CRUD
   const bubblesList = document.getElementById('bubbles-list');
@@ -2321,48 +2125,6 @@ function renderPrograms() {
         </div>
       </div>`).join('');
 
-  // Montessori — CRUD
-  const montList = document.getElementById('montessori-list');
-  if (montList) montList.innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addMontessori()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Activity
-      </button>
-    </div>` +
-    state.montessori.map(m => `
-      <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:12px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-size:13px;font-weight:700;flex:1">${m.title}</span>
-          <button class="ws-btn delete" onclick="deleteMontessori(${m.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-        </div>
-        <div class="field-row" style="margin-bottom:10px">
-          <input class="field-input" value="${m.title}" placeholder="Title" onchange="updateMontessori(${m.id},'title',this.value)"/>
-          <textarea class="field-input field-textarea" style="min-height:60px" onchange="updateMontessori(${m.id},'desc',this.value)">${m.desc}</textarea>
-        </div>
-        ${makeInlineImgField(m.img)}
-      </div>`).join('');
-
-  // DIY — CRUD
-  const diyList = document.getElementById('diy-list');
-  if (diyList) diyList.innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addDIY()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add DIY Activity
-      </button>
-    </div>` +
-    state.diy.map(d => `
-      <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:12px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-size:13px;font-weight:700;flex:1">${d.title}</span>
-          <button class="ws-btn delete" onclick="deleteDIY(${d.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-        </div>
-        <div class="field-row" style="margin-bottom:10px">
-          <input class="field-input" value="${d.title}" placeholder="Title" onchange="updateDIY(${d.id},'title',this.value)"/>
-          <textarea class="field-input field-textarea" style="min-height:60px" onchange="updateDIY(${d.id},'desc',this.value)">${d.desc}</textarea>
-        </div>
-        ${makeInlineImgField(d.img)}
-      </div>`).join('');
-
   renderAgeEditor('0-6');
 }
 
@@ -2387,47 +2149,6 @@ function deleteBubble(id) {
   renderPrograms(); toast('Program deleted');
 }
 
-// ── Montessori CRUD ──────────────────────────────────────────────────────
-function addMontessori() {
-  openItemModal('Add Montessori Activity', [
-    { id:'title', label:'Activity Title', placeholder:'e.g. Sand Writing', value:'' },
-    { id:'desc',  label:'Description',    placeholder:'What this activity develops…', value:'', textarea:true },
-    { id:'img',   label:'Image URL',      placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    const imgId = 'mont-' + Date.now();
-    state.images.push({ id:imgId, label:vals.title, page:'Programs', src:vals.img||'' });
-    state.montessori.push({ id:Date.now(), title:vals.title, desc:vals.desc, img:imgId });
-    autoSave(); renderPrograms(); toast('Activity added!');
-  });
-}
-function updateMontessori(id, field, val) { const m = state.montessori.find(x=>x.id===id); if(m) m[field]=val; autoSave(); }
-function deleteMontessori(id) {
-  if (!confirm('Delete this activity?')) return;
-  state.montessori = state.montessori.filter(x=>x.id!==id); autoSave();
-  renderPrograms(); toast('Activity deleted');
-}
-
-// ── DIY CRUD ─────────────────────────────────────────────────────────────
-function addDIY() {
-  openItemModal('Add DIY Activity', [
-    { id:'title', label:'Activity Title', placeholder:'e.g. Rainbow Rice Play', value:'' },
-    { id:'desc',  label:'Description',    placeholder:'What children will explore…', value:'', textarea:true },
-    { id:'img',   label:'Image URL',      placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    const imgId = 'diy-' + Date.now();
-    state.images.push({ id:imgId, label:vals.title, page:'Programs', src:vals.img||'' });
-    state.diy.push({ id:Date.now(), title:vals.title, desc:vals.desc, img:imgId });
-    autoSave(); renderPrograms(); toast('DIY activity added!');
-  });
-}
-function updateDIY(id, field, val) { const d = state.diy.find(x=>x.id===id); if(d) d[field]=val; autoSave(); }
-function deleteDIY(id) {
-  if (!confirm('Delete this activity?')) return;
-  state.diy = state.diy.filter(x=>x.id!==id); autoSave();
-  renderPrograms(); toast('Activity deleted');
-}
 
 function makeInlineImgField(imgId) {
   const img = state.images.find(i => i.id === imgId);
@@ -2591,30 +2312,6 @@ function getActivities(k) {
 function renderCommunity() {
   makeImageField('comm-hero', 'img-comm-hero');
 
-  // Chat rooms — CRUD
-  document.getElementById('chat-rooms-list').innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addChatRoom()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Chat Room
-      </button>
-    </div>` +
-    state.chatRooms.map(r => `
-      <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-          <span class="material-symbols-outlined" style="color:#7c6100;font-size:18px">${r.icon}</span>
-          <span style="font-size:13px;font-weight:700;flex:1">${r.label}</span>
-          <button class="ws-btn delete" onclick="deleteChatRoom('${r.id}')"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-        </div>
-        <div class="field-row" style="margin-bottom:8px">
-          <input class="field-input" value="${r.label}" placeholder="Room name" onchange="updateChatRoom('${r.id}','label',this.value)"/>
-          <input class="field-input" value="${r.members}" placeholder="Member count" type="number" onchange="updateChatRoom('${r.id}','members',+this.value)"/>
-        </div>
-        <div class="field-row">
-          <input class="field-input" value="${r.icon}" placeholder="Material icon" onchange="updateChatRoom('${r.id}','icon',this.value)"/>
-          <input class="field-input" value="${r.desc}" placeholder="Room description" onchange="updateChatRoom('${r.id}','desc',this.value)"/>
-        </div>
-      </div>`).join('');
-
   // Mothers Who Bloom gallery — CRUD
   document.getElementById('gallery-list').innerHTML = `
     <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
@@ -2645,25 +2342,6 @@ function renderCommunity() {
     }).join('');
 }
 
-// ── Chat Room CRUD ───────────────────────────────────────────────────────
-function addChatRoom() {
-  openItemModal('Add Chat Room', [
-    { id:'label',   label:'Room Name',        placeholder:'e.g. Baby Nutrition', value:'' },
-    { id:'desc',    label:'Description',      placeholder:'What this room is about…', value:'' },
-    { id:'icon',    label:'Material Icon',    placeholder:'e.g. restaurant, eco, spa', value:'chat' },
-    { id:'members', label:'Initial Members',  placeholder:'0', value:'0' },
-  ], (vals) => {
-    if (!vals.label) return;
-    state.chatRooms.push({ id:'room-'+Date.now(), icon:vals.icon||'chat', label:vals.label, desc:vals.desc, members:+vals.members||0 });
-    autoSave(); renderCommunity(); toast('Chat room added!');
-  });
-}
-function updateChatRoom(id, field, val) { const r = state.chatRooms.find(x=>x.id===id); if(r) r[field]=val; autoSave(); }
-function deleteChatRoom(id) {
-  if (!confirm('Delete this chat room?')) return;
-  state.chatRooms = state.chatRooms.filter(x=>x.id!==id); autoSave();
-  renderCommunity(); toast('Room deleted');
-}
 
 // ── Gallery CRUD ─────────────────────────────────────────────────────────
 function addGalleryItem() {
@@ -2685,47 +2363,6 @@ function deleteGallery(id) {
   renderCommunity(); toast('Photo removed');
 }
 
-function renderToolkit() {
-  makeImageField('toolkit-hero', 'img-toolkit-hero');
-
-  // Wisdom cards — CRUD
-  document.getElementById('wisdom-cards-list').innerHTML = `
-    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-      <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addWisdom()">
-        <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Wisdom Card
-      </button>
-    </div>` +
-    state.wisdom.map(w => `
-      <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-size:13px;font-weight:700;flex:1">${w.title}</span>
-          <button class="ws-btn delete" onclick="deleteWisdom(${w.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
-        </div>
-        <div class="field-row">
-          <input class="field-input" value="${w.title}" placeholder="Sanskrit term" onchange="updateWisdom(${w.id},'title',this.value)"/>
-          <textarea class="field-input field-textarea" style="min-height:60px" onchange="updateWisdom(${w.id},'desc',this.value)">${w.desc}</textarea>
-        </div>
-      </div>`).join('');
-
-}
-
-// ── Wisdom CRUD ──────────────────────────────────────────────────────────
-function addWisdom() {
-  openItemModal('Add Sanskrit Wisdom Card', [
-    { id:'title', label:'Sanskrit Term',  placeholder:'e.g. Dharma', value:'' },
-    { id:'desc',  label:'Explanation',    placeholder:'What this wisdom teaches…', value:'', textarea:true },
-  ], (vals) => {
-    if (!vals.title) return;
-    state.wisdom.push({ id:Date.now(), title:vals.title, desc:vals.desc });
-    autoSave(); renderToolkit(); toast('Wisdom card added!');
-  });
-}
-function updateWisdom(id, field, val) { const w = state.wisdom.find(x=>x.id===id); if(w) w[field]=val; autoSave(); }
-function deleteWisdom(id) {
-  if (!confirm('Delete this wisdom card?')) return;
-  state.wisdom = state.wisdom.filter(x=>x.id!==id); autoSave();
-  renderToolkit(); toast('Card deleted');
-}
 
 function renderSections() {
   document.getElementById('sections-visibility-grid').innerHTML =
@@ -2754,7 +2391,7 @@ function switchImgTab(tab) {
 }
 
 function renderImages() {
-  const pages = ['Home','Programs','Community','Toolkit'];
+  const pages = ['Home','Programs','Community'];
   const allImgs = state.images;
 
   // Stats strip
@@ -2767,7 +2404,6 @@ function renderImages() {
       { label:'Home', count:counts['Home']||0, icon:'home', color:'#7c6100' },
       { label:'Programs', count:counts['Programs']||0, icon:'school', color:'#a74632' },
       { label:'Community', count:counts['Community']||0, icon:'groups', color:'#995200' },
-      { label:'Toolkit', count:counts['Toolkit']||0, icon:'auto_stories', color:'#5a4500' },
     ].map(s => `
       <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.8);border-radius:12px;padding:7px 14px;backdrop-filter:blur(12px);cursor:pointer;transition:all 0.2s" onclick="switchImgTab('${s.label === 'All' ? 'all' : s.label}')">
         <span class="material-symbols-outlined" style="font-size:15px;color:${s.color}">${s.icon}</span>
@@ -2852,10 +2488,9 @@ function addNewImage() {
     <div class="field">
       <div class="field-label">Belongs To Page</div>
       <select class="field-input" id="ni-page" style="cursor:pointer">
-        <option value="Home"      ${defaultPage==='Home'     ?'selected':''}>Home</option>
+        <option value="Home"      ${defaultPage==='Home'     ?'selected':''}>Our Story</option>
         <option value="Programs"  ${defaultPage==='Programs' ?'selected':''}>Programs</option>
         <option value="Community" ${defaultPage==='Community'?'selected':''}>Community</option>
-        <option value="Toolkit"   ${defaultPage==='Toolkit'  ?'selected':''}>Toolkit</option>
       </select>
     </div>
     <div class="field">
