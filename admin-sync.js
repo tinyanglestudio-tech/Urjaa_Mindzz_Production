@@ -20,6 +20,7 @@
       if(!img.src || img.src.indexOf('data:') === 0) return;
       document.querySelectorAll('img[data-img-id="'+img.id+'"]').forEach(function(el){
         el.src = img.src;
+        el.style.opacity = '1';
       });
       if (img.id === 'founders') {
         document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ el.src = img.src; });
@@ -205,37 +206,38 @@
     var container = listAt('[data-sync-list="testimonials"]');
     if(!container) return;
     var list = s.testimonials;
-    var first = list[0];
-    var rest = list.slice(1);
-    var leftCard = '';
-    if (first) {
-      var loc1 = first.location ? ', ' + first.location : '';
-      leftCard = '<div class="glass-card p-8 rounded-2xl soft-card relative gold-border">'+
-        '<span class="text-6xl text-primary opacity-15 font-serif leading-none absolute top-4 left-4">&ldquo;</span>'+
-        '<p class="text-on-surface relative z-10 leading-relaxed italic text-base mb-6">'+esc(first.quote)+'</p>'+
-        '<div class="flex items-center gap-3">'+
-          '<div class="w-10 h-1 bg-secondary rounded-full"></div>'+
-          '<span class="font-bold text-sm">'+esc(first.name)+esc(loc1)+'</span>'+
-        '</div>'+
-      '</div>';
-    }
-    var borders = ['border-primary','border-secondary','border-primary','border-secondary'];
-    var rightCards = rest.map(function(t, i){
-      var initials = t.initials || (t.name ? t.name.split(/\s+/).map(function(p){return p.charAt(0);}).join('').slice(0,2).toUpperCase() : '');
-      var color = t.color || '#7c6100';
-      var bc = borders[i % borders.length];
-      return '<div class="glass-card p-6 rounded-2xl soft-card border-l-4 '+bc+'">'+
-        '<p class="text-base leading-relaxed text-on-surface mb-5">'+esc(t.quote)+'</p>'+
-        '<div class="flex items-center gap-3">'+
-          '<div style="width:52px;height:52px;border-radius:50%;background:'+esc(color)+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">'+esc(initials)+'</div>'+
+    var accentColors = ['#7c6100','#a74632','#5a8a5e','#c07820','#4a7ab5'];
+    function makeCard(t, ci){
+      var initials = t.initials || (t.name ? t.name.split(/\s+/).map(function(p){return p.charAt(0);}).join('').slice(0,2).toUpperCase() : '??');
+      var color = t.color || accentColors[ci % accentColors.length];
+      var quote = t.quote || '';
+      var short = quote.length > 140 ? quote.slice(0,137)+'…' : quote;
+      return '<div style="'+
+        'background:rgba(255,255,255,0.88);'+
+        'backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);'+
+        'border-radius:1.5rem;'+
+        'padding:22px 24px 20px;'+
+        'min-width:280px;max-width:300px;'+
+        'box-shadow:0 6px 28px rgba(124,97,0,0.09);'+
+        'border:1.5px solid rgba(255,255,255,0.9);'+
+        'flex-shrink:0;'+
+        'border-top:3px solid '+color+';'+
+        'display:flex;flex-direction:column;gap:14px'+
+      '">'+
+        '<p style="font-size:13px;line-height:1.7;color:#383833;margin:0;font-style:italic;">&ldquo;'+esc(short)+'&rdquo;</p>'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:auto">'+
+          '<div style="width:40px;height:40px;border-radius:50%;background:'+esc(color)+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;letter-spacing:0.5px">'+esc(initials)+'</div>'+
           '<div>'+
-            '<h4 class="font-bold text-sm">'+esc(t.name)+'</h4>'+
-            '<p class="text-xs text-on-surface-variant">'+esc(t.role||'')+(t.location?' &middot; '+esc(t.location):'')+'</p>'+
+            '<div style="font-size:13px;font-weight:700;color:#383833;line-height:1.2">'+esc(t.name)+'</div>'+
+            '<div style="font-size:11px;color:#65655f;margin-top:2px">'+esc(t.role||'')+(t.location?' &middot; '+esc(t.location):'')+'</div>'+
           '</div>'+
         '</div>'+
       '</div>';
-    }).join('');
-    container.innerHTML = leftCard + '<div class="flex flex-col gap-6">' + rightCards + '</div>';
+    }
+    var cardsHTML = list.map(makeCard).join('');
+    /* Duplicate for seamless infinite loop (translateX -50% = one full set width) */
+    container.innerHTML = cardsHTML + cardsHTML;
+    container.style.animation = 'testimonialScroll 32s linear infinite';
   }
 
   function applyWisdom(s){
