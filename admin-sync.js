@@ -2,6 +2,16 @@
   var SB_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
   var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
 
+  /* ── localStorage content cache (10 min TTL) ── */
+  var CACHE_KEY = 'urjaa_content_v1';
+  var CACHE_TTL = 10 * 60 * 1000;
+  function getCached(){
+    try{var c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;}catch(e){}return null;
+  }
+  function setCache(data){
+    try{localStorage.setItem(CACHE_KEY,JSON.stringify({ts:Date.now(),data:data}));}catch(e){}
+  }
+
   function esc(v){
     return String(v==null?'':v).replace(/[&<>"']/g,function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
@@ -19,8 +29,25 @@
     s.images.forEach(function(img){
       if(!img.src || img.src.indexOf('data:') === 0) return;
       document.querySelectorAll('img[data-img-id="'+img.id+'"]').forEach(function(el){
-        el.src = img.src;
-        el.style.opacity = '1';
+        if(img.id === 'hero-banner'){
+          // Cache URL so next visit preloads it instantly
+          try{localStorage.setItem('urjaa_hero_src', img.src);}catch(e){}
+          if(el.src !== img.src) el.src = img.src;
+          el.onload = function(){
+            el.style.opacity = '1';
+            var shimmer = document.getElementById('hero-shimmer');
+            if(shimmer) shimmer.style.display = 'none';
+          };
+          // Already loaded (cached path set src before this ran)
+          if(el.complete && el.naturalWidth > 0){
+            el.style.opacity = '1';
+            var shimmer = document.getElementById('hero-shimmer');
+            if(shimmer) shimmer.style.display = 'none';
+          }
+        } else {
+          el.src = img.src;
+          el.style.opacity = '1';
+        }
       });
       if (img.id === 'founders') {
         document.querySelectorAll('img[alt*="Founders"], img[alt*="Jayashree"]').forEach(function(el){ el.src = img.src; });
@@ -333,10 +360,14 @@
       .then(function(r){ return r.ok ? r.json() : []; })
       .then(function(rows){
         if (rows && rows[0] && rows[0].data) {
-          apply(rows[0].data);
+          var data = rows[0].data;
+          apply(data);
+          setCache(data); // Save for next visit
+          return data;
         }
+        return null;
       })
-      .catch(function(){});
+      .catch(function(){ return null; });
   }
 
   function connectRealtime() {
@@ -400,7 +431,11 @@
   }
 
   function run(){
-    fetchAndApply().then(function() {
+    // Apply cached content IMMEDIATELY — zero network wait on repeat visits
+    var cached = getCached();
+    if(cached){ try{ apply(cached); }catch(e){} }
+    // Then fetch fresh from Supabase in background (updates cache + overwrites stale data)
+    fetchAndApply().then(function(){
       connectRealtime();
     });
   }
