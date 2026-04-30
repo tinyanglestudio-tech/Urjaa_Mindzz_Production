@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Urjaa Mindz — Mobile Preview</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',system-ui,sans-serif;
+    background:#1a1a2e;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* ── Top bar ── */
+  .topbar{
+    width:100%;
+    background:rgba(255,255,255,0.04);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 32px;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .topbar-title{
+    font-size:15px;font-weight:700;
+    color:#fccc38;letter-spacing:0.04em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .topbar-title span{color:rgba(255,255,255,0.45);font-weight:400}
+  .tab-group{display:flex;gap:6px;flex-wrap:wrap}
+  .tab-btn{
+    padding:7px 18px;border-radius:999px;border:none;
+    font-size:13px;font-weight:600;cursor:pointer;
+    transition:all 0.2s;
+  }
+  .tab-btn.active{background:#fccc38;color:#3a2800}
+  .tab-btn:not(.active){background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65)}
+  .tab-btn:not(.active):hover{background:rgba(255,255,255,0.14);color:#fff}
+
+  .device-group{display:flex;gap:6px}
+  .dev-btn{
+    padding:6px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.15);
+    font-size:12px;font-weight:600;cursor:pointer;background:none;color:rgba(255,255,255,0.5);
+    transition:all 0.2s;
+  }
+  .dev-btn.active{border-color:#fccc38;color:#fccc38;background:rgba(252,204,56,0.08)}
+
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#25d366;box-shadow:0 0 8px #25d366;
+    display:inline-block;
+  }
+  .url-bar{
+    font-size:11px;color:rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.05);
+    padding:4px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ── Stage ── */
+  .stage{
+    flex:1;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 20px 60px;
+    gap:60px;
+    flex-wrap:wrap;
+    width:100%;
+  }
+
+  /* ── Phone frame ── */
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .phone-label{
+    font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+    color:rgba(255,255,255,0.35);
+  }
+  .phone{
+    position:relative;
+    border-radius:52px;
+    background:#111;
+    box-shadow:
+      0 0 0 2px #333,
+      0 0 0 4px #1a1a1a,
+      0 32px 80px rgba(0,0,0,0.7),
+      inset 0 0 0 1px rgba(255,255,255,0.06);
+    transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .phone.iphone{width:375px}
+  .phone.android{width:360px}
+  .phone.ipad{width:500px}
+
+  /* Dynamic island */
+  .phone::before{
+    content:'';
+    position:absolute;
+    top:14px;left:50%;transform:translateX(-50%);
+    width:120px;height:34px;
+    background:#000;
+    border-radius:20px;
+    z-index:10;
+  }
+  /* Side buttons */
+  .phone::after{
+    content:'';
+    position:absolute;
+    right:-4px;top:110px;
+    width:4px;height:60px;
+    background:#2a2a2a;border-radius:0 3px 3px 0;
+    box-shadow:0 70px 0 #2a2a2a, 0 140px 0 #2a2a2a;
+  }
+  /* Left buttons */
+  .phone .vol-btn{
+    position:absolute;left:-4px;top:90px;
+    width:4px;height:40px;background:#2a2a2a;border-radius:3px 0 0 3px;
+    box-shadow:0 52px 0 #2a2a2a, 0 100px 0 #2a2a2a;
+    pointer-events:none;
+  }
+
+  .phone-screen{
+    border-radius:44px;
+    overflow:hidden;
+    background:#fff;
+    position:relative;
+    margin:0;
+  }
+  .phone.iphone .phone-screen{width:375px;height:812px}
+  .phone.android .phone-screen{width:360px;height:800px}
+  .phone.ipad .phone-screen{width:500px;height:900px}
+
+  .phone-screen iframe{
+    width:390px;
+    height:844px;
+    border:none;
+    transform-origin:top left;
+    display:block;
+    pointer-events:auto;
+  }
+  .phone.iphone .phone-screen iframe{
+    transform:scale(calc(375/390));
+    width:390px;height:844px;
+  }
+  .phone.android .phone-screen iframe{
+    transform:scale(calc(360/390));
+    width:390px;height:844px;
+  }
+  .phone.ipad .phone-screen iframe{
+    transform:scale(calc(500/390));
+    width:390px;height:844px;
+    transform-origin:top left;
+  }
+
+  /* Home indicator */
+  .home-bar{
+    position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+    width:120px;height:5px;background:rgba(255,255,255,0.25);
+    border-radius:999px;pointer-events:none;
+  }
+
+  /* Status bar overlay */
+  .status-bar{
+    position:absolute;top:0;left:0;right:0;height:54px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px 0;
+    z-index:5;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(0,0,0,0.18),transparent);
+  }
+  .status-time{font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.4)}
+  .status-icons{display:flex;align-items:center;gap:5px}
+  .status-icons svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4))}
+
+  /* ── Section nav ── */
+  .section-nav{
+    display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+    margin-top:-20px;
+  }
+  .sec-btn{
+    padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);
+    font-size:11px;font-weight:600;cursor:pointer;background:none;
+    color:rgba(255,255,255,0.45);transition:all 0.2s;white-space:nowrap;
+  }
+  .sec-btn:hover{background:rgba(252,204,56,0.12);color:#fccc38;border-color:rgba(252,204,56,0.3)}
+  .sec-btn.active{background:rgba(252,204,56,0.15);color:#fccc38;border-color:rgba(252,204,56,0.4)}
+
+  /* ── Scroll indicator ── */
+  .scroll-hint{
+    font-size:11px;color:rgba(255,255,255,0.2);
+    text-align:center;margin-top:8px;
+  }
+
+  /* ── Hidden panels ── */
+  .preview-panel{display:none}
+  .preview-panel.active{display:flex;gap:60px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-title">
+    <span class="live-dot"></span>
+    Urjaa Mindz &nbsp;<span>Mobile Preview</span>
+    <span class="url-bar">localhost:3456</span>
+  </div>
+
+  <div class="tab-group">
+    <button class="tab-btn active" onclick="switchPanel('website')">Website</button>
+    <button class="tab-btn" onclick="switchPanel('admin')">Admin Panel</button>
+  </div>
+
+  <div class="device-group">
+    <button class="dev-btn active" onclick="switchDevice('iphone')" id="dev-iphone">iPhone</button>
+    <button class="dev-btn" onclick="switchDevice('android')" id="dev-android">Android</button>
+  </div>
+</div>
+
+<!-- Stage -->
+<div class="stage">
+
+  <!-- Website panel -->
+  <div class="preview-panel active" id="panel-website">
+
+    <!-- Phone 1: Above the fold -->
+    <div class="phone-wrap">
+      <div class="phone iphone" id="phone-1">
+        <div class="vol-btn"></div>
+        <div class="phone-screen" id="screen-1">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 24 12" fill="white"><rect x="0" y="2" width="20" height="10" rx="2" fill="none" stroke="white" stroke-width="1.5"/><rect x="21" y="4" width="3" height="6" rx="1.5"/><rect x="1.5" y="3.5" width="14" height="7" rx="1" fill="white"/></svg>
+            </div>
+          </div>
+          <iframe id="frame-hero" src="http://localhost:3456/index.html" title="Website Hero"></iframe>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+      <div class="phone-label">Hero &amp; Programs</div>
+      <div class="section-nav">
+        <button class="sec-btn active" onclick="scrollFrame('frame-hero', 0, this)">Top</button>
+        <button class="sec-btn" onclick="scrollFrame('frame-hero', 900, this)">Programs CTA</button>
+        <button class="sec-btn" onclick="scrollFrame('frame-hero', 2100, this)">Community</button>
+        <button class="sec-btn" onclick="scrollFrame('frame-hero', 3800, this)">Join Form</button>
+        <button class="sec-btn" onclick="scrollFrame('frame-hero', 6200, this)">Footer</button>
+      </div>
+    </div>
+
+    <!-- Phone 2: Mobile menu -->
+    <div class="phone-wrap">
+      <div class="phone iphone" id="phone-2">
+        <div class="vol-btn"></div>
+        <div class="phone-screen" id="screen-2">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 24 12" fill="white"><rect x="0" y="2" width="20" height="10" rx="2" fill="none" stroke="white" stroke-width="1.5"/><rect x="21" y="4" width="3" height="6" rx="1.5"/><rect x="1.5" y="3.5" width="14" height="7" rx="1" fill="white"/></svg>
+            </div>
+          </div>
+          <iframe id="frame-menu" src="http://localhost:3456/index.html" title="Mobile Menu"></iframe>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+      <div class="phone-label">Mobile Menu</div>
+      <div class="section-nav">
+        <button class="sec-btn active" onclick="openMenu('frame-menu', this)">Open Menu</button>
+        <button class="sec-btn" onclick="closeMenu('frame-menu', this)">Close Menu</button>
+        <button class="sec-btn" onclick="openPopup('frame-menu', this)">Join Popup</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Admin panel -->
+  <div class="preview-panel" id="panel-admin">
+
+    <!-- Phone 1: Login -->
+    <div class="phone-wrap">
+      <div class="phone iphone" id="phone-admin-1">
+        <div class="vol-btn"></div>
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 24 12" fill="white"><rect x="0" y="2" width="20" height="10" rx="2" fill="none" stroke="white" stroke-width="1.5"/><rect x="21" y="4" width="3" height="6" rx="1.5"/><rect x="1.5" y="3.5" width="14" height="7" rx="1" fill="white"/></svg>
+            </div>
+          </div>
+          <iframe id="frame-admin-login" title="Admin Login"></iframe>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+      <div class="phone-label">Admin Login</div>
+    </div>
+
+    <!-- Phone 2: Dashboard -->
+    <div class="phone-wrap">
+      <div class="phone iphone" id="phone-admin-2">
+        <div class="vol-btn"></div>
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1"/></svg>
+              <svg width="16" height="12" viewBox="0 0 24 12" fill="white"><rect x="0" y="2" width="20" height="10" rx="2" fill="none" stroke="white" stroke-width="1.5"/><rect x="21" y="4" width="3" height="6" rx="1.5"/><rect x="1.5" y="3.5" width="14" height="7" rx="1" fill="white"/></svg>
+            </div>
+          </div>
+          <iframe id="frame-admin-dash" title="Admin Dashboard"></iframe>
+          <div class="home-bar"></div>
+        </div>
+      </div>
+      <div class="phone-label">Admin Dashboard</div>
+      <div class="section-nav">
+        <button class="sec-btn active" onclick="adminNav('frame-admin-dash', 'dashboard', this)">Dashboard</button>
+        <button class="sec-btn" onclick="adminNav('frame-admin-dash', 'programs', this)">Programs</button>
+        <button class="sec-btn" onclick="adminNav('frame-admin-dash', 'community', this)">Community</button>
+        <button class="sec-btn" onclick="adminNav('frame-admin-dash', 'workshops', this)">Workshops</button>
+        <button class="sec-btn" onclick="adminSidebar('frame-admin-dash', this)">Sidebar</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// ── Set auth FIRST (same-origin = shared sessionStorage) ───────
+// Admin.html checks this at parse time — must be set before iframes load
+sessionStorage.setItem('urjaa_admin_auth', 'true');
+
+// ── Load admin iframes NOW (auth already in sessionStorage) ────
+const ADMIN_URL = 'http://localhost:3456/admin.html';
+document.getElementById('frame-admin-dash').src = ADMIN_URL;
+// Login frame loads 200ms later so dashboard initialises first
+setTimeout(() => {
+  document.getElementById('frame-admin-login').src = ADMIN_URL;
+}, 200);
+
+// ── Force login overlay on the login frame after it loads ──────
+document.getElementById('frame-admin-login').addEventListener('load', function() {
+  const frame = this;
+  setTimeout(() => {
+    try {
+      const win = frame.contentWindow;
+      const doc = win.document;
+      // Show the login overlay regardless of sessionStorage
+      const ov = doc.getElementById('login-overlay');
+      if (ov) {
+        ov.style.cssText =
+          'position:fixed;inset:0;z-index:9999;background-color:#fefcf4;' +
+          'display:flex;align-items:center;justify-content:center;' +
+          'opacity:1;transform:none;transition:none;visibility:visible';
+      }
+      // Hide sidebar + main so they don't peek through
+      const sb = doc.getElementById('sidebar');
+      const mn = doc.getElementById('main');
+      if (sb) sb.style.visibility = 'hidden';
+      if (mn) mn.style.visibility = 'hidden';
+    } catch(e) {}
+  }, 350);
+});
+
+// ── Panel switching ────────────────────────────────────────────
+function switchPanel(name) {
+  document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (name === 'website' && i === 0) || (name === 'admin' && i === 1));
+  });
+}
+
+// ── Device switching ───────────────────────────────────────────
+function switchDevice(type) {
+  document.querySelectorAll('.dev-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('dev-' + type).classList.add('active');
+  const w = type === 'android' ? 360 : 375;
+  const h = type === 'android' ? 800 : 812;
+  document.querySelectorAll('.phone').forEach(ph => { ph.className = 'phone ' + type; });
+  document.querySelectorAll('.phone-screen').forEach(sc => {
+    sc.style.width  = w + 'px';
+    sc.style.height = h + 'px';
+  });
+  document.querySelectorAll('.phone-screen iframe').forEach(ifr => {
+    ifr.style.transform = `scale(${w / 390})`;
+  });
+}
+
+// ── Scroll helper ──────────────────────────────────────────────
+function scrollFrame(id, y, btn) {
+  try { document.getElementById(id).contentWindow.scrollTo({ top: y, behavior: 'smooth' }); } catch(e) {}
+  setActive(btn);
+}
+
+// ── Mobile menu helpers ────────────────────────────────────────
+function openMenu(id, btn) {
+  try {
+    const win = document.getElementById(id).contentWindow;
+    win.scrollTo({ top: 0 });
+    win.document.getElementById('menu-toggle')?.click();
+  } catch(e) {}
+  setActive(btn);
+}
+function closeMenu(id, btn) {
+  try { document.getElementById(id).contentWindow.document.getElementById('menu-close')?.click(); } catch(e) {}
+  setActive(btn);
+}
+function openPopup(id, btn) {
+  try {
+    const win = document.getElementById(id).contentWindow;
+    win.scrollTo({ top: 0 });
+    if (typeof win.openJoinPopup === 'function') win.openJoinPopup();
+  } catch(e) {}
+  setActive(btn);
+}
+
+// ── Admin nav buttons ──────────────────────────────────────────
+function adminNav(id, page, btn) {
+  try {
+    const win = document.getElementById(id).contentWindow;
+    if (typeof win.showPage === 'function') win.showPage(page);
+  } catch(e) {}
+  setActive(btn);
+}
+function adminSidebar(id, btn) {
+  try {
+    const win = document.getElementById(id).contentWindow;
+    if (typeof win.toggleMobileSidebar === 'function') win.toggleMobileSidebar();
+  } catch(e) {}
+  setActive(btn);
+}
+
+function setActive(btn) {
+  if (!btn) return;
+  btn.closest('.section-nav')?.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
