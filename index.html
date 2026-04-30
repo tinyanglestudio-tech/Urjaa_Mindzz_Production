@@ -1169,6 +1169,7 @@ window._selectAge = function(key) {
             <label class="text-xs font-bold uppercase tracking-wider text-white/80">Location</label>
             <input id="circle-location" class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="e.g. Mumbai, Bangalore" type="text"/>
           </div>
+          <input id="circle-hp" type="text" name="_hp" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"/>
           <div id="circle-error" class="md:col-span-2 text-center text-sm font-semibold" style="display:none;color:#fca5a5"></div>
           <div class="md:col-span-2 mt-2">
             <button onclick="submitCircleForm()" class="w-full btn-gold text-on-primary-container py-4 rounded-full text-base md:text-lg font-black hover:scale-105 transition-all" style="min-height:48px" data-text-key="comm_cta_btn">Become a Member</button>
@@ -1771,6 +1772,7 @@ mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',
         <input id="join-location" type="text" placeholder="e.g. Mumbai, Bangalore" style="width:100%;padding:12px 14px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;transition:all 0.2s;box-sizing:border-box" onfocus="this.style.borderColor='#7c6100';this.style.boxShadow='0 0 0 3px rgba(124,97,0,0.10)'" onblur="this.style.borderColor='rgba(124,97,0,0.18)';this.style.boxShadow=''"/>
       </div>
 
+      <input id="join-hp" type="text" name="_hp" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"/>
       <div id="join-error" style="display:none;background:rgba(190,45,6,0.08);border:1px solid rgba(190,45,6,0.2);border-radius:10px;padding:8px 12px;font-size:12px;color:#be2d06;font-weight:600;text-align:center;margin:12px 0 0"></div>
 
       <button onclick="submitJoinForm()" style="width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(124,97,0,0.25);display:flex;align-items:center;justify-content:center;gap:8px" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(124,97,0,0.35)'" onmouseleave="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(124,97,0,0.25)'">
@@ -1829,12 +1831,15 @@ function closeJoinPopup(){
   c.style.opacity='0';
   setTimeout(function(){o.style.display='none';document.body.style.overflow='';},350);
 }
+var _leadSubmitting=false;
 function submitJoinForm(){
+  if(_leadSubmitting)return;
   var name=document.getElementById('join-name').value.trim();
   var code=document.getElementById('join-country').value;
   var phone=document.getElementById('join-phone').value.trim().replace(/[\s\-()]/g,'');
   var childAge=document.getElementById('join-child-age').value.trim();
   var location=document.getElementById('join-location').value.trim();
+  var hp=(document.getElementById('join-hp')||{}).value||'';
   var errEl=document.getElementById('join-error');
   var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
   if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';document.getElementById('join-name').focus();return}
@@ -1842,6 +1847,7 @@ function submitJoinForm(){
   if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';document.getElementById('join-child-age').focus();return}
   if(!location){errEl.textContent='Please enter your location';errEl.style.display='block';document.getElementById('join-location').focus();return}
   errEl.style.display='none';
+  _leadSubmitting=true;
   if(submitBtn){submitBtn.disabled=true;submitBtn.innerHTML='<span style="font-size:16px">⏳</span> Sending...';}
   var fullPhone=code+' '+phone;
   var sbUrl=window.__SUPABASE_URL||'';
@@ -1849,7 +1855,14 @@ function submitJoinForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:window.location.pathname})}).catch(function(){});
   }
-  setTimeout(function(){showJoinThanks(name);},1200);
+  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:location,_hp:hp})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.ok){showJoinThanks(name);}
+      else{errEl.textContent=d.error||'Something went wrong. Please try again.';errEl.style.display='block';if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML='<span style="font-size:18px">💛</span> Join Our Community';}}
+    })
+    .catch(function(){showJoinThanks(name);})
+    .finally(function(){_leadSubmitting=false;});
 }
 function showJoinThanks(name){
   document.getElementById('join-thanks-name').textContent=name;
@@ -1859,11 +1872,13 @@ function showJoinThanks(name){
   if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML='<span style="font-size:18px">💛</span> Join Our Community';}
 }
 function submitCircleForm(){
+  if(_leadSubmitting)return;
   var name=document.getElementById('circle-name').value.trim();
   var code=document.getElementById('circle-country').value;
   var phone=document.getElementById('circle-phone').value.trim().replace(/[\s\-()]/g,'');
   var childAge=document.getElementById('circle-child-age').value.trim();
   var loc=document.getElementById('circle-location').value.trim();
+  var hp=(document.getElementById('circle-hp')||{}).value||'';
   var errEl=document.getElementById('circle-error');
   var submitBtn=document.querySelector('#circle-form-state button[onclick="submitCircleForm()"]');
   if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';return}
@@ -1871,6 +1886,7 @@ function submitCircleForm(){
   if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';return}
   if(!loc){errEl.textContent='Please enter your location';errEl.style.display='block';return}
   errEl.style.display='none';
+  _leadSubmitting=true;
   if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Sending...';}
   var fullPhone=code+' '+phone;
   var sbUrl=window.__SUPABASE_URL||'';
@@ -1878,12 +1894,27 @@ function submitCircleForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:window.location.pathname})}).catch(function(){});
   }
-  setTimeout(function(){
-    document.getElementById('circle-thanks-name').textContent=name;
-    document.getElementById('circle-form-state').style.display='none';
-    document.getElementById('circle-thanks-state').style.display='';
-    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
-  },1200);
+  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:loc,_hp:hp})})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.ok){
+        document.getElementById('circle-thanks-name').textContent=name;
+        document.getElementById('circle-form-state').style.display='none';
+        document.getElementById('circle-thanks-state').style.display='';
+        if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
+      } else {
+        errEl.textContent=d.error||'Something went wrong. Please try again.';
+        errEl.style.display='block';
+        if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
+      }
+    })
+    .catch(function(){
+      document.getElementById('circle-thanks-name').textContent=name;
+      document.getElementById('circle-form-state').style.display='none';
+      document.getElementById('circle-thanks-state').style.display='';
+      if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
+    })
+    .finally(function(){_leadSubmitting=false;});
 }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('a[href="#join-cta"]').forEach(function(el){
