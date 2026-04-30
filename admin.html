@@ -733,7 +733,6 @@ function adminLogin() {
   var errEl = document.getElementById('login-error');
   var overlay = document.getElementById('login-overlay');
   
-  // Credentials: Urjaa_Admin / Admin1234
   if (u === 'Urjaa_Admin' && p === 'Admin1234') {
     sessionStorage.setItem('urjaa_admin_auth', 'true');
     // Animate out
@@ -820,6 +819,11 @@ function adminLogin() {
     <span class="material-symbols-outlined">format_quote</span>
     <span class="nav-item-label">Testimonials</span>
   </div>
+  <div class="nav-item" onclick="showPage('leads')">
+    <span class="material-symbols-outlined">contacts</span>
+    <span class="nav-item-label">Leads</span>
+    <span class="nav-item-badge" id="leads-nav-badge" style="display:none"></span>
+  </div>
   <div class="nav-item" onclick="showPage('settings')">
     <span class="material-symbols-outlined">tune</span>
     <span class="nav-item-label">Site Settings</span>
@@ -865,6 +869,7 @@ function adminLogin() {
         <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num" id="stat-workshops">3</div><div class="stat-label">Workshops</div></div>
         <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-num">4</div><div class="stat-label">Testimonials</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num">3/3</div><div class="stat-label">Pages Live</div></div>
+        <div class="stat-card" onclick="showPage('leads')" style="cursor:pointer"><div class="stat-icon">👥</div><div class="stat-num" id="stat-leads">—</div><div class="stat-label">Leads</div></div>
       </div>
 
       <div class="card">
@@ -1630,6 +1635,28 @@ function adminLogin() {
       </div>
     </div>
 
+    <!-- ════════ LEADS ════════ -->
+    <div id="page-leads" style="display:none">
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="card-header-icon" style="background:rgba(34,197,94,0.12)"><span class="material-symbols-outlined" style="color:#16a34a">contacts</span></div>
+          <div>
+            <div class="card-header-title">Lead Submissions</div>
+            <div class="card-header-sub" id="leads-count">Loading…</div>
+          </div>
+          <div style="margin-left:auto;margin-right:8px">
+            <button class="topbar-btn secondary" onclick="event.stopPropagation();renderLeads()" style="padding:6px 14px">
+              <span class="material-symbols-outlined" style="font-size:16px">refresh</span> Refresh
+            </button>
+          </div>
+          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
+        </div>
+        <div class="card-body open" style="padding:0">
+          <div id="leads-table-wrap" style="min-height:120px"></div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- end #content -->
 </div><!-- end #main -->
 
@@ -1907,8 +1934,8 @@ function showPage(name) {
   });
 
   // Update topbar
-  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings' };
-  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global' };
+  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings', leads:'Leads' };
+  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global', leads:'Supabase' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
   document.getElementById('topbar-badge').textContent = badges[name] || '';
 
@@ -2126,6 +2153,7 @@ function renderPage(name) {
     }, 0);
   }
   else if (name === 'testimonials') renderTestimonials();
+  else if (name === 'leads') renderLeads();
 }
 
 function renderDashboard() {
@@ -2148,6 +2176,90 @@ function renderDashboard() {
         <span class="material-symbols-outlined" style="font-size:14px">edit</span> Edit
       </button>
     </div>`).join('');
+
+  // Fetch lead count for dashboard stat card
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=id', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var n = Array.isArray(data) ? data.length : 0;
+    var el = document.getElementById('stat-leads');
+    if (el) el.textContent = n;
+    var badge = document.getElementById('leads-nav-badge');
+    if (badge && n > 0) { badge.textContent = n; badge.style.display = ''; }
+  })
+  .catch(function(){});
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderLeads() {
+  var wrap  = document.getElementById('leads-table-wrap');
+  var cntEl = document.getElementById('leads-count');
+  if (!wrap) return;
+
+  wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#65655f">' +
+    '<span class="material-symbols-outlined" style="font-size:36px;display:block;margin-bottom:8px;color:#ccc">hourglass_top</span>Loading leads…</div>';
+
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=*&order=created_at.desc&limit=500', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var statEl    = document.getElementById('stat-leads');
+    var navBadge  = document.getElementById('leads-nav-badge');
+
+    if (!Array.isArray(data) || data.length === 0) {
+      wrap.innerHTML = '<div style="text-align:center;padding:48px 20px;color:#94918a">' +
+        '<span class="material-symbols-outlined" style="font-size:44px;display:block;margin-bottom:12px;color:#ddd">inbox</span>' +
+        'No leads yet. Form submissions will appear here.</div>';
+      if (cntEl)    cntEl.textContent  = '0 leads';
+      if (statEl)   statEl.textContent = '0';
+      if (navBadge) navBadge.style.display = 'none';
+      return;
+    }
+
+    var total = data.length;
+    if (cntEl)    cntEl.textContent  = total + ' lead' + (total !== 1 ? 's' : '');
+    if (statEl)   statEl.textContent = total;
+    if (navBadge) { navBadge.textContent = total; navBadge.style.display = ''; }
+
+    var rows = data.map(function(l) {
+      var d    = l.created_at ? new Date(l.created_at) : null;
+      var date = d ? d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—';
+      var time = d ? d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }) : '';
+      return '<tr style="transition:background .15s" onmouseenter="this.style.background=\'rgba(124,97,0,0.04)\'" onmouseleave="this.style.background=\'\'">' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);font-weight:600;color:#383833">' + escHtml(l.name) + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.phone) + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.child_age || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.location || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#94918a;font-size:11px">' + escHtml(l.source || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f;font-size:12px;white-space:nowrap">' +
+          date + (time ? '<br><span style="color:#94918a;font-size:11px">' + time + '</span>' : '') +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    var th = function(label) {
+      return '<th style="padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:#7c6100;' +
+        'text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;background:rgba(124,97,0,0.07)">' + label + '</th>';
+    };
+
+    wrap.innerHTML = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px">' +
+      '<thead><tr>' + th('Name') + th('Phone') + th('Child Age') + th('Location') + th('Source') + th('Date') + '</tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table></div>';
+  })
+  .catch(function() {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#be2d06">' +
+      '<span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:8px">error</span>' +
+      'Failed to load leads. Check your Supabase connection.</div>';
+  });
 }
 
 function renderHome() {
