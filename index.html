@@ -1855,14 +1855,9 @@ function submitJoinForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:window.location.pathname})}).catch(function(){});
   }
-  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:location,_hp:hp})})
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(d.ok){showJoinThanks(name);}
-      else{errEl.textContent=d.error||'Something went wrong. Please try again.';errEl.style.display='block';if(submitBtn){submitBtn.disabled=false;submitBtn.innerHTML='<span style="font-size:18px">💛</span> Join Our Community';}}
-    })
-    .catch(function(){showJoinThanks(name);})
-    .finally(function(){_leadSubmitting=false;});
+  // WhatsApp notification runs in background — never blocks the user flow
+  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:location,_hp:hp})}).catch(function(){});
+  setTimeout(function(){showJoinThanks(name);_leadSubmitting=false;},800);
 }
 function showJoinThanks(name){
   document.getElementById('join-thanks-name').textContent=name;
@@ -1894,27 +1889,15 @@ function submitCircleForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:window.location.pathname})}).catch(function(){});
   }
-  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:loc,_hp:hp})})
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(d.ok){
-        document.getElementById('circle-thanks-name').textContent=name;
-        document.getElementById('circle-form-state').style.display='none';
-        document.getElementById('circle-thanks-state').style.display='';
-        if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
-      } else {
-        errEl.textContent=d.error||'Something went wrong. Please try again.';
-        errEl.style.display='block';
-        if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
-      }
-    })
-    .catch(function(){
-      document.getElementById('circle-thanks-name').textContent=name;
-      document.getElementById('circle-form-state').style.display='none';
-      document.getElementById('circle-thanks-state').style.display='';
-      if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
-    })
-    .finally(function(){_leadSubmitting=false;});
+  // WhatsApp notification runs in background — never blocks the user flow
+  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:loc,_hp:hp})}).catch(function(){});
+  setTimeout(function(){
+    document.getElementById('circle-thanks-name').textContent=name;
+    document.getElementById('circle-form-state').style.display='none';
+    document.getElementById('circle-thanks-state').style.display='';
+    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent='Become a Member';}
+    _leadSubmitting=false;
+  },800);
 }
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('a[href="#join-cta"]').forEach(function(el){

@@ -2213,7 +2213,25 @@ function renderLeads() {
     var statEl    = document.getElementById('stat-leads');
     var navBadge  = document.getElementById('leads-nav-badge');
 
-    if (!Array.isArray(data) || data.length === 0) {
+    // Supabase error (table missing, RLS, etc.)
+    if (!Array.isArray(data)) {
+      var errMsg = data.message || data.error || JSON.stringify(data);
+      var isNoTable = errMsg.indexOf('does not exist') !== -1 || data.code === '42P01';
+      wrap.innerHTML = '<div style="padding:24px 20px">' +
+        '<div style="background:rgba(190,45,6,0.07);border:1px solid rgba(190,45,6,0.2);border-radius:12px;padding:18px 20px;margin-bottom:16px">' +
+          '<div style="font-weight:700;color:#be2d06;font-size:13px;margin-bottom:6px">⚠ ' + (isNoTable ? 'leads table not found in Supabase' : 'Supabase error') + '</div>' +
+          '<div style="font-size:12px;color:#65655f;font-family:monospace;background:rgba(0,0,0,0.04);padding:8px 10px;border-radius:6px;word-break:break-all">' + escHtml(errMsg) + '</div>' +
+        '</div>' +
+        (isNoTable ? '<div style="font-size:13px;color:#383833;font-weight:600;margin-bottom:8px">Run this SQL in your <a href="https://supabase.com/dashboard" target="_blank" style="color:#7c6100">Supabase SQL Editor</a>:</div>' +
+        '<pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:10px;font-size:12px;overflow-x:auto;line-height:1.6">CREATE TABLE IF NOT EXISTS public.leads (\n  id         BIGSERIAL PRIMARY KEY,\n  name       TEXT NOT NULL,\n  phone      TEXT NOT NULL,\n  country_code TEXT,\n  child_age  TEXT,\n  location   TEXT,\n  source     TEXT,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);\n\n-- Allow the anon key to insert and read\nGRANT INSERT, SELECT ON public.leads TO anon;\nGRANT USAGE, SELECT ON SEQUENCE public.leads_id_seq TO anon;</pre>' : '') +
+      '</div>';
+      if (cntEl)    cntEl.textContent  = 'Setup required';
+      if (statEl)   statEl.textContent = '—';
+      if (navBadge) navBadge.style.display = 'none';
+      return;
+    }
+
+    if (data.length === 0) {
       wrap.innerHTML = '<div style="text-align:center;padding:48px 20px;color:#94918a">' +
         '<span class="material-symbols-outlined" style="font-size:44px;display:block;margin-bottom:12px;color:#ddd">inbox</span>' +
         'No leads yet. Form submissions will appear here.</div>';
