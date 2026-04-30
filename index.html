@@ -1853,7 +1853,7 @@ function submitJoinForm(){
   var sbUrl=window.__SUPABASE_URL||'';
   var sbKey=window.__SUPABASE_ANON_KEY||'';
   if(sbUrl&&sbKey){
-    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:window.location.pathname})}).catch(function(){});
+    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:'Join Popup'})}).catch(function(){});
   }
   // WhatsApp notification runs in background — never blocks the user flow
   fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:location,_hp:hp})}).catch(function(){});
@@ -1887,7 +1887,7 @@ function submitCircleForm(){
   var sbUrl=window.__SUPABASE_URL||'';
   var sbKey=window.__SUPABASE_ANON_KEY||'';
   if(sbUrl&&sbKey){
-    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:window.location.pathname})}).catch(function(){});
+    fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:'Join the Circle'})}).catch(function(){});
   }
   // WhatsApp notification runs in background — never blocks the user flow
   fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:loc,_hp:hp})}).catch(function(){});
