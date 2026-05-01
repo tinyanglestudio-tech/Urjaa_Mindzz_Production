@@ -1654,7 +1654,10 @@ function adminLogin() {
             <div class="card-header-title">Lead Submissions</div>
             <div class="card-header-sub" id="leads-count">Loading…</div>
           </div>
-          <div style="margin-left:auto;margin-right:8px">
+          <div style="margin-left:auto;margin-right:8px;display:flex;gap:8px">
+            <button class="topbar-btn secondary" onclick="event.stopPropagation();exportLeadsCSV()" style="padding:6px 14px">
+              <span class="material-symbols-outlined" style="font-size:16px">download</span> Export CSV
+            </button>
             <button class="topbar-btn secondary" onclick="event.stopPropagation();renderLeads()" style="padding:6px 14px">
               <span class="material-symbols-outlined" style="font-size:16px">refresh</span> Refresh
             </button>
@@ -2273,6 +2276,11 @@ function renderLeads() {
         '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f;font-size:12px;white-space:nowrap">' +
           date + (time ? '<br><span style="color:#94918a;font-size:11px">' + time + '</span>' : '') +
         '</td>' +
+        '<td style="padding:8px 14px;border-bottom:1px solid rgba(0,0,0,0.05);text-align:center">' +
+          '<button onclick="deleteLead(' + l.id + ')" title="Delete" style="background:none;border:none;cursor:pointer;color:#be2d06;padding:5px;border-radius:6px;line-height:1;transition:background .15s" onmouseenter="this.style.background=\'rgba(190,45,6,0.08)\'" onmouseleave="this.style.background=\'none\'">' +
+            '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">delete</span>' +
+          '</button>' +
+        '</td>' +
       '</tr>';
     }).join('');
 
@@ -2283,7 +2291,7 @@ function renderLeads() {
 
     wrap.innerHTML = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;' +
       'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px">' +
-      '<thead><tr>' + th('Name') + th('Phone') + th('Child Age') + th('Location') + th('Source') + th('Date') + '</tr></thead>' +
+      '<thead><tr>' + th('Name') + th('Phone') + th('Child Age') + th('Location') + th('Source') + th('Date') + th('') + '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
     '</table></div>';
   })
@@ -2292,6 +2300,56 @@ function renderLeads() {
       '<span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:8px">error</span>' +
       'Failed to load leads. Check your Supabase connection.</div>';
   });
+}
+
+function deleteLead(id) {
+  if (!confirm('Delete this lead? This cannot be undone.')) return;
+  fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  }).then(function(r) {
+    if (r.ok) {
+      renderLeads();
+    } else {
+      r.json().then(function(e) {
+        alert('Delete failed: ' + (e.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+      }).catch(function() {
+        alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+      });
+    }
+  }).catch(function() {
+    alert('Network error — could not delete lead.');
+  });
+}
+
+function exportLeadsCSV() {
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=*&order=created_at.desc&limit=2000', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+      alert('No leads to export.');
+      return;
+    }
+    function q(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+    var headers = ['Name', 'Phone', 'Country Code', 'Child Age', 'Location', 'Source', 'Date'];
+    var rows = data.map(function(l) {
+      var date = l.created_at ? new Date(l.created_at).toLocaleString('en-IN') : '';
+      return [q(l.name), q(l.phone), q(l.country_code), q(l.child_age), q(l.location), q(l.source), q(date)].join(',');
+    });
+    var csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'urjaa-leads-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  })
+  .catch(function() { alert('Failed to fetch leads for export.'); });
 }
 
 function renderHome() {
