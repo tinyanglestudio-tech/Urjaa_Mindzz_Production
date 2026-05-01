@@ -732,33 +732,43 @@ function adminLogin() {
   var p = (document.getElementById('login-pass').value || '').trim();
   var errEl = document.getElementById('login-error');
   var overlay = document.getElementById('login-overlay');
-  
-  if (u === 'Urjaa_Admin' && p === 'Admin1234') {
-    sessionStorage.setItem('urjaa_admin_auth', 'true');
-    // Animate out
-    overlay.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    overlay.style.opacity = '0';
-    overlay.style.transform = 'scale(1.03)';
-    setTimeout(function() {
-      overlay.style.display = 'none';
-      document.getElementById('sidebar').style.visibility = '';
-      document.getElementById('main').style.visibility = '';
-    }, 400);
-    errEl.style.display = 'none';
-  } else {
-    errEl.style.display = 'block';
-    // Shake animation
-    var card = overlay.querySelector('div[style*="max-width:400px"]');
-    if (card) {
-      card.style.animation = 'none';
-      card.style.transform = 'translateX(8px)';
-      setTimeout(function(){ card.style.transition='transform 0.1s'; card.style.transform='translateX(-8px)'; }, 80);
-      setTimeout(function(){ card.style.transform='translateX(5px)'; }, 160);
-      setTimeout(function(){ card.style.transform='translateX(0)'; }, 240);
+
+  fetch('/api/admin-auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, password: p })
+  }).then(function(r) {
+    return r.json().then(function(data) { return { ok: r.ok, data: data }; });
+  }).then(function(res) {
+    if (res.data.ok) {
+      sessionStorage.setItem('urjaa_admin_auth', 'true');
+      overlay.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      overlay.style.opacity = '0';
+      overlay.style.transform = 'scale(1.03)';
+      setTimeout(function() {
+        overlay.style.display = 'none';
+        document.getElementById('sidebar').style.visibility = '';
+        document.getElementById('main').style.visibility = '';
+      }, 400);
+      errEl.style.display = 'none';
+    } else {
+      errEl.style.display = 'block';
+      var card = overlay.querySelector('div[style*="max-width:400px"]');
+      if (card) {
+        card.style.animation = 'none';
+        card.style.transform = 'translateX(8px)';
+        setTimeout(function(){ card.style.transition='transform 0.1s'; card.style.transform='translateX(-8px)'; }, 80);
+        setTimeout(function(){ card.style.transform='translateX(5px)'; }, 160);
+        setTimeout(function(){ card.style.transform='translateX(0)'; }, 240);
+      }
+      document.getElementById('login-pass').value = '';
+      document.getElementById('login-pass').focus();
     }
+  }).catch(function() {
+    errEl.style.display = 'block';
     document.getElementById('login-pass').value = '';
     document.getElementById('login-pass').focus();
-  }
+  });
 }
 </script>
 
@@ -1679,8 +1689,12 @@ function adminLogin() {
 // ── State ──────────────────────────────────────────────────────────────────
 // ── State Persistence ──────────────────────────────────────────────────────
 const ADMIN_STATE_KEY = 'urjaa_admin_state';
-const SUPABASE_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+let SUPABASE_URL = '';
+let SUPABASE_ANON_KEY = '';
+fetch('/api/config').then(function(r){return r.json();}).then(function(c){
+  SUPABASE_URL = c.supabaseUrl || '';
+  SUPABASE_ANON_KEY = c.supabaseAnonKey || '';
+}).catch(function(){});
 
 function _pushToSupabase(id, data) {
   return fetch(SUPABASE_URL + '/rest/v1/site_settings?on_conflict=id', {

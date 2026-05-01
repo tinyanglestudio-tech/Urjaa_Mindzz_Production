@@ -1470,8 +1470,10 @@ mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',
 @keyframes joinBounce{0%{transform:scale(0)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 </style>
 <script>
-window.__SUPABASE_URL='https://iqikqkprswelbthkuglg.supabase.co';
-window.__SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+fetch('/api/config').then(function(r){return r.json();}).then(function(c){
+  window.__SUPABASE_URL=c.supabaseUrl||'';
+  window.__SUPABASE_ANON_KEY=c.supabaseAnonKey||'';
+}).catch(function(){});
 function openJoinPopup(){
   var o=document.getElementById('join-popup-overlay');
   var c=document.getElementById('join-popup-card');

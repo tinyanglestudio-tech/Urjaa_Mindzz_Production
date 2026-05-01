@@ -18,14 +18,9 @@ ADMIN PANEL
   admin.html       → Content management system
   URL: yoursite.com/admin.html
 
-  Login credentials (prefilled for testing):
-  ┌─────────────────────────────────┐
-  │  Username : Urjaa_Admin         │
-  │  Password : Admin1234           │
-  └─────────────────────────────────┘
-
-  ⚠️  Remove prefilled credentials before
-      going live in production!
+  Login credentials are set via environment variables:
+    ADMIN_USERNAME  (in .env or Vercel dashboard)
+    ADMIN_PASSWORD  (in .env or Vercel dashboard)
 
 ADMIN FEATURES
 ──────────────

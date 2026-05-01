@@ -1140,7 +1140,7 @@ window._selectAge = function(key) {
             <input id="circle-name" class="w-full bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white placeholder-white/40 py-3 transition-all rounded-none text-sm" placeholder="e.g. Priya Sharma" type="text"/>
           </div>
           <div class="space-y-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-white/80">WhatsApp Number</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-white/80">Phone Number</label>
             <div class="flex gap-2">
               <select id="circle-country" class="bg-white/10 border-0 border-b-2 border-primary focus:border-white focus:ring-0 text-white py-3 text-sm rounded-none" style="width:90px">
                 <option value="+91" class="text-black">+91</option>
@@ -1183,7 +1183,7 @@ window._selectAge = function(key) {
         </div>
         <h3 style="font-family:'Noto Serif',serif;font-size:22px;font-weight:700;color:white;margin:0 0 8px">Welcome to Urjaa!</h3>
         <p style="font-size:14px;color:rgba(255,255,255,0.85);margin:0 0 6px">Thank you, <strong id="circle-thanks-name"></strong>!</p>
-        <p style="font-size:13px;color:rgba(255,255,255,0.6);margin:0">Our team will connect with you on WhatsApp very soon.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);margin:0">Our team will connect with you very soon.</p>
       </div>
     </div>
   </div>
@@ -1720,7 +1720,7 @@ mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',
           <span style="font-size:28px">🌱</span>
         </div>
         <h3 style="font-family:'Noto Serif',serif;font-size:22px;font-weight:700;color:#383833;margin:0 0 4px">Join the Urjaa Family</h3>
-        <p style="font-size:13px;color:#65655f;margin:0;line-height:1.5">Connect with us on WhatsApp for updates,<br>workshops & nurturing resources</p>
+        <p style="font-size:13px;color:#65655f;margin:0;line-height:1.5">Stay connected for updates,<br>workshops & nurturing resources</p>
       </div>
 
       <div style="margin-bottom:16px">
@@ -1729,7 +1729,7 @@ mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',
       </div>
 
       <div style="margin-bottom:8px">
-        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">WhatsApp Number</label>
+        <label style="display:block;font-size:11px;font-weight:700;color:#7c6100;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Phone Number</label>
         <div style="display:flex;gap:8px">
           <select id="join-country" style="width:100px;padding:12px 6px 12px 10px;border:1.5px solid rgba(124,97,0,0.18);border-radius:12px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;background:rgba(255,255,255,0.8);color:#383833;outline:none;cursor:pointer;transition:all 0.2s;flex-shrink:0" onfocus="this.style.borderColor='#7c6100'" onblur="this.style.borderColor='rgba(124,97,0,0.18)'">
             <option value="+91">🇮🇳 +91</option>
@@ -1802,8 +1802,10 @@ mobileMenu.querySelectorAll('a').forEach(function(l){l.addEventListener('click',
 @keyframes joinBounce{0%{transform:scale(0)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 </style>
 <script>
-window.__SUPABASE_URL='https://iqikqkprswelbthkuglg.supabase.co';
-window.__SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+fetch('/api/config').then(function(r){return r.json();}).then(function(c){
+  window.__SUPABASE_URL=c.supabaseUrl||'';
+  window.__SUPABASE_ANON_KEY=c.supabaseAnonKey||'';
+}).catch(function(){});
 function openJoinPopup(){
   var o=document.getElementById('join-popup-overlay');
   var c=document.getElementById('join-popup-card');
@@ -1843,7 +1845,7 @@ function submitJoinForm(){
   var errEl=document.getElementById('join-error');
   var submitBtn=document.querySelector('#join-form-state button[onclick="submitJoinForm()"]');
   if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';document.getElementById('join-name').focus();return}
-  if(!phone||phone.length<7){errEl.textContent='Please enter a valid WhatsApp number';errEl.style.display='block';document.getElementById('join-phone').focus();return}
+  if(!phone||phone.length<7){errEl.textContent='Please enter a valid phone number';errEl.style.display='block';document.getElementById('join-phone').focus();return}
   if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';document.getElementById('join-child-age').focus();return}
   if(!location){errEl.textContent='Please enter your location';errEl.style.display='block';document.getElementById('join-location').focus();return}
   errEl.style.display='none';
@@ -1855,8 +1857,6 @@ function submitJoinForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:location,source:'Join Popup'})}).catch(function(){});
   }
-  // WhatsApp notification runs in background — never blocks the user flow
-  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:location,_hp:hp})}).catch(function(){});
   setTimeout(function(){showJoinThanks(name);_leadSubmitting=false;},800);
 }
 function showJoinThanks(name){
@@ -1877,7 +1877,7 @@ function submitCircleForm(){
   var errEl=document.getElementById('circle-error');
   var submitBtn=document.querySelector('#circle-form-state button[onclick="submitCircleForm()"]');
   if(!name){errEl.textContent='Please enter your name';errEl.style.display='block';return}
-  if(!phone||phone.length<7){errEl.textContent='Please enter a valid WhatsApp number';errEl.style.display='block';return}
+  if(!phone||phone.length<7){errEl.textContent='Please enter a valid phone number';errEl.style.display='block';return}
   if(!childAge){errEl.textContent="Please enter your child's age";errEl.style.display='block';return}
   if(!loc){errEl.textContent='Please enter your location';errEl.style.display='block';return}
   errEl.style.display='none';
@@ -1889,8 +1889,6 @@ function submitCircleForm(){
   if(sbUrl&&sbKey){
     fetch(sbUrl+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':sbKey,'Authorization':'Bearer '+sbKey,'Prefer':'return=minimal'},body:JSON.stringify({name:name,phone:fullPhone,country_code:code,child_age:childAge,location:loc,source:'Join the Circle'})}).catch(function(){});
   }
-  // WhatsApp notification runs in background — never blocks the user flow
-  fetch('/api/send-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,phone:fullPhone,child_age:childAge,location:loc,_hp:hp})}).catch(function(){});
   setTimeout(function(){
     document.getElementById('circle-thanks-name').textContent=name;
     document.getElementById('circle-form-state').style.display='none';

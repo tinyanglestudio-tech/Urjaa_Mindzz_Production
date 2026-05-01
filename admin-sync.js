@@ -1,6 +1,10 @@
 (function(){
-  var SB_URL = 'https://iqikqkprswelbthkuglg.supabase.co';
-  var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxaWtxa3Byc3dlbGJ0aGt1Z2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTY4MTcsImV4cCI6MjA5MjEzMjgxN30.7htC_YhKzhq3U-YTnsqlpYdJOX2w22AYy3W6iGFSPrM';
+  var SB_URL = '';
+  var SB_KEY = '';
+  var _configReady = fetch('/api/config')
+    .then(function(r){ return r.json(); })
+    .then(function(c){ SB_URL = c.supabaseUrl || ''; SB_KEY = c.supabaseAnonKey || ''; })
+    .catch(function(){});
 
   /* ── localStorage content cache (10 min TTL) ── */
   var CACHE_KEY = 'urjaa_content_v1';
@@ -434,9 +438,11 @@
     // Apply cached content IMMEDIATELY — zero network wait on repeat visits
     var cached = getCached();
     if(cached){ try{ apply(cached); }catch(e){} }
-    // Then fetch fresh from Supabase in background (updates cache + overwrites stale data)
-    fetchAndApply().then(function(){
-      connectRealtime();
+    // Wait for config, then fetch fresh from Supabase in background
+    _configReady.then(function(){
+      fetchAndApply().then(function(){
+        connectRealtime();
+      });
     });
   }
 
