@@ -2295,32 +2295,35 @@ function renderLeads() {
       '<tbody>' + rows + '</tbody>' +
     '</table></div>';
 
-    wrap.addEventListener('click', function(e) {
-      var btn = e.target.closest('[data-delete-id]');
-      if (!btn) return;
-      var id = btn.getAttribute('data-delete-id');
-      if (!confirm('Delete this lead? This cannot be undone.')) return;
-      btn.disabled = true;
-      btn.style.opacity = '0.4';
-      fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
-        method: 'DELETE',
-        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
-      }).then(function(r) {
-        if (r.ok) {
-          renderLeads();
-        } else {
+    if (!wrap._deleteListenerAdded) {
+      wrap._deleteListenerAdded = true;
+      wrap.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-delete-id]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-delete-id');
+        if (!confirm('Delete this lead? This cannot be undone.')) return;
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
+          method: 'DELETE',
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+        }).then(function(r) {
+          if (r.ok) {
+            renderLeads();
+          } else {
+            btn.disabled = false; btn.style.opacity = '';
+            r.json().then(function(e2) {
+              alert('Delete failed: ' + (e2.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+            }).catch(function() {
+              alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+            });
+          }
+        }).catch(function() {
           btn.disabled = false; btn.style.opacity = '';
-          r.json().then(function(e2) {
-            alert('Delete failed: ' + (e2.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
-          }).catch(function() {
-            alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
-          });
-        }
-      }).catch(function() {
-        btn.disabled = false; btn.style.opacity = '';
-        alert('Network error — could not delete lead.');
+          alert('Network error — could not delete lead.');
+        });
       });
-    });
+    }
   })
   .catch(function() {
     wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#be2d06">' +
