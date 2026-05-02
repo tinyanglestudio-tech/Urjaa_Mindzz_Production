@@ -889,8 +889,6 @@ window._selectAge = function(key) {
   window._actScroll = function(dir) { window._actGoTo(window._actIdx + dir); };
   window._actGoTo(0);
 
-  // Smooth scroll to level header
-  setTimeout(() => document.getElementById('level-header').scrollIntoView({ behavior:'smooth', block:'start' }), 150);
 };
 
 })();
