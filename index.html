@@ -195,6 +195,14 @@
     /* WhatsApp button: slightly smaller */
     #float-wa>span:nth-child(2){width:50px!important;height:50px!important}
     #float-wa>span:nth-child(2) svg{width:24px!important;height:24px!important}
+    /* Age selector: ensure 2-col grid does not overflow */
+    #age-btn-group{grid-template-columns:1fr 1fr;gap:0.65rem}
+    .age-emoji{font-size:1.5rem;margin-bottom:0.25rem}
+    .age-label{font-size:0.78rem}
+    /* Focus pills: ensure they fit */
+    .focus-pill{padding:10px 12px}
+    .focus-pill-icon{width:34px;height:34px;font-size:16px}
+    .focus-pill-text{font-size:12px}
     /* Home CTA glass card */
     [data-section="home-cta"] .glass-card{padding:1.25rem!important}
   }
@@ -324,12 +332,568 @@
     <img data-img-id="hero-banner" alt="Every mother wonders how to nurture her child" loading="eager" fetchpriority="high" width="1200" height="630" style="width:100%;height:auto;display:block;border-radius:1rem;opacity:0;transition:opacity 0.35s ease;position:relative;z-index:2"/>
   </div>
 </section>
+<!-- AGE SELECTOR -->
+<section data-section="programs-age" id="age-selector" class="py-8 md:py-16 px-4 md:px-8" style="display:none">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Heading -->
+    <div class="text-center mb-10">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest text-primary bg-primary-container/30 px-4 py-1.5 rounded-full mb-4">Let us help you ..</span>
+      <h2 class="font-['Noto_Serif'] text-2xl md:text-4xl font-black mb-3">What's your child's age?</h2>
+      <p class="text-on-surface-variant text-sm max-w-md mx-auto">Select an age group to explore the right programs, milestones, and activities for your little one.</p>
+    </div>
+
+    <!-- Age buttons -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" id="age-btn-group">
+      <!-- rendered by JS -->
+    </div>
+
+    <!-- Dynamic Level Program Section -->
+    <div id="age-content" class="hidden" style="animation:fadeSlideIn 0.5s ease forwards">
+
+      <!-- Level Badge + Title -->
+      <div class="glass-card rounded-2xl p-6 md:p-8 mb-6 relative overflow-hidden" id="level-header" style="border:1.5px solid rgba(252,204,56,0.3)">
+        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(252,204,56,0.1);border-radius:50%;pointer-events:none"></div>
+        <div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:rgba(167,70,50,0.06);border-radius:50%;pointer-events:none"></div>
+        <div class="relative z-10">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+            <span id="level-age-range" style="font-size:13px;color:#94918a;font-weight:600">0–6 Months</span>
+          </div>
+          <h3 id="level-title" class="font-['Noto_Serif'] text-2xl md:text-3xl font-black mb-2" style="color:#383833">Sense & See</h3>
+          <p id="level-tagline" style="font-size:14px;color:#65655f;line-height:1.6;max-width:640px">Right stimulation at the right age – building brain connections from day one.</p>
+        </div>
+      </div>
+
+      <!-- Focus Areas Grid -->
+      <div class="mb-6">
+        <h4 style="font-family:'Noto Serif',serif;font-size:16px;font-weight:700;color:#383833;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="width:28px;height:28px;background:linear-gradient(135deg,#fccc38,#e6a817);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🎯</span>
+          Focus Areas
+        </h4>
+        <div id="focus-pills" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Milestone banner -->
+      <div id="milestone-banner" style="display:none !important" class="glass-card rounded-2xl p-6 md:p-7 mb-8 flex flex-col md:flex-row items-start gap-5 gold-border overflow-hidden">
+        <div class="milestone-img-wrap">
+          <img id="milestone-img" src="" alt="Milestone" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:1rem"/>
+        </div>
+        <div class="flex-1">
+          <p class="text-xs font-bold uppercase tracking-widest text-primary mb-1" id="milestone-label">Milestone</p>
+          <h3 class="font-['Noto_Serif'] text-xl font-bold mb-2" id="milestone-title">Key Developmental Milestone</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed" id="milestone-desc"></p>
+        </div>
+      </div>
+
+      <!-- Focus area detail cards -->
+      <div style="display:none !important" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10" id="focus-cards">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- Activity carousel -->
+      <div style="display:none !important" class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center justify-between mb-6">
+          <h4 class="font-['Noto_Serif'] font-bold text-lg flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-xl">checklist</span>
+            Recommended Activities
+          </h4>
+          <div class="flex items-center gap-2">
+            <button id="act-prev" onclick="window._actScroll(-1)"
+              class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style="background:rgba(124,97,0,0.1);border:1.5px solid rgba(124,97,0,0.2)">
+              <span class="material-symbols-outlined text-primary" style="font-size:18px">chevron_left</span>
+            </button>
+            <span id="act-counter" class="text-xs font-bold text-on-surface-variant w-10 text-center">1 / 6</span>
+            <button id="act-next" onclick="window._actScroll(1)"
+              class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style="background:rgba(124,97,0,0.1);border:1.5px solid rgba(124,97,0,0.2)">
+              <span class="material-symbols-outlined text-primary" style="font-size:18px">chevron_right</span>
+            </button>
+          </div>
+        </div>
+        <div class="relative overflow-hidden rounded-xl">
+          <div id="activity-list" class="flex transition-transform duration-400"
+            style="transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)">
+          </div>
+        </div>
+        <div id="act-dots" class="flex justify-center gap-2 mt-4"></div>
+      </div>
+
+      <!-- Subscribe CTA -->
+      <div id="level-cta" class="glass-card rounded-2xl p-6 md:p-8 text-center" style="border:1.5px solid rgba(16,185,129,0.2);background:linear-gradient(145deg,rgba(16,185,129,0.04),rgba(252,204,56,0.06))">
+        <div style="font-size:32px;margin-bottom:8px">🌱</div>
+        <h4 style="font-family:'Noto Serif',serif;font-size:18px;font-weight:700;color:#383833;margin-bottom:6px">Ready to unlock your child's potential?</h4>
+        <p style="font-size:13px;color:#65655f;margin-bottom:16px;line-height:1.5">Join the Urjaa community for personalised guidance, workshops, and resources.</p>
+        <button onclick="openJoinPopup()" style="background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;border:none;padding:13px 32px;border-radius:14px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(124,97,0,0.25)" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+          Join Now — It's Free
+        </button>
+      </div>
+
+    </div><!-- end age-content -->
 
 
+    <!-- Placeholder before selection -->
+    <div id="age-placeholder" class="text-center py-12">
+      <div class="text-5xl mb-4">👆</div>
+      <p class="text-on-surface-variant text-sm">Select an age group above to see personalised content</p>
+    </div>
 
+  </div>
+</section>
+  /* Age selector button */
+  .age-btn {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.07);
+    border-radius: 1.25rem;
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    overflow: hidden;
+    min-height: 44px;
+  }
+  .age-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(124,97,0,0.14);
+    border-color: rgba(252,204,56,0.5);
+  }
+  .age-btn.selected {
+    background: linear-gradient(135deg,#7c6100,#5a4500);
+    border-color: #7c6100;
+    box-shadow: 0 8px 28px rgba(124,97,0,0.35);
+    transform: translateY(-4px) scale(1.03);
+  }
+  .age-btn.selected .age-label { color: #fff; }
+  .age-btn.selected .age-range { color: rgba(255,255,255,0.75); }
+  .age-btn.selected .age-emoji { filter: none; }
+  .age-btn.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fccc38;
+  }
+  .age-emoji { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .age-label { font-family: 'Noto Serif', serif; font-weight: 700; font-size: 0.9rem; color: #383833; display: block; margin-bottom: 0.2rem; }
+  .age-range { font-size: 0.75rem; color: #65655f; font-weight: 600; }
 
+  /* Focus area card — image on top */
+  .focus-card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.07);
+  }
+  .focus-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(124,97,0,0.14); }
+  .focus-card-img {
+    width: 100%; height: 140px;
+    object-fit: cover; display: block;
+    transition: transform 0.4s ease;
+  }
+  .focus-card:hover .focus-card-img { transform: scale(1.05); }
+  .focus-card-body { padding: 1rem 1rem 1.1rem; }
+  .focus-card-icon { font-size: 1.3rem; margin-bottom: 0.3rem; display: block; }
+  .focus-title { font-family: 'Noto Serif', serif; font-weight: 700; font-size: 0.92rem; display: block; margin-bottom: 0.3rem; color: #383833; }
+  .focus-desc  { font-size: 0.76rem; line-height: 1.55; color: #65655f; }
 
+  /* Activity carousel card */
+  .activity-card {
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: rgba(255,255,255,0.75);
+    border: 1.5px solid rgba(255,255,255,0.8);
+    box-shadow: 0 4px 20px rgba(124,97,0,0.08);
+  }
+  .activity-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  @media(min-width:768px){.activity-card-img{height:260px}}
+  .activity-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .activity-card-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .activity-card-text {
+    font-family: 'Noto Serif', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #383833;
+    line-height: 1.5;
+  }
+  /* Arrow button hover */
+  #act-prev:hover, #act-next:hover {
+    background: rgba(124,97,0,0.18) !important;
+    transform: scale(1.08);
+  }
+  /* Dot */
+  .act-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(124,97,0,0.2);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  .act-dot.active {
+    background: #7c6100;
+    width: 22px;
+    border-radius: 4px;
+  }
+  /* Milestone banner with bg image */
+  .milestone-img-wrap {
+    width: 100%; height: 160px;
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .milestone-img-wrap { width: 200px; height: 140px; }
+  }
+  .milestone-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; border-radius:1rem; }
+  /* Slide-in animation for content */
+  @keyframes slideDown {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .slide-in { animation: slideDown 0.35s ease forwards; }
+  /* Level section animations */
+  @keyframes fadeSlideIn {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  /* Focus area pills */
+  .focus-pill {
+    display:flex;align-items:center;gap:10px;
+    padding:14px 18px;
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1.5px solid rgba(255,255,255,0.8);
+    border-radius:16px;
+    box-shadow:0 2px 12px rgba(124,97,0,0.06);
+    transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+    cursor:default;
+  }
+  .focus-pill:hover {
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(124,97,0,0.1);
+    border-color:rgba(252,204,56,0.4);
+  }
+  .focus-pill-icon {
+    width:40px;height:40px;
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;flex-shrink:0;
+  }
+  .focus-pill-text {
+    font-size:13px;font-weight:600;color:#383833;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    line-height:1.3;
+  }
+</style>
+<script>
+(function(){
 
+const AGE_DATA = {
+  '0-6': {
+    emoji: '🌸',
+    label: '0–6 Months',
+    range: 'Newborn to 6 months',
+    milestone: {
+      emoji: '👁️',
+      label: 'Key Milestone',
+      title: 'Sensory Awakening & Bonding',
+      desc: 'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling. Every gentle touch, sound, and face builds critical neural pathways during this rapid growth window.',
+      img: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80',
+    },
+    focuses: [
+      { icon:'👁️', title:'Visual Tracking',     desc:'High-contrast images and slow movement to develop eye muscles and focus.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80' },
+      { icon:'👂', title:'Auditory Stimulation', desc:'Soft music, your voice, and natural sounds to build auditory processing.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)',   img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🤲', title:'Tactile Exploration',  desc:'Different textures, skin-to-skin contact, and gentle massage for touch development.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80' },
+      { icon:'💞', title:'Emotional Bonding',    desc:'Eye contact, responsive caregiving, and mirroring to build secure attachment.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)',   img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Black & white high-contrast cards — hold 20–30 cm from baby\'s face', color:'#fccc38', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
+      { text:'Gentle tummy time on a soft mat with a mirror placed in front',          color:'#fccc38', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Sing the same lullaby daily — repetition builds auditory memory',         color:'#a74632', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+      { text:'Narrate everything you do while changing or feeding baby',                color:'#a74632', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Soft textured sensory book — guide tiny fingers across each page',        color:'#995200', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
+      { text:'Warm oil massage before bath — sesame or coconut oil in circular strokes',color:'#995200', img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=300&q=80' },
+    ],
+  },
+
+  '6-12': {
+    emoji: '🧡',
+    label: '6–12 Months',
+    range: '6 to 12 months',
+    milestone: {
+      emoji: '🤸',
+      title: 'Motor Skills & Object Permanence',
+      label: 'Key Milestone',
+      desc: 'Baby begins sitting, crawling, and pulling to stand. They understand that objects exist even when hidden — a huge cognitive leap. Babbling intensifies and they respond to their name, showing emerging social awareness.',
+      img: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🧠', title:'Cognitive Growth', desc:'Object permanence games (peek-a-boo, hidden toys) to build memory and prediction.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80' },
+      { icon:'✋', title:'Fine Motor',        desc:'Picking up small soft objects, transferring toys hand-to-hand, and banging exploration.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80' },
+      { icon:'🗣️', title:'Language Seeds',   desc:'Babbling back and forth, naming objects constantly, reading board books aloud.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🏃', title:'Gross Motor',       desc:'Supported sitting, tummy-to-sit transitions, crawling over soft obstacles.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Peek-a-boo with a soft cloth — builds object permanence and delight',            color:'#fccc38', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Stacking soft rings and knocking them down — cause and effect learning',          color:'#fccc38', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
+      { text:'Treasure basket: fill with safe household objects of different textures',         color:'#a74632', img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
+      { text:'Mirror play — baby studies their reflection and begins self-recognition',         color:'#a74632', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Water play in shallow tub — pouring and splashing builds schema patterns',        color:'#995200', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Crawl obstacle course with cushions, tunnels, and soft ramps',                    color:'#995200', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
+    ],
+  },
+
+  '12-24': {
+    emoji: '⭐',
+    label: '12–24 Months',
+    range: '1 to 2 years',
+    milestone: {
+      emoji: '🚶',
+      title: 'Walking, Talking & Symbolic Play',
+      label: 'Key Milestone',
+      desc: 'First steps mark a revolution in independence. Vocabulary explodes from first words to 50+ by age 2. Toddlers begin pretend play — feeding a doll, talking on a toy phone — showing they can hold mental representations of real-world actions.',
+      img: 'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🎭', title:'Pretend Play',        desc:'Role-play scenarios using household objects to build symbolic thinking and creativity.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80' },
+      { icon:'🔤', title:'Language Explosion',   desc:'Naming, pointing, two-word phrases — building vocabulary through rich conversation.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🧩', title:'Problem Solving',      desc:'Simple shape sorters, nesting cups, and puzzle boards to build spatial reasoning.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80' },
+      { icon:'🎨', title:'Creative Expression',  desc:'First scribbles with chunky crayons, finger painting, and clay exploration.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Pretend kitchen play — narrate what you\'re "cooking" together',                  color:'#fccc38', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80' },
+      { text:'Shape sorter challenge: name each shape as they post it through the hole',        color:'#fccc38', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
+      { text:'Nature walk: name every flower, tree, bird, and stone you encounter',             color:'#a74632', img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
+      { text:'Finger painting with edible turmeric + flour paint on baking paper',             color:'#a74632', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
+      { text:'Block stacking towers — count aloud as they build, clap when it falls!',         color:'#995200', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
+      { text:'Reading the same book nightly — ask "what\'s next?" to build prediction',        color:'#995200', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+    ],
+  },
+
+  '24-36': {
+    emoji: '🌟',
+    label: '24–36 Months',
+    range: '2 to 3 years',
+    milestone: {
+      emoji: '💬',
+      title: 'Language, Logic & Emotional Regulation',
+      label: 'Key Milestone',
+      desc: 'Sentences grow from 2 words to full stories. Toddlers ask "Why?" constantly — this is curiosity doing its best work. They begin understanding rules, categorising objects, and experiencing a full range of emotions they\'re just learning to navigate.',
+      img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80',
+    },
+    focuses: [
+      { icon:'🔢', title:'Early Numeracy',        desc:'Counting objects, understanding "more" and "less", sorting by colour and size.', bg:'rgba(252,204,56,0.15)', border:'rgba(252,204,56,0.35)', img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400&q=80' },
+      { icon:'🗺️', title:'Memory & Recall',       desc:'Retelling stories, remembering sequences, and simple rhymes to build working memory.', bg:'rgba(167,70,50,0.08)', border:'rgba(167,70,50,0.25)', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80' },
+      { icon:'🫂', title:'Emotional Intelligence', desc:'Naming feelings, empathy games, and calm-down corners to build self-regulation.', bg:'rgba(255,151,52,0.1)', border:'rgba(255,151,52,0.3)', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80' },
+      { icon:'🔬', title:'Scientific Curiosity',   desc:'Simple experiments — dissolving sugar, sinking/floating — to feed the "why" phase.', bg:'rgba(124,97,0,0.08)', border:'rgba(124,97,0,0.2)', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80' },
+    ],
+    activities: [
+      { text:'Sorting games: sort fruit by colour, toys by shape, socks by size',              color:'#fccc38', img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=300&q=80' },
+      { text:'"What happened today?" retelling at bedtime builds narrative memory',              color:'#fccc38', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
+      { text:'Water + oil + food colouring experiment: observe and discuss what happens',        color:'#a74632', img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
+      { text:'Feelings check-in cards — name an emotion, draw a face that matches',             color:'#a74632', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
+      { text:'Nature mandalas: collect leaves and arrange in patterns on the ground',            color:'#995200', img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
+      { text:'Simple board games with turns — builds patience and rule-following',               color:'#995200', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80' },
+    ],
+  },
+};
+
+// ── Render age buttons ───────────────────────────────────────────────────
+const AGES = [
+  { key:'0-6',   emoji:'🌸', label:'0–6 Months',   sub:'Newborn' },
+  { key:'6-12',  emoji:'🧡', label:'6–12 Months',  sub:'Explorer' },
+  { key:'12-24', emoji:'⭐', label:'12–24 Months', sub:'Toddler' },
+  { key:'24-36', emoji:'🌟', label:'24–36 Months', sub:'Big Kid' },
+];
+
+const btnGroup = document.getElementById('age-btn-group');
+btnGroup.innerHTML = AGES.map(a => `
+  <button class="age-btn" data-age="${a.key}" onclick="window._selectAge('${a.key}')">
+    <span class="age-emoji">${a.emoji}</span>
+    <span class="age-label">${a.label}</span>
+    <span class="age-range">${a.sub}</span>
+  </button>`).join('');
+
+// ── Level Program Data ───────────────────────────────────────────────
+// Default icons for focus area mapping
+const FOCUS_ICONS = {'Visual Development':'👁️','Auditory Development':'👂','Sensory Exploration':'🤲','Brain Stimulation':'🧠','Motor Skills (Tummy Time)':'💪','Emotional Bonding':'💞','Cognitive Development':'🧩','Language Development':'🗣️','Attention & Focus':'🎯','Early Knowledge Building':'📚','Fine Motor Skills':'✋','Coordination (Bilateral)':'🤸','Cognitive & Logical Development':'🧠','Creativity & Imagination':'🎨','Language & Communication':'🗣️','Visual Skills':'👁️','Focus & Attention':'🎯','Sensory Play':'🤲','Early Maths Skills':'🔢'};
+const FOCUS_BGS = ['rgba(252,204,56,0.15)','rgba(167,70,50,0.08)','rgba(255,151,52,0.1)','rgba(124,97,0,0.08)','rgba(16,185,129,0.08)','rgba(252,204,56,0.12)','rgba(167,70,50,0.06)','rgba(124,97,0,0.06)'];
+
+// Level data — populated from Supabase via admin-sync.js
+var LEVEL_DATA = {
+  '0-6':  { level:1, name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.',
+            focusAreas:[
+              {icon:'👁️',title:'Visual Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'👂',title:'Auditory Development',bg:'rgba(167,70,50,0.08)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🧠',title:'Brain Stimulation',bg:'rgba(124,97,0,0.08)'},
+              {icon:'💪',title:'Motor Skills (Tummy Time)',bg:'rgba(16,185,129,0.08)'},
+              {icon:'💞',title:'Emotional Bonding',bg:'rgba(252,204,56,0.12)'},
+            ]},
+  '6-12': { level:2, name:'Explore & Learn', tagline:'Nurturing curiosity, communication, and focus during the most absorbent learning phase.',
+            focusAreas:[
+              {icon:'🧩',title:'Cognitive Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'🗣️',title:'Language Development',bg:'rgba(167,70,50,0.08)'},
+              {icon:'👁️',title:'Visual Development',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(124,97,0,0.08)'},
+              {icon:'🎯',title:'Attention & Focus',bg:'rgba(16,185,129,0.08)'},
+              {icon:'📚',title:'Early Knowledge Building',bg:'rgba(252,204,56,0.12)'},
+            ]},
+  '12-24':{ level:3, name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.',
+            focusAreas:[
+              {icon:'🧩',title:'Cognitive Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'✋',title:'Fine Motor Skills',bg:'rgba(167,70,50,0.08)'},
+              {icon:'👁️',title:'Visual Development',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🗣️',title:'Language Development',bg:'rgba(124,97,0,0.08)'},
+              {icon:'🤸',title:'Coordination (Bilateral)',bg:'rgba(16,185,129,0.08)'},
+              {icon:'🎯',title:'Attention & Focus',bg:'rgba(252,204,56,0.12)'},
+              {icon:'🤲',title:'Sensory Exploration',bg:'rgba(167,70,50,0.06)'},
+            ]},
+  '24-36':{ level:4, name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.',
+            focusAreas:[
+              {icon:'🧠',title:'Cognitive & Logical Development',bg:'rgba(252,204,56,0.15)'},
+              {icon:'✋',title:'Fine Motor Skills',bg:'rgba(167,70,50,0.08)'},
+              {icon:'🎨',title:'Creativity & Imagination',bg:'rgba(255,151,52,0.1)'},
+              {icon:'🗣️',title:'Language & Communication',bg:'rgba(124,97,0,0.08)'},
+              {icon:'👁️',title:'Visual Skills',bg:'rgba(16,185,129,0.08)'},
+              {icon:'🎯',title:'Focus & Attention',bg:'rgba(252,204,56,0.12)'},
+              {icon:'🤲',title:'Sensory Play',bg:'rgba(167,70,50,0.06)'},
+              {icon:'🔢',title:'Early Maths Skills',bg:'rgba(124,97,0,0.06)'},
+            ]},
+};
+
+// Allow admin-sync.js to update level data from Supabase
+window.__urjaaApplyLevelPrograms = function(levelPrograms) {
+  if (!levelPrograms) return;
+  Object.keys(levelPrograms).forEach(function(key) {
+    if (!LEVEL_DATA[key]) return;
+    var lp = levelPrograms[key];
+    if (lp.name) LEVEL_DATA[key].name = lp.name;
+    if (lp.tagline) LEVEL_DATA[key].tagline = lp.tagline;
+    if (lp.focusAreas && lp.focusAreas.length) {
+      LEVEL_DATA[key].focusAreas = lp.focusAreas.map(function(title, i) {
+        return {icon: FOCUS_ICONS[title] || '✨', title: title, bg: FOCUS_BGS[i % FOCUS_BGS.length]};
+      });
+    }
+  });
+};
+
+// ── Select age ───────────────────────────────────────────────────────────
+window._selectAge = function(key) {
+  const d = AGE_DATA[key];
+  const lv = LEVEL_DATA[key];
+  if (!d || !lv) return;
+
+  // Update buttons
+  document.querySelectorAll('.age-btn').forEach(b => b.classList.toggle('selected', b.dataset.age === key));
+
+  // Show content with animation
+  const content = document.getElementById('age-content');
+  const placeholder = document.getElementById('age-placeholder');
+  content.style.animation = 'none';
+  content.offsetHeight; // force reflow
+  content.style.animation = 'fadeSlideIn 0.5s ease forwards';
+  content.classList.remove('hidden');
+  placeholder.classList.add('hidden');
+
+  // Level header
+  document.getElementById('level-age-range').textContent = AGES.find(a=>a.key===key).label;
+  document.getElementById('level-title').textContent = lv.name;
+  document.getElementById('level-tagline').textContent = lv.tagline;
+
+  // Focus area pills
+  document.getElementById('focus-pills').innerHTML = lv.focusAreas.map(fa => `
+    <div class="focus-pill">
+      <div class="focus-pill-icon" style="background:${fa.bg}">${fa.icon}</div>
+      <span class="focus-pill-text">${fa.title}</span>
+    </div>`).join('');
+
+  // Milestone banner
+  document.getElementById('milestone-img').src   = d.milestone.img;
+  document.getElementById('milestone-img').alt   = d.milestone.title;
+  document.getElementById('milestone-label').textContent = d.milestone.label || 'Key Milestone';
+  document.getElementById('milestone-title').textContent = d.milestone.title;
+  document.getElementById('milestone-desc').textContent  = d.milestone.desc;
+
+  // Focus detail cards
+  document.getElementById('focus-cards').innerHTML = d.focuses.map(f => `
+    <div class="focus-card" style="border:1.5px solid ${f.border}">
+      <div style="overflow:hidden;height:140px;background:${f.bg}">
+        <img class="focus-card-img" src="${f.img}" alt="${f.title}"/>
+      </div>
+      <div class="focus-card-body" style="background:${f.bg}">
+        <span class="focus-card-icon">${f.icon}</span>
+        <span class="focus-title">${f.title}</span>
+        <span class="focus-desc">${f.desc}</span>
+      </div>
+    </div>`).join('');
+
+  // Activity carousel
+  window._actIdx = 0;
+  const actTrack = document.getElementById('activity-list');
+  const actDots  = document.getElementById('act-dots');
+
+  actTrack.innerHTML = d.activities.map((a, i) => `
+    <div class="activity-card">
+      <img class="activity-card-img" src="${a.img}" alt="${a.text.slice(0,40)}"/>
+      <div class="activity-card-body">
+        <span class="activity-card-num" style="color:${a.color}">Activity ${i+1} of ${d.activities.length}</span>
+        <span class="activity-card-text">${a.text}</span>
+      </div>
+    </div>`).join('');
+
+  actDots.innerHTML = d.activities.map((_, i) => `
+    <button class="act-dot ${i===0?'active':''}" onclick="window._actGoTo(${i})"></button>`).join('');
+
+  document.getElementById('act-counter').textContent = `1 / ${d.activities.length}`;
+  actTrack.style.transform = 'translateX(0)';
+
+  window._actGoTo = function(idx) {
+    const total = d.activities.length;
+    window._actIdx = Math.max(0, Math.min(total - 1, idx));
+    actTrack.style.transform = `translateX(-${window._actIdx * 100}%)`;
+    document.getElementById('act-counter').textContent = `${window._actIdx + 1} / ${total}`;
+    document.querySelectorAll('.act-dot').forEach((dot, i) => dot.classList.toggle('active', i === window._actIdx));
+    document.getElementById('act-prev').style.opacity = window._actIdx === 0 ? '0.35' : '1';
+    document.getElementById('act-next').style.opacity = window._actIdx === total - 1 ? '0.35' : '1';
+  };
+  window._actScroll = function(dir) { window._actGoTo(window._actIdx + dir); };
+  window._actGoTo(0);
+
+  // Smooth scroll to level header
+  setTimeout(() => document.getElementById('level-header').scrollIntoView({ behavior:'smooth', block:'start' }), 150);
+};
+
+})();
+</script>
 
 <!-- FINAL CTA -->
 <section class="max-w-4xl mx-auto px-4 mt-10 md:mt-20" id="programs-cta">
