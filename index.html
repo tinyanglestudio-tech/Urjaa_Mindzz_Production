@@ -812,6 +812,7 @@ window._selectAge = function(key) {
   const d = AGE_DATA[key];
   const lv = LEVEL_DATA[key];
   if (!d || !lv) return;
+  const _savedScroll = window.scrollY;
 
   // Update buttons
   document.querySelectorAll('.age-btn').forEach(b => b.classList.toggle('selected', b.dataset.age === key));
@@ -889,6 +890,7 @@ window._selectAge = function(key) {
   window._actScroll = function(dir) { window._actGoTo(window._actIdx + dir); };
   window._actGoTo(0);
 
+  requestAnimationFrame(() => window.scrollTo({ top: _savedScroll, behavior: 'instant' }));
 };
 
 })();
