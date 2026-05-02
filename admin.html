@@ -1771,7 +1771,15 @@ function loadSavedState() {
       const parsed = JSON.parse(saved);
       for (const key in parsed) {
         if (parsed.hasOwnProperty(key) && key !== 'currentPage') {
-          state[key] = parsed[key];
+          if (key === 'sections') {
+            const allowed = Object.keys(state.sections);
+            const src = parsed.sections || {};
+            allowed.forEach(function(sk){
+              if (src[sk] != null) state.sections[sk] = Object.assign({}, state.sections[sk], { visible: src[sk].visible });
+            });
+          } else {
+            state[key] = parsed[key];
+          }
         }
       }
       return true;
@@ -3400,6 +3408,14 @@ _fetchFromSupabase('admin_state').then(function(remote){
           (remote.images || []).forEach(function(img){
             if (!state.images.find(function(i){ return i.id === img.id; })) {
               state.images.push(img);
+            }
+          });
+        } else if (k === 'sections') {
+          var allowedKeys = Object.keys(state.sections);
+          var remoteSecs = remote.sections || {};
+          allowedKeys.forEach(function(sk){
+            if (remoteSecs[sk] != null) {
+              state.sections[sk] = Object.assign({}, state.sections[sk], { visible: remoteSecs[sk].visible });
             }
           });
         } else {
