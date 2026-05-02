@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Urjaa Mindz — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
 /* ── Reset & base ─────────────────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;height:100%}
 body{
   font-family:'Plus Jakarta Sans',sans-serif;
   color:#383833;
   height:100vh;
+  height:100svh;
   display:flex;
   overflow:hidden;
   background-color:#fefcf4;
@@ -140,9 +141,11 @@ body{
   display:flex;align-items:center;padding:0 24px;gap:14px;
 }
 .topbar-hamburger{
-  display:none;cursor:pointer;padding:6px;
+  display:none;cursor:pointer;padding:8px;
   border-radius:10px;border:none;background:none;
-  color:#7c6100;
+  color:#7c6100;min-width:44px;min-height:44px;
+  align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
 }
 .topbar-hamburger:hover{background:rgba(124,97,0,0.08)}
 .topbar-title{font-family:'Noto Serif',serif;font-weight:700;font-size:17px;color:#383833;flex:1}
@@ -530,6 +533,56 @@ body{
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
+
+  /* ── Workshop rows: stack date + info, then actions below ── */
+  .workshop-row{flex-wrap:wrap;align-items:flex-start;gap:8px 12px}
+  .workshop-date-badge{flex-shrink:0}
+  .workshop-info{flex:1 1 calc(100% - 64px);min-width:0}
+  .workshop-actions{flex:0 0 100%;justify-content:flex-end;border-top:1px solid rgba(124,97,0,0.09);padding-top:8px;margin-top:2px}
+
+  /* ── Modal footer: stack buttons ── */
+  .modal-footer{flex-direction:column;align-items:stretch}
+  .modal-footer .topbar-btn{justify-content:center;width:100%}
+
+  /* ── Quick actions grid: tighter min ── */
+  #page-dashboard .card-body div[style*="180px"]{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))!important}
+
+  /* ── Topbar: hide sync status text on very small screens ── */
+  #sync-status{display:none}
+
+  /* ── Toast: full width on mobile ── */
+  #toast{left:12px;right:12px;bottom:16px;max-width:none}
+}
+
+/* ── Tabs: scrollable on mobile ── */
+@media(max-width:600px){
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:6px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;white-space:nowrap}
+}
+
+/* ── Login card: tighter on very small screens ── */
+@media(max-width:380px){
+  #login-overlay>div[style*="max-width:400px"]{padding:24px 18px 20px!important}
+}
+
+/* ── Testi rows: ensure avatar+text don't overflow ── */
+@media(max-width:400px){
+  .testi-row{flex-wrap:wrap}
+  .testi-body{flex:0 0 calc(100% - 56px)}
+  .testi-actions{margin-left:0;flex:0 0 100%;justify-content:flex-end;border-top:1px solid rgba(124,97,0,0.08);padding-top:8px}
+}
+
+/* ── Analytics sessions table: always scrollable ── */
+#analytics-sessions{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#analytics-sessions table{min-width:380px}
+
+/* ── Admin body: safe area on iOS ── */
+@supports(padding:max(0px)){
+  #topbar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
+  @media(max-width:768px){
+    #sidebar{padding-bottom:env(safe-area-inset-bottom)}
+  }
 }
 
   /* Badge pill active state */
@@ -679,7 +732,7 @@ function adminLogin() {
   var p = (document.getElementById('login-pass').value || '').trim();
   var errEl = document.getElementById('login-error');
   var overlay = document.getElementById('login-overlay');
-  
+
   fetch('/api/admin-auth', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -776,6 +829,11 @@ function adminLogin() {
     <span class="material-symbols-outlined">format_quote</span>
     <span class="nav-item-label">Testimonials</span>
   </div>
+  <div class="nav-item" onclick="showPage('leads')">
+    <span class="material-symbols-outlined">contacts</span>
+    <span class="nav-item-label">Leads</span>
+    <span class="nav-item-badge" id="leads-nav-badge" style="display:none"></span>
+  </div>
   <div class="nav-item" onclick="showPage('settings')">
     <span class="material-symbols-outlined">tune</span>
     <span class="nav-item-label">Site Settings</span>
@@ -821,6 +879,7 @@ function adminLogin() {
         <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-num" id="stat-workshops">3</div><div class="stat-label">Workshops</div></div>
         <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-num">4</div><div class="stat-label">Testimonials</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num">3/3</div><div class="stat-label">Pages Live</div></div>
+        <div class="stat-card" onclick="showPage('leads')" style="cursor:pointer"><div class="stat-icon">👥</div><div class="stat-num" id="stat-leads">—</div><div class="stat-label">Leads</div></div>
       </div>
 
       <div class="card">
@@ -1211,7 +1270,6 @@ function adminLogin() {
       <div class="tabs" id="programs-tabs">
         <button class="tab active" onclick="switchTab('programs','hero')"><span class="material-symbols-outlined">star</span> Hero</button>
         <button class="tab" onclick="switchTab('programs','levels')"><span class="material-symbols-outlined">school</span> Levels</button>
-        <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">child_care</span> Age Selector</button>
         <button class="tab" onclick="switchTab('programs','bubbles')"><span class="material-symbols-outlined">bubble_chart</span> Brain Programs</button>
       </div>
 
@@ -1252,24 +1310,6 @@ function adminLogin() {
         </div>
       </div>
 
-      <div id="programs-tab-agesel" style="display:none">
-        <div class="card">
-          <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">child_care</span></div>
-            <div><div class="card-header-title">Age Selector Content</div><div class="card-header-sub">Milestone, focus areas & activities per age group</div></div>
-            <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-          </div>
-          <div class="card-body open">
-            <div class="tabs" style="margin-bottom:16px">
-              <button class="tab active" onclick="switchAgeTab('0-6')">0–6 Mo</button>
-              <button class="tab" onclick="switchAgeTab('6-12')">6–12 Mo</button>
-              <button class="tab" onclick="switchAgeTab('12-24')">12–24 Mo</button>
-              <button class="tab" onclick="switchAgeTab('24-36')">24–36 Mo</button>
-            </div>
-            <div id="age-editor-panel"></div>
-          </div>
-        </div>
-      </div>
 
       <div id="programs-tab-bubbles" style="display:none">
         <div class="card">
@@ -1586,6 +1626,31 @@ function adminLogin() {
       </div>
     </div>
 
+    <!-- ════════ LEADS ════════ -->
+    <div id="page-leads" style="display:none">
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="card-header-icon" style="background:rgba(34,197,94,0.12)"><span class="material-symbols-outlined" style="color:#16a34a">contacts</span></div>
+          <div>
+            <div class="card-header-title">Lead Submissions</div>
+            <div class="card-header-sub" id="leads-count">Loading…</div>
+          </div>
+          <div style="margin-left:auto;margin-right:8px;display:flex;gap:8px">
+            <button class="topbar-btn secondary" onclick="event.stopPropagation();exportLeadsCSV()" style="padding:6px 14px">
+              <span class="material-symbols-outlined" style="font-size:16px">download</span> Export CSV
+            </button>
+            <button class="topbar-btn secondary" onclick="event.stopPropagation();renderLeads()" style="padding:6px 14px">
+              <span class="material-symbols-outlined" style="font-size:16px">refresh</span> Refresh
+            </button>
+          </div>
+          <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
+        </div>
+        <div class="card-body open" style="padding:0">
+          <div id="leads-table-wrap" style="min-height:120px"></div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- end #content -->
 </div><!-- end #main -->
 
@@ -1702,7 +1767,6 @@ let state = {
     'home-story':         { label:'Our Story: Founders',     page:'Our Story', icon:'auto_stories', visible:true },
     'home-vision':        { label:'Our Story: Vision & Mission', page:'Our Story', icon:'visibility', visible:true },
     'home-cta':           { label:'Our Story: Join CTA',     page:'Our Story', icon:'campaign',     visible:true },
-    'programs-age':       { label:'Programs: Age Selector',  page:'Programs',  icon:'child_care',   visible:false },
     'programs-bubbles':   { label:'Programs: Brain Programs',page:'Programs',  icon:'bubble_chart', visible:true },
     'programs-workshops': { label:'Programs: Workshops',     page:'Programs',  icon:'event',        visible:true },
     'community-hero':     { label:'Community: Hero',         page:'Community', icon:'star',         visible:true },
@@ -1755,76 +1819,6 @@ let state = {
   },
   pdfGuides: [],
   articles: [],
-  ageData: {
-    '0-6':  {
-      milestone: { title:'Sensory Awakening & Bonding', img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80', desc:'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling.' },
-      focuses: [
-        { id:1, icon:'👁️', title:'Visual Tracking',     img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80', desc:'High-contrast images and slow movement to develop eye muscles and focus.' },
-        { id:2, icon:'👂', title:'Auditory Stimulation', img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80', desc:'Soft music, your voice, and natural sounds to build auditory processing.' },
-        { id:3, icon:'🤲', title:'Tactile Exploration',  img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80', desc:'Different textures, skin-to-skin contact, and gentle massage for touch development.' },
-        { id:4, icon:'💞', title:'Emotional Bonding',    img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400&q=80', desc:'Eye contact, responsive caregiving, and mirroring to build secure attachment.' },
-      ],
-      activities: [
-        { id:1, text:"Black & white high-contrast cards — hold 20–30 cm from baby's face", img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
-        { id:2, text:'Gentle tummy time on a soft mat with a mirror placed in front',         img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
-        { id:3, text:'Sing the same lullaby daily — repetition builds auditory memory',        img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
-        { id:4, text:'Narrate everything you do while changing or feeding baby',               img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
-        { id:5, text:'Soft textured sensory book — guide tiny fingers across each page',       img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
-        { id:6, text:'Warm oil massage before bath — sesame or coconut oil in circular strokes',img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=300&q=80' },
-      ],
-    },
-    '6-12': {
-      milestone: { title:'Motor Skills & Object Permanence', img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&q=80', desc:'Baby begins sitting, crawling, and pulling to stand. They understand that objects exist even when hidden — a huge cognitive leap.' },
-      focuses: [
-        { id:1, icon:'🧠', title:'Cognitive Growth', img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80', desc:'Object permanence games (peek-a-boo, hidden toys) to build memory and prediction.' },
-        { id:2, icon:'✋', title:'Fine Motor',        img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80', desc:'Picking up small soft objects, transferring toys hand-to-hand, and banging exploration.' },
-        { id:3, icon:'🗣️', title:'Language Seeds',   img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80', desc:'Babbling back and forth, naming objects constantly, reading board books aloud.' },
-        { id:4, icon:'🏃', title:'Gross Motor',       img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80', desc:'Supported sitting, tummy-to-sit transitions, crawling over soft obstacles.' },
-      ],
-      activities: [
-        { id:1, text:'Peek-a-boo with a soft cloth — builds object permanence and delight',           img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
-        { id:2, text:'Stacking soft rings and knocking them down — cause and effect learning',         img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
-        { id:3, text:'Treasure basket: fill with safe household objects of different textures',        img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80' },
-        { id:4, text:'Mirror play — baby studies their reflection and begins self-recognition',        img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
-        { id:5, text:'Water play in shallow tub — pouring and splashing builds schema patterns',       img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
-        { id:6, text:'Crawl obstacle course with cushions, tunnels, and soft ramps',                   img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
-      ],
-    },
-    '12-24': {
-      milestone: { title:'Walking, Talking & Symbolic Play', img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=800&q=80', desc:'First steps mark a revolution in independence. Vocabulary explodes from first words to 50+ by age 2.' },
-      focuses: [
-        { id:1, icon:'🎭', title:'Pretend Play',       img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80', desc:'Role-play scenarios using household objects to build symbolic thinking and creativity.' },
-        { id:2, icon:'🔤', title:'Language Explosion',  img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80', desc:'Naming, pointing, two-word phrases — building vocabulary through rich conversation.' },
-        { id:3, icon:'🧩', title:'Problem Solving',     img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80', desc:'Simple shape sorters, nesting cups, and puzzle boards to build spatial reasoning.' },
-        { id:4, icon:'🎨', title:'Creative Expression', img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80', desc:'First scribbles with chunky crayons, finger painting, and clay exploration.' },
-      ],
-      activities: [
-        { id:1, text:"Pretend kitchen play — narrate what you're 'cooking' together",              img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80' },
-        { id:2, text:'Shape sorter challenge: name each shape as they post it through the hole',   img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80' },
-        { id:3, text:'Nature walk: name every flower, tree, bird, and stone you encounter',        img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
-        { id:4, text:'Finger painting with edible turmeric + flour paint on baking paper',        img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80' },
-        { id:5, text:"Block stacking towers — count aloud as they build, clap when it falls!",    img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80' },
-        { id:6, text:"Reading the same book nightly — ask 'what's next?' to build prediction",    img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
-      ],
-    },
-    '24-36': {
-      milestone: { title:'Language, Logic & Emotional Regulation', img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80', desc:'Sentences grow from 2 words to full stories. Toddlers ask "Why?" constantly — this is curiosity doing its best work.' },
-      focuses: [
-        { id:1, icon:'🔢', title:'Early Numeracy',         img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400&q=80', desc:'Counting objects, understanding "more" and "less", sorting by colour and size.' },
-        { id:2, icon:'🗺️', title:'Memory & Recall',        img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80', desc:'Retelling stories, remembering sequences, and simple rhymes to build working memory.' },
-        { id:3, icon:'🫂', title:'Emotional Intelligence',  img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80', desc:'Naming feelings, empathy games, and calm-down corners to build self-regulation.' },
-        { id:4, icon:'🔬', title:'Scientific Curiosity',    img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80', desc:'Simple experiments — dissolving sugar, sinking/floating — to feed the "why" phase.' },
-      ],
-      activities: [
-        { id:1, text:'Sorting games: sort fruit by colour, toys by shape, socks by size',          img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=300&q=80' },
-        { id:2, text:'"What happened today?" retelling at bedtime builds narrative memory',          img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80' },
-        { id:3, text:'Water + oil + food colouring experiment: observe and discuss what happens',   img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80' },
-        { id:4, text:'Feelings check-in cards — name an emotion, draw a face that matches',        img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80' },
-        { id:5, text:'Nature mandalas: collect leaves and arrange in patterns on the ground',       img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80' },
-        { id:6, text:'Simple board games with turns — builds patience and rule-following',          img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80' },
-      ],
-    },
-  },
   texts: {},
 }
 
@@ -1867,8 +1861,8 @@ function showPage(name) {
   });
 
   // Update topbar
-  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings' };
-  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global' };
+  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings', leads:'Leads' };
+  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global', leads:'Supabase' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
   document.getElementById('topbar-badge').textContent = badges[name] || '';
 
@@ -1890,14 +1884,43 @@ function toggleMobileSidebar() {
   const sb = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebar-overlay');
   sb.classList.toggle('mobile-open');
-  overlay.classList.toggle('show', sb.classList.contains('mobile-open'));
+  const isOpen = sb.classList.contains('mobile-open');
+  overlay.classList.toggle('show', isOpen);
+  document.getElementById('content').style.overflow = isOpen ? 'hidden' : '';
 }
 function closeMobileSidebar() {
   const sb = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebar-overlay');
   sb.classList.remove('mobile-open');
   overlay.classList.remove('show');
+  document.getElementById('content').style.overflow = '';
 }
+
+// ── Touch swipe to open/close sidebar ──────────────────────────────────────
+(function() {
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var SWIPE_THRESHOLD = 60;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (!e.changedTouches.length) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    if (dy > 60) return; // vertical swipe — ignore
+    var sb = document.getElementById('sidebar');
+    // Swipe right from left edge: open sidebar
+    if (dx > SWIPE_THRESHOLD && touchStartX < 30 && window.innerWidth <= 768) {
+      if (!sb.classList.contains('mobile-open')) toggleMobileSidebar();
+    }
+    // Swipe left: close sidebar
+    if (dx < -SWIPE_THRESHOLD && window.innerWidth <= 768) {
+      if (sb.classList.contains('mobile-open')) closeMobileSidebar();
+    }
+  }, { passive: true });
+})();
 
 // ── Tabs ───────────────────────────────────────────────────────────────────
 function switchTab(page, tab) {
@@ -1919,12 +1942,6 @@ function switchTab(page, tab) {
   }
 }
 
-function switchAgeTab(ageKey) {
-  document.querySelectorAll('#programs-tab-agesel .tabs .tab').forEach(t => {
-    t.classList.toggle('active', t.getAttribute('onclick') && t.getAttribute('onclick').includes(ageKey));
-  });
-  renderAgeEditor(ageKey);
-}
 
 // ── Render helpers ─────────────────────────────────────────────────────────
 function makeImageField(imgId, containerId) {
@@ -2057,6 +2074,7 @@ function renderPage(name) {
     }, 0);
   }
   else if (name === 'testimonials') renderTestimonials();
+  else if (name === 'leads') renderLeads();
 }
 
 function renderDashboard() {
@@ -2079,6 +2097,163 @@ function renderDashboard() {
         <span class="material-symbols-outlined" style="font-size:14px">edit</span> Edit
       </button>
     </div>`).join('');
+
+  // Fetch lead count for dashboard stat card
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=id', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var n = Array.isArray(data) ? data.length : 0;
+    var el = document.getElementById('stat-leads');
+    if (el) el.textContent = n;
+    var badge = document.getElementById('leads-nav-badge');
+    if (badge && n > 0) { badge.textContent = n; badge.style.display = ''; }
+  })
+  .catch(function(){});
+}
+
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderLeads() {
+  var wrap  = document.getElementById('leads-table-wrap');
+  var cntEl = document.getElementById('leads-count');
+  if (!wrap) return;
+
+  wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#65655f">' +
+    '<span class="material-symbols-outlined" style="font-size:36px;display:block;margin-bottom:8px;color:#ccc">hourglass_top</span>Loading leads…</div>';
+
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=*&order=created_at.desc&limit=500', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var statEl    = document.getElementById('stat-leads');
+    var navBadge  = document.getElementById('leads-nav-badge');
+
+    // Supabase error (table missing, RLS, etc.)
+    if (!Array.isArray(data)) {
+      var errMsg = data.message || data.error || JSON.stringify(data);
+      var isNoTable = errMsg.indexOf('does not exist') !== -1 || data.code === '42P01';
+      wrap.innerHTML = '<div style="padding:24px 20px">' +
+        '<div style="background:rgba(190,45,6,0.07);border:1px solid rgba(190,45,6,0.2);border-radius:12px;padding:18px 20px;margin-bottom:16px">' +
+          '<div style="font-weight:700;color:#be2d06;font-size:13px;margin-bottom:6px">⚠ ' + (isNoTable ? 'leads table not found in Supabase' : 'Supabase error') + '</div>' +
+          '<div style="font-size:12px;color:#65655f;font-family:monospace;background:rgba(0,0,0,0.04);padding:8px 10px;border-radius:6px;word-break:break-all">' + escHtml(errMsg) + '</div>' +
+        '</div>' +
+        (isNoTable ? '<div style="font-size:13px;color:#383833;font-weight:600;margin-bottom:8px">Run this SQL in your <a href="https://supabase.com/dashboard" target="_blank" style="color:#7c6100">Supabase SQL Editor</a>:</div>' +
+        '<pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:10px;font-size:12px;overflow-x:auto;line-height:1.6">CREATE TABLE IF NOT EXISTS public.leads (\n  id         BIGSERIAL PRIMARY KEY,\n  name       TEXT NOT NULL,\n  phone      TEXT NOT NULL,\n  country_code TEXT,\n  child_age  TEXT,\n  location   TEXT,\n  source     TEXT,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);\n\n-- Allow the anon key to insert and read\nGRANT INSERT, SELECT ON public.leads TO anon;\nGRANT USAGE, SELECT ON SEQUENCE public.leads_id_seq TO anon;</pre>' : '') +
+      '</div>';
+      if (cntEl)    cntEl.textContent  = 'Setup required';
+      if (statEl)   statEl.textContent = '—';
+      if (navBadge) navBadge.style.display = 'none';
+      return;
+    }
+
+    if (data.length === 0) {
+      wrap.innerHTML = '<div style="text-align:center;padding:48px 20px;color:#94918a">' +
+        '<span class="material-symbols-outlined" style="font-size:44px;display:block;margin-bottom:12px;color:#ddd">inbox</span>' +
+        'No leads yet. Form submissions will appear here.</div>';
+      if (cntEl)    cntEl.textContent  = '0 leads';
+      if (statEl)   statEl.textContent = '0';
+      if (navBadge) navBadge.style.display = 'none';
+      return;
+    }
+
+    var total = data.length;
+    if (cntEl)    cntEl.textContent  = total + ' lead' + (total !== 1 ? 's' : '');
+    if (statEl)   statEl.textContent = total;
+    if (navBadge) { navBadge.textContent = total; navBadge.style.display = ''; }
+
+    var rows = data.map(function(l) {
+      var d    = l.created_at ? new Date(l.created_at) : null;
+      var date = d ? d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—';
+      var time = d ? d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' }) : '';
+      return '<tr style="transition:background .15s" onmouseenter="this.style.background=\'rgba(124,97,0,0.04)\'" onmouseleave="this.style.background=\'\'">' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);font-weight:600;color:#383833">' + escHtml(l.name) + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.phone) + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.child_age || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f">'                + escHtml(l.location || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#94918a;font-size:11px">' + escHtml(l.source || '—') + '</td>' +
+        '<td style="padding:11px 14px;border-bottom:1px solid rgba(0,0,0,0.05);color:#65655f;font-size:12px;white-space:nowrap">' +
+          date + (time ? '<br><span style="color:#94918a;font-size:11px">' + time + '</span>' : '') +
+        '</td>' +
+        '<td style="padding:8px 14px;border-bottom:1px solid rgba(0,0,0,0.05);text-align:center">' +
+          '<button onclick="deleteLead(' + l.id + ')" title="Delete" style="background:none;border:none;cursor:pointer;color:#be2d06;padding:5px;border-radius:6px;line-height:1;transition:background .15s" onmouseenter="this.style.background=\'rgba(190,45,6,0.08)\'" onmouseleave="this.style.background=\'none\'">' +
+            '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">delete</span>' +
+          '</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    var th = function(label) {
+      return '<th style="padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:#7c6100;' +
+        'text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;background:rgba(124,97,0,0.07)">' + label + '</th>';
+    };
+
+    wrap.innerHTML = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px">' +
+      '<thead><tr>' + th('Name') + th('Phone') + th('Child Age') + th('Location') + th('Source') + th('Date') + th('') + '</tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table></div>';
+  })
+  .catch(function() {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#be2d06">' +
+      '<span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:8px">error</span>' +
+      'Failed to load leads. Check your Supabase connection.</div>';
+  });
+}
+
+function deleteLead(id) {
+  if (!confirm('Delete this lead? This cannot be undone.')) return;
+  fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  }).then(function(r) {
+    if (r.ok) {
+      renderLeads();
+    } else {
+      r.json().then(function(e) {
+        alert('Delete failed: ' + (e.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+      }).catch(function() {
+        alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+      });
+    }
+  }).catch(function() {
+    alert('Network error — could not delete lead.');
+  });
+}
+
+function exportLeadsCSV() {
+  fetch(SUPABASE_URL + '/rest/v1/leads?select=*&order=created_at.desc&limit=2000', {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+      alert('No leads to export.');
+      return;
+    }
+    function q(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+    var headers = ['Name', 'Phone', 'Country Code', 'Child Age', 'Location', 'Source', 'Date'];
+    var rows = data.map(function(l) {
+      var date = l.created_at ? new Date(l.created_at).toLocaleString('en-IN') : '';
+      return [q(l.name), q(l.phone), q(l.country_code), q(l.child_age), q(l.location), q(l.source), q(date)].join(',');
+    });
+    var csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'urjaa-leads-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  })
+  .catch(function() { alert('Failed to fetch leads for export.'); });
 }
 
 function renderHome() {
@@ -2168,7 +2343,6 @@ function renderPrograms() {
         </div>
       </div>`).join('');
 
-  renderAgeEditor('0-6');
 }
 
 // ── Bubble CRUD ──────────────────────────────────────────────────────────
@@ -2208,148 +2382,6 @@ function makeInlineImgField(imgId) {
       </label>
     </div>
   </div>`;
-}
-
-function renderAgeEditor(ageKey) {
-  const ageLabels = { '0-6':'0–6 Months', '6-12':'6–12 Months', '12-24':'12–24 Months', '24-36':'24–36 Months' };
-  const panel = document.getElementById('age-editor-panel');
-  if (!panel) return;
-  const data = state.ageData[ageKey];
-  if (!data) return;
-  const m = data.milestone;
-
-  panel.innerHTML = `
-    <!-- Milestone -->
-    <div style="background:rgba(252,204,56,0.06);border:1.5px solid rgba(252,204,56,0.25);border-radius:14px;padding:16px;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100;margin-bottom:12px">📍 ${ageLabels[ageKey]} — Milestone</div>
-      <div class="field-row">
-        <div class="field"><div class="field-label">Milestone Title</div>
-          <input class="field-input" value="${m.title}" placeholder="Title" onchange="state.ageData['${ageKey}'].milestone.title=this.value;autoSave()"/>
-        </div>
-        <div class="field"><div class="field-label">Milestone Image URL</div>
-          <input class="field-input" value="${m.img}" placeholder="https://…" onchange="state.ageData['${ageKey}'].milestone.img=this.value;autoSave()"/>
-        </div>
-      </div>
-      <div class="field"><div class="field-label">Description</div>
-        <textarea class="field-input field-textarea" onchange="state.ageData['${ageKey}'].milestone.desc=this.value;autoSave()">${m.desc}</textarea>
-      </div>
-    </div>
-
-    <!-- Focus Areas -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100">🎯 Focus Areas</div>
-      <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addFocusArea('${ageKey}')">
-        <span class="material-symbols-outlined" style="font-size:13px">add</span> Add Focus
-      </button>
-    </div>
-    ${data.focuses.map((f,i) => `
-      <div style="border:1.5px solid rgba(124,97,0,0.12);border-radius:10px;padding:12px;margin-bottom:8px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-size:18px">${f.icon}</span>
-          <span style="font-size:12px;font-weight:700;color:#888;flex:1">Focus ${i+1}</span>
-          <button class="ws-btn delete" style="width:26px;height:26px" onclick="deleteFocusArea('${ageKey}',${f.id})"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>
-        </div>
-        <div class="field-row" style="margin-bottom:6px">
-          <input class="field-input" value="${f.icon}" placeholder="Emoji icon" onchange="updateFocusArea('${ageKey}',${f.id},'icon',this.value)"/>
-          <input class="field-input" value="${f.title}" placeholder="Focus title" onchange="updateFocusArea('${ageKey}',${f.id},'title',this.value)"/>
-        </div>
-        <div class="field-row">
-          <input class="field-input" value="${f.desc}" placeholder="Description" onchange="updateFocusArea('${ageKey}',${f.id},'desc',this.value)"/>
-          <input class="field-input" value="${f.img}" placeholder="Image URL" onchange="updateFocusArea('${ageKey}',${f.id},'img',this.value)"/>
-        </div>
-      </div>`).join('')}
-
-    <!-- Activities -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100">✅ Activities</div>
-      <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addActivity('${ageKey}')">
-        <span class="material-symbols-outlined" style="font-size:13px">add</span> Add Activity
-      </button>
-    </div>
-    ${data.activities.map((a,i) => `
-      <div style="border:1.5px solid rgba(124,97,0,0.12);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,0.5)">
-        <div style="width:52px;height:42px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid rgba(124,97,0,0.12)">
-          <img src="${a.img}" style="width:100%;height:100%;object-fit:cover"/>
-        </div>
-        <input class="field-input" value="${a.text}" style="flex:2;min-width:180px" placeholder="Activity description" onchange="updateActivity('${ageKey}',${a.id},'text',this.value)"/>
-        <input class="field-input" value="${a.img}" style="flex:1;min-width:140px" placeholder="Image URL" onchange="updateActivity('${ageKey}',${a.id},'img',this.value)"/>
-        <button class="ws-btn delete" style="width:26px;height:26px;flex-shrink:0" onclick="deleteActivity('${ageKey}',${a.id})"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>
-      </div>`).join('')}`;
-}
-
-// ── Age data CRUD ────────────────────────────────────────────────────────
-function addFocusArea(ageKey) {
-  openItemModal('Add Focus Area', [
-    { id:'icon',  label:'Emoji Icon',    placeholder:'e.g. 🌟', value:'' },
-    { id:'title', label:'Focus Title',   placeholder:'e.g. Balance & Coordination', value:'' },
-    { id:'desc',  label:'Description',   placeholder:'What this focus develops…', value:'' },
-    { id:'img',   label:'Image URL',     placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    state.ageData[ageKey].focuses.push({ id:Date.now(), icon:vals.icon||'⭐', title:vals.title, desc:vals.desc, img:vals.img||'' });
-    autoSave(); renderAgeEditor(ageKey); toast('Focus area added!');
-  });
-}
-function updateFocusArea(ageKey, id, field, val) {
-  const f = state.ageData[ageKey].focuses.find(x=>x.id===id);
-  if (f) f[field]=val;
-  autoSave();
-}
-function deleteFocusArea(ageKey, id) {
-  if (!confirm('Delete this focus area?')) return;
-  state.ageData[ageKey].focuses = state.ageData[ageKey].focuses.filter(x=>x.id!==id); autoSave();
-  renderAgeEditor(ageKey); toast('Focus area deleted');
-}
-function addActivity(ageKey) {
-  openItemModal('Add Activity', [
-    { id:'text', label:'Activity Description', placeholder:'What the child will do…', value:'', textarea:true },
-    { id:'img',  label:'Image URL',            placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.text) return;
-    state.ageData[ageKey].activities.push({ id:Date.now(), text:vals.text, img:vals.img||'' });
-    autoSave(); renderAgeEditor(ageKey); toast('Activity added!');
-  });
-}
-function updateActivity(ageKey, id, field, val) {
-  const a = state.ageData[ageKey].activities.find(x=>x.id===id);
-  if (a) a[field]=val;
-  autoSave();
-}
-function deleteActivity(ageKey, id) {
-  if (!confirm('Delete this activity?')) return;
-  state.ageData[ageKey].activities = state.ageData[ageKey].activities.filter(x=>x.id!==id); autoSave();
-  renderAgeEditor(ageKey); toast('Activity deleted');
-}
-
-function getMilestoneTitle(k) {
-  const m = { '0-6':'Sensory Awakening & Bonding', '6-12':'Motor Skills & Object Permanence', '12-24':'Walking, Talking & Symbolic Play', '24-36':'Language, Logic & Emotional Regulation' };
-  return m[k] || '';
-}
-function getMilestoneImg(k) {
-  const m = { '0-6':'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80', '6-12':'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&q=80', '12-24':'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=800&q=80', '24-36':'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80' };
-  return m[k] || '';
-}
-function getMilestoneDesc(k) {
-  const m = { '0-6':'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling.', '6-12':'Baby begins sitting, crawling, and pulling to stand. They understand that objects exist even when hidden — a huge cognitive leap.', '12-24':'First steps mark a revolution in independence. Vocabulary explodes from first words to 50+ by age 2.', '24-36':'Sentences grow from 2 words to full stories. Toddlers ask "Why?" constantly — this is curiosity doing its best work.' };
-  return m[k] || '';
-}
-function getFocusAreas(k) {
-  const data = {
-    '0-6':   [{icon:'👁️',title:'Visual Tracking',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80',desc:'High-contrast images and slow movement'},{icon:'👂',title:'Auditory Stimulation',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Soft music and natural sounds'},{icon:'🤲',title:'Tactile Exploration',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80',desc:'Different textures and skin contact'},{icon:'💞',title:'Emotional Bonding',img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400&q=80',desc:'Eye contact and responsive caregiving'}],
-    '6-12':  [{icon:'🧠',title:'Cognitive Growth',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80',desc:'Object permanence games'},{icon:'✋',title:'Fine Motor',img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80',desc:'Picking up small objects'},{icon:'🗣️',title:'Language Seeds',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Babbling and board books'},{icon:'🏃',title:'Gross Motor',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80',desc:'Crawling and sitting'}],
-    '12-24': [{icon:'🎭',title:'Pretend Play',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',desc:'Role-play scenarios'},{icon:'🔤',title:'Language Explosion',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Naming and pointing'},{icon:'🧩',title:'Problem Solving',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80',desc:'Shape sorters and puzzles'},{icon:'🎨',title:'Creative Expression',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80',desc:'Finger painting and crayons'}],
-    '24-36': [{icon:'🔢',title:'Early Numeracy',img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400&q=80',desc:'Counting and sorting'},{icon:'🗺️',title:'Memory & Recall',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Retelling stories'},{icon:'🫂',title:'Emotional Intelligence',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80',desc:'Naming feelings'},{icon:'🔬',title:'Scientific Curiosity',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80',desc:'Simple experiments'}],
-  };
-  return data[k] || [];
-}
-function getActivities(k) {
-  const data = {
-    '0-6':   [{text:'Black & white high-contrast cards',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80'},{text:'Gentle tummy time on a soft mat',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Sing the same lullaby daily',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'},{text:'Narrate everything you do while feeding',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Soft textured sensory book',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80'},{text:'Warm oil massage before bath',img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=300&q=80'}],
-    '6-12':  [{text:'Peek-a-boo with a soft cloth',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Stacking soft rings',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80'},{text:'Treasure basket exploration',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80'},{text:'Mirror play',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Water play in shallow tub',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Crawl obstacle course',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80'}],
-    '12-24': [{text:'Pretend kitchen play',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80'},{text:'Shape sorter challenge',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80'},{text:'Nature walk',img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80'},{text:'Finger painting',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80'},{text:'Block stacking towers',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80'},{text:'Reading the same book nightly',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'}],
-    '24-36': [{text:'Sorting games by colour',img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=300&q=80'},{text:'Bedtime retelling',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'},{text:'Water and oil experiment',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Feelings check-in cards',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Nature mandalas',img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80'},{text:'Simple board games',img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80'}],
-  };
-  return data[k] || [];
 }
 
 function renderCommunity() {
