@@ -235,34 +235,41 @@
 
 <!-- HEADER -->
 <header class="glass fixed top-0 left-0 right-0 z-50 rounded-b-[2rem] shadow-sm" id="site-header">
-
-  <!-- Top contact bar (desktop only) -->
-  <div class="hidden md:flex items-center justify-center gap-8 w-full px-4 md:px-8 py-1.5" style="border-bottom:1px solid rgba(124,97,0,0.08)">
-    <a href="tel:+919529190553" style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#65655f;text-decoration:none;white-space:nowrap;transition:color .2s" onmouseover="this.style.color='#7c6100'" onmouseout="this.style.color='#65655f'">
-      <span style="font-size:13px;color:#F4C430">&#9742;</span>+91 9529190553
-    </a>
-    <a href="mailto:urjaamindzz@gmail.com" style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#65655f;text-decoration:none;white-space:nowrap;transition:color .2s" onmouseover="this.style.color='#7c6100'" onmouseout="this.style.color='#65655f'">
-      <span style="font-size:13px;color:#F4C430">&#9993;</span>urjaamindzz@gmail.com
-    </a>
-  </div>
-
   <nav class="flex justify-between items-center w-full px-4 md:px-8 py-2 md:py-3 max-w-7xl mx-auto">
 
-    <!-- Logo -->
-    <div class="logo-group" style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px">
+    <!-- Logo (left, vertically centered) -->
+    <div class="logo-group" style="flex-shrink:0;display:flex;align-items:center">
       <a href="home.html" class="logo-link">
         <img alt="Urjaa Mindz Logo" class="w-auto object-contain h-14 md:h-28" src="logo.png"/>
       </a>
     </div>
 
-    <!-- Nav links (desktop) -->
-    <div class="hidden md:flex items-center gap-6 font-['Noto_Serif'] text-base font-bold tracking-tight">
-      <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="#programs">Programs</a>
-      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#community">Community</a>
-      <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#home">Our Story</a>
+    <!-- Center: 3 stacked rows — contact / nav / sanskrit (desktop only) -->
+    <div class="hidden md:flex flex-col items-center" style="flex:1;max-width:560px;margin:0 24px">
+      <!-- Row 1: contact -->
+      <div class="flex items-center justify-center gap-8" style="width:100%;padding:3px 0 5px;border-bottom:1px solid rgba(124,97,0,0.08)">
+        <a href="tel:+919529190553" style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#65655f;text-decoration:none;white-space:nowrap;transition:color .2s" onmouseover="this.style.color='#7c6100'" onmouseout="this.style.color='#65655f'">
+          <span style="font-size:13px;color:#F4C430">&#9742;</span>+91 9529190553
+        </a>
+        <a href="mailto:urjaamindzz@gmail.com" style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#65655f;text-decoration:none;white-space:nowrap;transition:color .2s" onmouseover="this.style.color='#7c6100'" onmouseout="this.style.color='#65655f'">
+          <span style="font-size:13px;color:#F4C430">&#9993;</span>urjaamindzz@gmail.com
+        </a>
+      </div>
+      <!-- Row 2: nav links -->
+      <div class="flex items-center justify-center gap-6 font-['Noto_Serif'] text-base font-bold tracking-tight" style="padding:6px 0">
+        <a class="text-[#F4C430] border-b-2 border-[#F4C430] pb-0.5" href="#programs">Programs</a>
+        <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#community">Community</a>
+        <a class="text-[#383833] hover:text-[#F4C430] hover:scale-105 transition-all" href="#home">Our Story</a>
+      </div>
+      <!-- Row 3: sanskrit tagline -->
+      <div class="flex items-center justify-center gap-2" style="width:100%;padding:5px 0 3px;border-top:1px solid rgba(124,97,0,0.08);background:linear-gradient(90deg,transparent,rgba(252,204,56,0.07) 30%,rgba(252,204,56,0.07) 70%,transparent)">
+        <span class="sanskrit-text">स्नेहन वर्धते बुद्धिः</span>
+        <span class="sanskrit-divider">·</span>
+        <span class="sanskrit-sub">"With love, intelligence grows"</span>
+      </div>
     </div>
 
-    <!-- Right: contact + socials + CTA + hamburger -->
+    <!-- Right: socials + CTA + hamburger (vertically centered) -->
     <div class="flex items-center gap-3">
 
       <!-- Social icons — desktop -->
@@ -302,14 +309,6 @@
     </div>
 
   </nav>
-
-  <!-- Sanskrit tagline strip -->
-  <div class="sanskrit-strip">
-    <span class="sanskrit-text">स्नेहन वर्धते बुद्धिः</span>
-    <span class="sanskrit-divider">·</span>
-    <span class="sanskrit-sub">"With love, intelligence grows"</span>
-  </div>
-
 </header>
 <!-- Mobile backdrop -->
 <div id="mobile-menu-backdrop"></div>
