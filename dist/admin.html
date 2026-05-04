@@ -636,7 +636,7 @@ body{
   ">
     <!-- Logo -->
     <div style="text-align:center;margin-bottom:28px">
-      <img src="/assets/logo-BCZWC3h6.png"
+      <img src="/assets/logo-vcZ-0p-h.png"
         alt="Urjaa Mindz"
         style="height:70px;width:auto;object-fit:contain;"/>
       <div style="margin-top:8px">
@@ -779,7 +779,7 @@ function adminLogin() {
 <nav id="sidebar">
   <div class="sidebar-logo">
     <img class="sidebar-logo-img" alt="Urjaa Mindz"
-      src="/assets/logo-BCZWC3h6.png"/>
+      src="/assets/logo-vcZ-0p-h.png"/>
     <div class="sidebar-logo-text-wrap">
       <div class="sidebar-logo-name">Urjaa Mindz</div>
       <div class="sidebar-logo-sub">Admin Panel</div>
@@ -2278,8 +2278,8 @@ function renderLeads() {
           date + (time ? '<br><span style="color:#94918a;font-size:11px">' + time + '</span>' : '') +
         '</td>' +
         '<td style="padding:8px 14px;border-bottom:1px solid rgba(0,0,0,0.05);text-align:center">' +
-          '<button onclick="deleteLead(' + l.id + ')" title="Delete" style="background:none;border:none;cursor:pointer;color:#be2d06;padding:5px;border-radius:6px;line-height:1;transition:background .15s" onmouseenter="this.style.background=\'rgba(190,45,6,0.08)\'" onmouseleave="this.style.background=\'none\'">' +
-            '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">delete</span>' +
+          '<button data-delete-id="' + l.id + '" title="Delete" style="background:none;border:none;cursor:pointer;color:#be2d06;padding:5px;border-radius:6px;line-height:1;transition:background .15s">' +
+            '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;pointer-events:none">delete</span>' +
           '</button>' +
         '</td>' +
       '</tr>';
@@ -2295,31 +2295,41 @@ function renderLeads() {
       '<thead><tr>' + th('Name') + th('Phone') + th('Child Age') + th('Location') + th('Source') + th('Date') + th('') + '</tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
     '</table></div>';
+
+    if (!wrap._deleteListenerAdded) {
+      wrap._deleteListenerAdded = true;
+      wrap.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-delete-id]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-delete-id');
+        if (!confirm('Delete this lead? This cannot be undone.')) return;
+        btn.disabled = true;
+        btn.style.opacity = '0.4';
+        fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
+          method: 'DELETE',
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
+        }).then(function(r) {
+          if (r.ok) {
+            renderLeads();
+          } else {
+            btn.disabled = false; btn.style.opacity = '';
+            r.json().then(function(e2) {
+              alert('Delete failed: ' + (e2.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+            }).catch(function() {
+              alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
+            });
+          }
+        }).catch(function() {
+          btn.disabled = false; btn.style.opacity = '';
+          alert('Network error — could not delete lead.');
+        });
+      });
+    }
   })
   .catch(function() {
     wrap.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#be2d06">' +
       '<span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:8px">error</span>' +
       'Failed to load leads. Check your Supabase connection.</div>';
-  });
-}
-
-function deleteLead(id) {
-  if (!confirm('Delete this lead? This cannot be undone.')) return;
-  fetch(SUPABASE_URL + '/rest/v1/leads?id=eq.' + id, {
-    method: 'DELETE',
-    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY }
-  }).then(function(r) {
-    if (r.ok) {
-      renderLeads();
-    } else {
-      r.json().then(function(e) {
-        alert('Delete failed: ' + (e.message || r.status) + '\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
-      }).catch(function() {
-        alert('Delete failed (' + r.status + ').\n\nRun in Supabase SQL Editor:\nGRANT DELETE ON public.leads TO anon;');
-      });
-    }
-  }).catch(function() {
-    alert('Network error — could not delete lead.');
   });
 }
 
