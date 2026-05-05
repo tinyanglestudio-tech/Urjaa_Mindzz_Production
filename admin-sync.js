@@ -177,7 +177,7 @@
       var badgeStyle = w.badge === 'Limited Spots' ? 'background:rgba(167,70,50,0.12);color:#a74632' :
                       w.badge === 'Online Only' ? 'background:rgba(124,97,0,0.08);color:#7c6100' :
                       'background:rgba(167,70,50,0.12);color:#a74632';
-      return '<div class="glass-card flex flex-col md:flex-row items-center p-5 rounded-2xl gap-6 soft-card">'+
+      return '<div class="glass-card flex flex-col md:flex-row items-start p-5 rounded-2xl gap-6 soft-card">'+
         '<div class="bg-primary-container text-on-primary-container p-5 rounded-xl text-center min-w-[100px]">'+
           '<span class="block text-xs font-bold uppercase tracking-widest">'+mon+'</span>'+
           '<span class="block text-3xl font-black">'+day+'</span>'+
@@ -186,7 +186,7 @@
           '<h4 class="font-[\'Noto_Serif\'] text-lg font-bold mb-1">'+esc(w.title)+'</h4>'+
           '<p class="text-on-surface-variant text-sm">'+esc(w.desc)+'</p>'+
         '</div>'+
-        '<div class="flex items-center gap-3 flex-wrap justify-center md:justify-end">'+
+        '<div class="flex items-center gap-3 flex-wrap justify-start md:justify-end">'+
           '<span class="text-xs font-medium px-4 py-1 rounded-full" style="'+badgeStyle+'">'+esc(w.badge||'')+'</span>'+
           '<button onclick="(window.openJoinPopup&&window.openJoinPopup())" class="btn-primary px-5 py-2.5 rounded-xl font-bold text-sm">Register</button>'+
         '</div>'+
