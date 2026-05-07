@@ -1694,6 +1694,8 @@ function adminLogin() {
 // ── State ──────────────────────────────────────────────────────────────────
 // ── State Persistence ──────────────────────────────────────────────────────
 const ADMIN_STATE_KEY = 'urjaa_admin_state';
+var _remoteLoaded = false;
+var _pendingSave  = false;
 let SUPABASE_URL = '';
 let SUPABASE_ANON_KEY = '';
 fetch('/api/config').then(function(r){return r.json();}).then(function(c){
@@ -1742,6 +1744,7 @@ function saveState() {
         return img;
       });
     }
+    if (!_remoteLoaded) { _pendingSave = true; return; }
     _pushToSupabase('admin_state', toSync)
       .then(function() {
         var el = document.getElementById('sync-status');
@@ -1799,6 +1802,7 @@ let state = {
     'community-hero':     { label:'Community: Hero',            page:'Community', icon:'star',          visible:true },
     'community-bloom':    { label:'Community: Mothers Gallery', page:'Community', icon:'photo_camera',  visible:true },
     'community-cta':      { label:'Community: Join CTA',        page:'Community', icon:'campaign',      visible:true },
+    'programs-age':       { label:'Programs: Age Selector',     page:'Programs',  icon:'tune',          visible:true },
   },
   images: [
     { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
@@ -1844,7 +1848,7 @@ let state = {
     '12-24':{ level:3, name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.', focusAreas:['Cognitive Development','Fine Motor Skills','Visual Development','Language Development','Coordination (Bilateral)','Attention & Focus','Sensory Exploration'] },
     '24-36':{ level:4, name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.', focusAreas:['Cognitive & Logical Development','Fine Motor Skills','Creativity & Imagination','Language & Communication','Visual Skills','Focus & Attention','Sensory Play','Early Maths Skills'] },
   },
-  pdfGuides: [],
+  pdfGuides: { '0-6':[], '6-12':[], '12-24':[], '24-36':[] },
   articles: [],
     ageData: {
     '0-6':  {
@@ -2563,7 +2567,18 @@ function renderAgeEditor(ageKey) {
         <input class="field-input" value="${a.text}" style="flex:2;min-width:180px" placeholder="Activity description" onchange="updateActivity('${ageKey}',${a.id},'text',this.value)"/>
         <input class="field-input" value="${a.img}" style="flex:1;min-width:140px" placeholder="Image URL" onchange="updateActivity('${ageKey}',${a.id},'img',this.value)"/>
         <button class="ws-btn delete" style="width:26px;height:26px;flex-shrink:0" onclick="deleteActivity('${ageKey}',${a.id})"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>
-      </div>`).join('')}`;
+      </div>`).join('')}
+
+    <!-- PDF Guides -->
+    <div style="background:rgba(124,97,0,0.04);border:1.5px solid rgba(124,97,0,0.15);border-radius:14px;padding:16px;margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:700;color:#7c6100">📄 PDF Guides — ${ageLabels[ageKey]}</div>
+        <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addPdf('${ageKey}')">
+          <span class="material-symbols-outlined" style="font-size:13px">add</span> Add PDF
+        </button>
+      </div>
+      <div id="pdf-admin-list-${ageKey}">${renderPdfAdminList(ageKey)}</div>
+    </div>`;
 }
 
 // ── Age data CRUD ────────────────────────────────────────────────────────
@@ -2608,6 +2623,82 @@ function deleteActivity(ageKey, id) {
   if (!confirm('Delete this activity?')) return;
   state.ageData[ageKey].activities = state.ageData[ageKey].activities.filter(x=>x.id!==id); autoSave();
   renderAgeEditor(ageKey); toast('Activity deleted');
+}
+
+// ── PDF Guides CRUD ──────────────────────────────────────────────────────
+function renderPdfAdminList(ageKey) {
+  var pdfs = (state.pdfGuides && !Array.isArray(state.pdfGuides) && state.pdfGuides[ageKey]) || [];
+  if (!pdfs.length) return '<div style="font-size:12px;color:#888;padding:6px 0">No PDFs yet. Click "Add PDF" to upload or link one.</div>';
+  return pdfs.map(function(p) {
+    return '<div style="border:1.5px solid rgba(124,97,0,0.12);border-radius:10px;padding:12px;margin-bottom:8px;background:rgba(255,255,255,0.6)">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+        '<span style="font-size:16px">📄</span>' +
+        '<span style="font-size:12px;font-weight:700;color:#383833;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (p.title || 'Untitled PDF') + '</span>' +
+        '<button class="ws-btn delete" style="width:26px;height:26px;flex-shrink:0" onclick="deletePdf(\'' + ageKey + '\',' + p.id + ')"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>' +
+      '</div>' +
+      '<div class="field-row" style="margin-bottom:6px">' +
+        '<input class="field-input" value="' + (p.title||'') + '" placeholder="PDF Title" onchange="updatePdf(\'' + ageKey + '\',' + p.id + ',\'title\',this.value)"/>' +
+        '<input class="field-input" value="' + (p.desc||'') + '" placeholder="Short description (optional)" onchange="updatePdf(\'' + ageKey + '\',' + p.id + ',\'desc\',this.value)"/>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;align-items:center">' +
+        '<input class="field-input" style="flex:1" value="' + (p.url||'') + '" placeholder="Paste PDF URL or upload below" onchange="updatePdf(\'' + ageKey + '\',' + p.id + ',\'url\',this.value)"/>' +
+        '<label class="img-btn upload" style="flex-shrink:0;font-size:11px;padding:6px 10px;cursor:pointer">' +
+          '<span class="material-symbols-outlined" style="font-size:13px">upload</span> Upload' +
+          '<input type="file" accept=".pdf,application/pdf" style="display:none" onchange="handlePdfUpload(event,\'' + ageKey + '\',' + p.id + ')"/>' +
+        '</label>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function addPdf(ageKey) {
+  if (!state.pdfGuides || Array.isArray(state.pdfGuides)) {
+    state.pdfGuides = { '0-6':[], '6-12':[], '12-24':[], '24-36':[] };
+  }
+  if (!Array.isArray(state.pdfGuides[ageKey])) state.pdfGuides[ageKey] = [];
+  state.pdfGuides[ageKey].push({ id: Date.now(), title: '', desc: '', url: '' });
+  autoSave(); renderAgeEditor(ageKey); toast('PDF row added — fill in title and upload or paste URL');
+}
+
+function deletePdf(ageKey, id) {
+  if (!confirm('Remove this PDF?')) return;
+  if (state.pdfGuides && state.pdfGuides[ageKey]) {
+    state.pdfGuides[ageKey] = state.pdfGuides[ageKey].filter(function(p){ return p.id !== id; });
+  }
+  autoSave(); renderAgeEditor(ageKey); toast('PDF removed');
+}
+
+function updatePdf(ageKey, id, field, val) {
+  if (!state.pdfGuides || !state.pdfGuides[ageKey]) return;
+  var p = state.pdfGuides[ageKey].find(function(x){ return x.id === id; });
+  if (p) { p[field] = val; autoSave(); }
+}
+
+function handlePdfUpload(event, ageKey, id) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var ext  = file.name.split('.').pop().toLowerCase() || 'pdf';
+  var path = 'pdfs/' + ageKey + '-' + id + '-' + Date.now() + '.' + ext;
+  toast('Uploading ' + file.name + '…');
+  fetch(SUPABASE_URL + '/storage/v1/object/site-images/' + path, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Content-Type': 'application/pdf',
+      'x-upsert': 'true'
+    },
+    body: file
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Upload failed: ' + r.status);
+    var publicUrl = SUPABASE_URL + '/storage/v1/object/public/site-images/' + path;
+    updatePdf(ageKey, id, 'url', publicUrl);
+    renderAgeEditor(ageKey);
+    toast('✓ PDF uploaded: ' + file.name);
+  }).catch(function(err) {
+    console.error('PDF upload error:', err);
+    toast('Upload failed — paste the PDF URL manually');
+  });
 }
 
 function getMilestoneTitle(k) {
@@ -3433,6 +3524,8 @@ _fetchFromSupabase('admin_state').then(function(remote){
       _pushToSupabase('admin_state', toSeed);
     } catch(e){}
   }
+  _remoteLoaded = true;
+  if (_pendingSave) { _pendingSave = false; saveState(); }
 });
 
 _fetchFromSupabase('webhook_settings').then(function(remote){

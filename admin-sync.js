@@ -331,6 +331,13 @@
     }
   }
 
+  function applyPdfGuides(s){
+    if (!s.pdfGuides || typeof s.pdfGuides !== 'object' || Array.isArray(s.pdfGuides)) return;
+    if (window.__urjaaApplyPdfGuides) {
+      window.__urjaaApplyPdfGuides(s.pdfGuides);
+    }
+  }
+
   function apply(s){
     if (!s) return;
     try { applyTexts(s); } catch(e) { console.error(e); }
@@ -348,6 +355,7 @@
     try { applyWisdom(s); } catch(e) { console.error(e); }
     try { applyImages(s); } catch(e) { console.error(e); }
     try { applyLevelPrograms(s); } catch(e) { console.error(e); }
+    try { applyPdfGuides(s); } catch(e) { console.error(e); }
   }
 
   function fetchAndApply() {
