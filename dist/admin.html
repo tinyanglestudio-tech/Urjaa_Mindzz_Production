@@ -798,10 +798,6 @@ function adminLogin() {
   </div>
 
   <div class="sidebar-section-label">Pages</div>
-  <div class="nav-item" onclick="showPage('home')">
-    <span class="material-symbols-outlined">auto_stories</span>
-    <span class="nav-item-label">Our Story</span>
-  </div>
   <div class="nav-item" onclick="showPage('programs')">
     <span class="material-symbols-outlined">school</span>
     <span class="nav-item-label">Programs</span>
@@ -809,6 +805,10 @@ function adminLogin() {
   <div class="nav-item" onclick="showPage('community')">
     <span class="material-symbols-outlined">groups</span>
     <span class="nav-item-label">Community</span>
+  </div>
+  <div class="nav-item" onclick="showPage('home')">
+    <span class="material-symbols-outlined">auto_stories</span>
+    <span class="nav-item-label">Our Story</span>
   </div>
 
   <div class="sidebar-section-label">Global</div>
@@ -1420,9 +1420,9 @@ function adminLogin() {
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
         <div class="tabs" style="flex:1;margin-bottom:0" id="images-tabs">
           <button class="tab active" onclick="switchImgTab('all')"><span class="material-symbols-outlined">photo_library</span> All Images</button>
-          <button class="tab" onclick="switchImgTab('Home')"><span class="material-symbols-outlined">home</span> Our Story</button>
           <button class="tab" onclick="switchImgTab('Programs')"><span class="material-symbols-outlined">school</span> Programs</button>
           <button class="tab" onclick="switchImgTab('Community')"><span class="material-symbols-outlined">groups</span> Community</button>
+          <button class="tab" onclick="switchImgTab('Home')"><span class="material-symbols-outlined">home</span> Our Story</button>
         </div>
         <button class="topbar-btn primary" onclick="addNewImage()" style="flex-shrink:0">
           <span class="material-symbols-outlined" style="font-size:16px">add_photo_alternate</span>
@@ -1799,25 +1799,25 @@ function loadSavedState() {
 let state = {
   currentPage: 'dashboard',
   sections: {
+    'programs-age':       { label:'Programs: Age Selector',      page:'Programs',  icon:'tune',          visible:true },
+    'community-hero':     { label:'Community: Hero',             page:'Community', icon:'star',          visible:true },
+    'community-bloom':    { label:'Community: Mothers Who Bloom',page:'Community', icon:'photo_camera',  visible:true },
+    'community-cta':      { label:'Community: Join CTA',         page:'Community', icon:'campaign',      visible:true },
     'home-hero':          { label:'Our Story: Hero',            page:'Our Story', icon:'auto_awesome',  visible:true },
     'home-pillars':       { label:'Our Story: 5 Pillars',       page:'Our Story', icon:'view_column',   visible:true },
     'home-story':         { label:'Our Story: Founders',        page:'Our Story', icon:'auto_stories',  visible:true },
     'home-vision':        { label:'Our Story: Vision & Mission',page:'Our Story', icon:'visibility',    visible:true },
     'home-cta':           { label:'Our Story: Join CTA',        page:'Our Story', icon:'campaign',      visible:true },
-    'community-hero':     { label:'Community: Hero',            page:'Community', icon:'star',          visible:true },
-    'community-bloom':    { label:'Community: Mothers Gallery', page:'Community', icon:'photo_camera',  visible:true },
-    'community-cta':      { label:'Community: Join CTA',        page:'Community', icon:'campaign',      visible:true },
-    'programs-age':       { label:'Programs: Age Selector',     page:'Programs',  icon:'tune',          visible:true },
   },
   images: [
-    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
-    { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'4.jpeg' },
-    { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'12.jpeg' },
     { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'0.png' },
     { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'3.jpeg' },
     { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'0.png' },
     { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'8.png' },
     { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'2.jpeg' },
+    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
+    { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'4.jpeg' },
+    { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'12.jpeg' },
   ],
   workshops: [
     { id:1, date:'2025-10-12', title:'Mindful Motherhood: The First 500 Days', desc:'Understanding the emotional and neurological shifts in you and your baby.', badge:'Limited Spots' },
@@ -2718,7 +2718,7 @@ function switchImgTab(tab) {
 }
 
 function renderImages() {
-  const pages = ['Home','Programs','Community'];
+  const pages = ['Programs','Community','Home'];
   const allImgs = state.images;
 
   // Stats strip
@@ -2728,9 +2728,9 @@ function renderImages() {
     pages.forEach(p => { counts[p] = allImgs.filter(i => i.page === p).length; });
     strip.innerHTML = [
       { label:'All', count:allImgs.length, icon:'photo_library', color:'#7c6100' },
-      { label:'Home', count:counts['Home']||0, icon:'home', color:'#7c6100' },
       { label:'Programs', count:counts['Programs']||0, icon:'school', color:'#a74632' },
       { label:'Community', count:counts['Community']||0, icon:'groups', color:'#995200' },
+      { label:'Home', count:counts['Home']||0, icon:'home', color:'#7c6100' },
     ].map(s => `
       <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.8);border-radius:12px;padding:7px 14px;backdrop-filter:blur(12px);cursor:pointer;transition:all 0.2s" onclick="switchImgTab('${s.label === 'All' ? 'all' : s.label}')">
         <span class="material-symbols-outlined" style="font-size:15px;color:${s.color}">${s.icon}</span>
@@ -2815,9 +2815,9 @@ function addNewImage() {
     <div class="field">
       <div class="field-label">Belongs To Page</div>
       <select class="field-input" id="ni-page" style="cursor:pointer">
-        <option value="Home"      ${defaultPage==='Home'     ?'selected':''}>Our Story</option>
         <option value="Programs"  ${defaultPage==='Programs' ?'selected':''}>Programs</option>
         <option value="Community" ${defaultPage==='Community'?'selected':''}>Community</option>
+        <option value="Home"      ${defaultPage==='Home'     ?'selected':''}>Our Story</option>
       </select>
     </div>
     <div class="field">
