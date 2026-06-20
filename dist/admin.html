@@ -1270,7 +1270,7 @@ function adminLogin() {
       <div class="tabs" id="programs-tabs">
         <button class="tab active" onclick="switchTab('programs','hero')"><span class="material-symbols-outlined">star</span> Hero</button>
         <button class="tab" onclick="switchTab('programs','levels')"><span class="material-symbols-outlined">school</span> Levels</button>
-        <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">child_care</span> Age Selector</button>
+        <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">picture_as_pdf</span> PDF Guides</button>
         <button class="tab" onclick="switchTab('programs','bubbles')"><span class="material-symbols-outlined">bubble_chart</span> Brain Programs</button>
       </div>
 
@@ -1316,8 +1316,8 @@ function adminLogin() {
       <div id="programs-tab-agesel" style="display:none">
         <div class="card">
           <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">child_care</span></div>
-            <div><div class="card-header-title">Age Selector Content</div><div class="card-header-sub">Milestone, focus areas &amp; activities per age group</div></div>
+            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">picture_as_pdf</span></div>
+            <div><div class="card-header-title">PDF Guides</div><div class="card-header-sub">Downloadable PDF guides per age group</div></div>
             <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
           </div>
           <div class="card-body open">
@@ -2512,70 +2512,13 @@ function renderAgeEditor(ageKey) {
   const ageLabels = { '0-6':'0–6 Months', '6-12':'6–12 Months', '12-24':'12–24 Months', '24-36':'24–36 Months' };
   const panel = document.getElementById('age-editor-panel');
   if (!panel) return;
-  const data = state.ageData[ageKey];
-  if (!data) return;
-  const m = data.milestone;
 
+  // NOTE: Level name, tagline and focus areas for each age group are edited in
+  // the "Levels" tab (those are what actually render on the website). This tab
+  // only manages the downloadable PDF guides per age group.
   panel.innerHTML = `
-    <!-- Milestone -->
-    <div style="background:rgba(252,204,56,0.06);border:1.5px solid rgba(252,204,56,0.25);border-radius:14px;padding:16px;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100;margin-bottom:12px">📍 ${ageLabels[ageKey]} — Milestone</div>
-      <div class="field-row">
-        <div class="field"><div class="field-label">Milestone Title</div>
-          <input class="field-input" value="${m.title}" placeholder="Title" onchange="state.ageData['${ageKey}'].milestone.title=this.value;autoSave()"/>
-        </div>
-        <div class="field"><div class="field-label">Milestone Image URL</div>
-          <input class="field-input" value="${m.img}" placeholder="https://…" onchange="state.ageData['${ageKey}'].milestone.img=this.value;autoSave()"/>
-        </div>
-      </div>
-      <div class="field"><div class="field-label">Description</div>
-        <textarea class="field-input field-textarea" onchange="state.ageData['${ageKey}'].milestone.desc=this.value;autoSave()">${m.desc}</textarea>
-      </div>
-    </div>
-
-    <!-- Focus Areas -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100">🎯 Focus Areas</div>
-      <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addFocusArea('${ageKey}')">
-        <span class="material-symbols-outlined" style="font-size:13px">add</span> Add Focus
-      </button>
-    </div>
-    ${data.focuses.map((f,i) => `
-      <div style="border:1.5px solid rgba(124,97,0,0.12);border-radius:10px;padding:12px;margin-bottom:8px;background:rgba(255,255,255,0.5)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-size:18px">${f.icon}</span>
-          <span style="font-size:12px;font-weight:700;color:#888;flex:1">Focus ${i+1}</span>
-          <button class="ws-btn delete" style="width:26px;height:26px" onclick="deleteFocusArea('${ageKey}',${f.id})"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>
-        </div>
-        <div class="field-row" style="margin-bottom:6px">
-          <input class="field-input" value="${f.icon}" placeholder="Emoji icon" onchange="updateFocusArea('${ageKey}',${f.id},'icon',this.value)"/>
-          <input class="field-input" value="${f.title}" placeholder="Focus title" onchange="updateFocusArea('${ageKey}',${f.id},'title',this.value)"/>
-        </div>
-        <div class="field-row">
-          <input class="field-input" value="${f.desc}" placeholder="Description" onchange="updateFocusArea('${ageKey}',${f.id},'desc',this.value)"/>
-          <input class="field-input" value="${f.img}" placeholder="Image URL" onchange="updateFocusArea('${ageKey}',${f.id},'img',this.value)"/>
-        </div>
-      </div>`).join('')}
-
-    <!-- Activities -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px">
-      <div style="font-size:13px;font-weight:700;color:#7c6100">✅ Activities</div>
-      <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addActivity('${ageKey}')">
-        <span class="material-symbols-outlined" style="font-size:13px">add</span> Add Activity
-      </button>
-    </div>
-    ${data.activities.map((a,i) => `
-      <div style="border:1.5px solid rgba(124,97,0,0.12);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,0.5)">
-        <div style="width:52px;height:42px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid rgba(124,97,0,0.12)">
-          <img src="${a.img}" style="width:100%;height:100%;object-fit:cover"/>
-        </div>
-        <input class="field-input" value="${a.text}" style="flex:2;min-width:180px" placeholder="Activity description" onchange="updateActivity('${ageKey}',${a.id},'text',this.value)"/>
-        <input class="field-input" value="${a.img}" style="flex:1;min-width:140px" placeholder="Image URL" onchange="updateActivity('${ageKey}',${a.id},'img',this.value)"/>
-        <button class="ws-btn delete" style="width:26px;height:26px;flex-shrink:0" onclick="deleteActivity('${ageKey}',${a.id})"><span class="material-symbols-outlined" style="font-size:13px">delete</span></button>
-      </div>`).join('')}
-
     <!-- PDF Guides -->
-    <div style="background:rgba(124,97,0,0.04);border:1.5px solid rgba(124,97,0,0.15);border-radius:14px;padding:16px;margin-top:14px">
+    <div style="background:rgba(124,97,0,0.04);border:1.5px solid rgba(124,97,0,0.15);border-radius:14px;padding:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="font-size:13px;font-weight:700;color:#7c6100">📄 PDF Guides — ${ageLabels[ageKey]}</div>
         <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addPdf('${ageKey}')">
@@ -2584,50 +2527,6 @@ function renderAgeEditor(ageKey) {
       </div>
       <div id="pdf-admin-list-${ageKey}">${renderPdfAdminList(ageKey)}</div>
     </div>`;
-}
-
-// ── Age data CRUD ────────────────────────────────────────────────────────
-function addFocusArea(ageKey) {
-  openItemModal('Add Focus Area', [
-    { id:'icon',  label:'Emoji Icon',    placeholder:'e.g. 🌟', value:'' },
-    { id:'title', label:'Focus Title',   placeholder:'e.g. Balance & Coordination', value:'' },
-    { id:'desc',  label:'Description',   placeholder:'What this focus develops…', value:'' },
-    { id:'img',   label:'Image URL',     placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    state.ageData[ageKey].focuses.push({ id:Date.now(), icon:vals.icon||'⭐', title:vals.title, desc:vals.desc, img:vals.img||'' });
-    autoSave(); renderAgeEditor(ageKey); toast('Focus area added!');
-  });
-}
-function updateFocusArea(ageKey, id, field, val) {
-  const f = state.ageData[ageKey].focuses.find(x=>x.id===id);
-  if (f) f[field]=val;
-  autoSave();
-}
-function deleteFocusArea(ageKey, id) {
-  if (!confirm('Delete this focus area?')) return;
-  state.ageData[ageKey].focuses = state.ageData[ageKey].focuses.filter(x=>x.id!==id); autoSave();
-  renderAgeEditor(ageKey); toast('Focus area deleted');
-}
-function addActivity(ageKey) {
-  openItemModal('Add Activity', [
-    { id:'text', label:'Activity Description', placeholder:'What the child will do…', value:'', textarea:true },
-    { id:'img',  label:'Image URL',            placeholder:'https://images.unsplash.com/…', value:'' },
-  ], (vals) => {
-    if (!vals.text) return;
-    state.ageData[ageKey].activities.push({ id:Date.now(), text:vals.text, img:vals.img||'' });
-    autoSave(); renderAgeEditor(ageKey); toast('Activity added!');
-  });
-}
-function updateActivity(ageKey, id, field, val) {
-  const a = state.ageData[ageKey].activities.find(x=>x.id===id);
-  if (a) a[field]=val;
-  autoSave();
-}
-function deleteActivity(ageKey, id) {
-  if (!confirm('Delete this activity?')) return;
-  state.ageData[ageKey].activities = state.ageData[ageKey].activities.filter(x=>x.id!==id); autoSave();
-  renderAgeEditor(ageKey); toast('Activity deleted');
 }
 
 // ── PDF Guides CRUD ──────────────────────────────────────────────────────
