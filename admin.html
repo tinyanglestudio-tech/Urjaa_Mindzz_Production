@@ -812,10 +812,6 @@ function adminLogin() {
   </div>
 
   <div class="sidebar-section-label">Global</div>
-  <div class="nav-item" onclick="showPage('sections')">
-    <span class="material-symbols-outlined">view_module</span>
-    <span class="nav-item-label">Section Visibility</span>
-  </div>
   <div class="nav-item" onclick="showPage('images')">
     <span class="material-symbols-outlined">photo_library</span>
     <span class="nav-item-label">Image Manager</span>
@@ -905,9 +901,7 @@ function adminLogin() {
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('programs')"><span class="material-symbols-outlined" style="font-size:16px">school</span> Edit Programs</button>
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('community')"><span class="material-symbols-outlined" style="font-size:16px">groups</span> Edit Community</button>
             <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('workshops')"><span class="material-symbols-outlined" style="font-size:16px">event_available</span> Add Workshop</button>
-            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('images')"><span class="material-symbols-outlined" style="font-size:16px">add_photo_alternate</span> Manage Images</button>
-            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('sections')"><span class="material-symbols-outlined" style="font-size:16px">visibility</span> Toggle Sections</button>
-          </div>
+            <button class="topbar-btn secondary" style="justify-content:center" onclick="showPage('images')"><span class="material-symbols-outlined" style="font-size:16px">add_photo_alternate</span> Manage Images</button>          </div>
         </div>
       </div>
     </div>
@@ -1377,12 +1371,6 @@ function adminLogin() {
       </div>
     </div>
 
-    <!-- ════════ SECTION VISIBILITY ════════ -->
-    <div id="page-sections" style="display:none">
-      <p style="color:#666;font-size:13px;margin-bottom:16px">Toggle sections on/off across all pages. Hidden sections will not appear on the live site.</p>
-      <div class="sections-grid" id="sections-visibility-grid"></div>
-    </div>
-
     <!-- ════════ IMAGE MANAGER ════════ -->
     <div id="page-images" style="display:none">
       <!-- Topbar row: tabs + Add button -->
@@ -1747,16 +1735,8 @@ function loadSavedState() {
     if (saved) {
       const parsed = JSON.parse(saved);
       for (const key in parsed) {
-        if (parsed.hasOwnProperty(key) && key !== 'currentPage') {
-          if (key === 'sections') {
-            const allowed = Object.keys(state.sections);
-            const src = parsed.sections || {};
-            allowed.forEach(function(sk){
-              if (src[sk] != null) state.sections[sk] = Object.assign({}, state.sections[sk], { visible: src[sk].visible });
-            });
-          } else {
-            state[key] = parsed[key];
-          }
+        if (parsed.hasOwnProperty(key) && key !== 'currentPage' && key !== 'sections') {
+          state[key] = parsed[key];
         }
       }
       return true;
@@ -1767,24 +1747,13 @@ function loadSavedState() {
 
 let state = {
   currentPage: 'dashboard',
-  sections: {
-    'programs-age':       { label:'Programs: Age Selector',      page:'Programs',  icon:'tune',          visible:true },
-    'community-hero':     { label:'Community: Hero',             page:'Community', icon:'star',          visible:true },
-    'community-bloom':    { label:'Community: Mothers Who Bloom',page:'Community', icon:'photo_camera',  visible:true },
-    'community-cta':      { label:'Community: Join CTA',         page:'Community', icon:'campaign',      visible:true },
-    'home-hero':          { label:'Our Story: Hero',            page:'Our Story', icon:'auto_awesome',  visible:true },
-    'home-pillars':       { label:'Our Story: 5 Pillars',       page:'Our Story', icon:'view_column',   visible:true },
-    'home-story':         { label:'Our Story: Founders',        page:'Our Story', icon:'auto_stories',  visible:true },
-    'home-vision':        { label:'Our Story: Vision & Mission',page:'Our Story', icon:'visibility',    visible:true },
-    'home-cta':           { label:'Our Story: Join CTA',        page:'Our Story', icon:'campaign',      visible:true },
-  },
   images: [
     { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'0.png' },
     { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'3.jpeg' },
     { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'0.png' },
     { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'8.png' },
     { id:'wisdom-comm',    label:'Community — Wisdom in Community', page:'Community', src:'2.jpeg' },
-    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
+    { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'' },
     { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'4.jpeg' },
     { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'12.jpeg' },
   ],
@@ -1931,8 +1900,8 @@ function showPage(name) {
   });
 
   // Update topbar
-  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', sections:'Section Visibility', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings', leads:'Leads' };
-  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', sections:'All Pages', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global', leads:'Supabase' };
+  const titles = { dashboard:'Dashboard', analytics:'Analytics', home:'Our Story', programs:'Programs', community:'Community', images:'Image Manager', workshops:'Workshops', testimonials:'Testimonials', settings:'Site Settings', leads:'Leads' };
+  const badges = { dashboard:'Overview', analytics:'Live Data', home:'index.html', programs:'index.html', community:'index.html', images:'All Pages', workshops:'index.html', testimonials:'index.html', settings:'Global', leads:'Supabase' };
   document.getElementById('topbar-title').textContent = titles[name] || name;
   document.getElementById('topbar-badge').textContent = badges[name] || '';
 
@@ -2040,27 +2009,6 @@ function makeImageField(imgId, containerId) {
     </div>`;
 }
 
-function makeVisToggle(sectionKey) {
-  const sec = state.sections[sectionKey];
-  return `
-    <div class="vis-toggle ${sec.visible ? '' : 'hidden-section'}" onclick="toggleSection('${sectionKey}', this)" id="vistoggle-${sectionKey}">
-      <span class="material-symbols-outlined" style="color:#7c6100;font-size:18px">${sec.icon}</span>
-      <span class="vis-toggle-label">${sec.label}</span>
-      <span style="font-size:12px;color:#888;margin-right:8px">${sec.visible ? 'Visible' : 'Hidden'}</span>
-      <div class="toggle-switch ${sec.visible ? 'on' : ''}" id="switch-${sectionKey}"></div>
-    </div>`;
-}
-
-function toggleSection(key, el) {
-  state.sections[key].visible = !state.sections[key].visible; autoSave();
-  const vis = state.sections[key].visible;
-  el.classList.toggle('hidden-section', !vis);
-  const sw = document.getElementById('switch-' + key);
-  if (sw) sw.classList.toggle('on', vis);
-  el.querySelector('.vis-toggle-label + span').textContent = vis ? 'Visible' : 'Hidden';
-  toast(`Section "${state.sections[key].label}" ${vis ? 'shown' : 'hidden'}`);
-}
-
 function updateImageUrl(imgId, url) {
   const img = state.images.find(i => i.id === imgId);
   if (img) img.src = url;
@@ -2124,7 +2072,6 @@ function renderPage(name) {
   else if (name === 'home') renderHome();
   else if (name === 'programs') renderPrograms();
   else if (name === 'community') renderCommunity();
-  else if (name === 'sections') renderSections();
   else if (name === 'images') renderImages();
   else if (name === 'workshops') {
     _wsCalYear = new Date().getFullYear();
@@ -2527,19 +2474,6 @@ function deleteGallery(id) {
   renderCommunity(); toast('Photo removed');
 }
 
-
-function renderSections() {
-  document.getElementById('sections-visibility-grid').innerHTML =
-    Object.entries(state.sections).map(([key]) => `
-      <div class="section-chip ${state.sections[key].visible ? '' : 'hidden-section'}" onclick="toggleSection('${key}', this)" id="chip-${key}">
-        <div class="section-chip-icon"><span class="material-symbols-outlined">${state.sections[key].icon}</span></div>
-        <div>
-          <div class="section-chip-label">${state.sections[key].label.split(': ')[1] || state.sections[key].label}</div>
-          <div class="section-chip-page">${state.sections[key].page} · ${state.sections[key].visible ? '● Visible' : '○ Hidden'}</div>
-        </div>
-        <div class="toggle-switch ${state.sections[key].visible ? 'on' : ''}" id="switch-${key}" style="margin-left:auto"></div>
-      </div>`).join('');
-}
 
 // ── Image Manager state ───────────────────────────────────────────────────
 let _imgTab = 'all';   // current active tab
@@ -3259,7 +3193,7 @@ _fetchFromSupabase('admin_state').then(function(remote){
   }
   if (remote && typeof remote === 'object') {
     for (var k in remote) {
-      if (Object.prototype.hasOwnProperty.call(remote, k) && k !== 'currentPage') {
+      if (Object.prototype.hasOwnProperty.call(remote, k) && k !== 'currentPage' && k !== 'sections') {
         if (k === 'images') {
           var remoteImgMap = {};
           (remote.images || []).forEach(function(img){ remoteImgMap[img.id] = img; });
@@ -3271,14 +3205,6 @@ _fetchFromSupabase('admin_state').then(function(remote){
           (remote.images || []).forEach(function(img){
             if (!state.images.find(function(i){ return i.id === img.id; })) {
               state.images.push(img);
-            }
-          });
-        } else if (k === 'sections') {
-          var allowedKeys = Object.keys(state.sections);
-          var remoteSecs = remote.sections || {};
-          allowedKeys.forEach(function(sk){
-            if (remoteSecs[sk] != null) {
-              state.sections[sk] = Object.assign({}, state.sections[sk], { visible: remoteSecs[sk].visible });
             }
           });
         } else {

@@ -28,10 +28,22 @@
   }
   function listAt(selector){ return document.querySelector(selector); }
 
+  var TRANSPARENT_PX = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   function applyImages(s){
     if(!s.images) return;
     s.images.forEach(function(img){
-      if(!img.src || img.src.indexOf('data:') === 0) return;
+      // Admin is the source of truth: when no image is set, clear any stale
+      // baked-in image so nothing shows unless the admin provides one.
+      if(!img.src){
+        var sel = 'img[data-img-id="'+img.id+'"]';
+        if (img.id === 'founders') sel += ', img[alt*="Founders"], img[alt*="Jayashree"]';
+        if (img.id === 'hero-bg')  sel += ', img[alt*="Mother and toddler"]';
+        document.querySelectorAll(sel).forEach(function(el){
+          if(el.getAttribute('src') !== TRANSPARENT_PX) el.src = TRANSPARENT_PX;
+        });
+        return;
+      }
+      if(img.src.indexOf('data:') === 0) return;
       document.querySelectorAll('img[data-img-id="'+img.id+'"]').forEach(function(el){
         if(img.id === 'hero-banner'){
           // Cache URL so next visit preloads it instantly
@@ -59,15 +71,6 @@
       if (img.id === 'hero-bg') {
         document.querySelectorAll('img[alt*="Mother and toddler"]').forEach(function(el){ el.src = img.src; });
       }
-    });
-  }
-
-  function applySections(s){
-    if(!s.sections) return;
-    Object.keys(s.sections).forEach(function(key){
-      var el = document.querySelector('[data-section="' + key + '"]');
-      if (!el) return;
-      el.style.display = s.sections[key].visible ? '' : 'none';
     });
   }
 
@@ -314,7 +317,6 @@
     if (!s) return;
     try { applyTexts(s); } catch(e) { console.error(e); }
     try { applyColors(s); } catch(e) { console.error(e); }
-    try { applySections(s); } catch(e) { console.error(e); }
     try { applyPillars(s); } catch(e) { console.error(e); }
     try { applyPhilCards(s); } catch(e) { console.error(e); }
     try { applyMontessori(s); } catch(e) { console.error(e); }
