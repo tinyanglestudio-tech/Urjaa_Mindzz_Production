@@ -1035,6 +1035,8 @@ window._selectAge = function(key) {
     }
     .pillars-circle .pillar-node {
       position: absolute;
+      top: 50%;
+      left: 50%;
       width: 25%;
       z-index: 3;
       aspect-ratio: 1 / 1;
@@ -1045,14 +1047,32 @@ window._selectAge = function(key) {
       justify-content: center;
       text-align: center;
       padding: 14px;
-      transform: translate(-50%, -50%);
-      transition: transform .35s ease, box-shadow .35s ease;
+      --r: 172%;
+      transform: translate(-50%, -50%) rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a)));
+      opacity: 0;
+      transition: opacity .6s ease, box-shadow .35s ease, filter .35s ease;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1.5px solid rgba(255,255,255,0.72);
     }
+    /* Orbit: each bubble revolves around the centre logo while staying upright */
+    @keyframes pillarOrbit {
+      from { transform: translate(-50%, -50%) rotate(var(--a))             translate(var(--r)) rotate(calc(-1 * var(--a))); }
+      to   { transform: translate(-50%, -50%) rotate(calc(var(--a) + 360deg)) translate(var(--r)) rotate(calc(-1 * (var(--a) + 360deg))); }
+    }
+    .pillars-circle.orbiting .pillar-node {
+      opacity: 1;
+      animation: pillarOrbit 32s linear infinite;
+    }
+    /* Pause so the bubbles can be read on hover */
+    .pillars-circle.orbiting:hover .pillar-node { animation-play-state: paused; }
     .pillars-circle .pillar-node:hover {
-      transform: translate(-50%, -50%) scale(1.07);
+      filter: brightness(1.06);
+      z-index: 4;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pillars-circle .pillar-node { opacity: 1; }
+      .pillars-circle.orbiting .pillar-node { animation: none; }
     }
     .pillars-circle .pillar-node .p-emoji { font-size: 1.6rem; line-height:1; margin-bottom:3px; }
     .pillars-circle .pillar-node .p-name  { font-weight:800; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
@@ -1060,35 +1080,35 @@ window._selectAge = function(key) {
 
     /* ── Glass bubble — Love (rose) ── */
     .pillars-circle .node-love {
-      top: 16%; left: 23%;
+      --a: -128deg;
       background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.90) 0%, rgba(255,168,185,0.70) 38%, rgba(225,80,110,0.60) 100%);
       box-shadow: inset 0 2px 14px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(180,40,70,0.18), 0 8px 30px rgba(220,70,100,0.30), 0 2px 6px rgba(0,0,0,0.08);
       color: #780028;
     }
     /* ── Glass bubble — Explore (amber) ── */
     .pillars-circle .node-explore {
-      top: 16%; left: 77%;
+      --a: -52deg;
       background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.90) 0%, rgba(254,210,110,0.72) 38%, rgba(220,148,20,0.62) 100%);
       box-shadow: inset 0 2px 14px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(180,110,0,0.15), 0 8px 30px rgba(220,148,20,0.28), 0 2px 6px rgba(0,0,0,0.08);
       color: #5a3a00;
     }
     /* ── Glass bubble — Stimulate (sky blue) ── */
     .pillars-circle .node-stimulate {
-      top: 60%; left: 8%;
+      --a: 167deg;
       background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.90) 0%, rgba(158,202,225,0.70) 38%, rgba(55,120,190,0.60) 100%);
       box-shadow: inset 0 2px 14px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(20,80,160,0.15), 0 8px 30px rgba(55,120,190,0.28), 0 2px 6px rgba(0,0,0,0.08);
       color: #0a3060;
     }
     /* ── Glass bubble — Bloom (orange) ── */
     .pillars-circle .node-bloom {
-      top: 60%; left: 92%;
+      --a: 13deg;
       background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.90) 0%, rgba(255,195,120,0.72) 38%, rgba(218,118,40,0.62) 100%);
       box-shadow: inset 0 2px 14px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(160,80,0,0.15), 0 8px 30px rgba(218,118,40,0.28), 0 2px 6px rgba(0,0,0,0.08);
       color: #6a3000;
     }
     /* ── Glass bubble — Connect (sage green) ── */
     .pillars-circle .node-connect {
-      top: 92%; left: 50%;
+      --a: 90deg;
       background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.90) 0%, rgba(158,210,152,0.70) 38%, rgba(68,148,62,0.60) 100%);
       box-shadow: inset 0 2px 14px rgba(255,255,255,0.85), inset 0 -6px 12px rgba(20,110,30,0.15), 0 8px 30px rgba(68,148,62,0.28), 0 2px 6px rgba(0,0,0,0.08);
       color: #0a4a0a;
@@ -1132,6 +1152,19 @@ window._selectAge = function(key) {
       <span class="p-tag">Strong bonds, strong minds</span>
     </div>
   </div>
+  <script>
+    (function(){
+      var circle = document.querySelector('.pillars-circle');
+      if(!circle) return;
+      if(!('IntersectionObserver' in window)){ circle.classList.add('orbiting'); return; }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ circle.classList.add('orbiting'); io.disconnect(); }
+        });
+      }, { threshold: 0.25 });
+      io.observe(circle);
+    })();
+  </script>
 
   <div class="pillars-grid-mobile grid-cols-1 sm:grid-cols-2 gap-4 px-1">
     <div class="sm:col-span-2 flex justify-center mb-2">
