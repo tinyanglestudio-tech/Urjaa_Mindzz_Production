@@ -1696,6 +1696,7 @@ function adminLogin() {
 const ADMIN_STATE_KEY = 'urjaa_admin_state';
 var _remoteLoaded = false;
 var _pendingSave  = false;
+var _userDirty    = false;
 let SUPABASE_URL = '';
 let SUPABASE_ANON_KEY = '';
 fetch('/api/config').then(function(r){return r.json();}).then(function(c){
@@ -1761,6 +1762,10 @@ function saveState() {
 
 var _autoSaveTimer = null;
 function autoSave() {
+  // Mark the session dirty the instant an edit happens (before the debounce),
+  // so a late Supabase fetch can't clobber an in-progress edit and re-push the
+  // stale value. See the guard in the init merge below.
+  _userDirty = true;
   clearTimeout(_autoSaveTimer);
   var el = document.getElementById('sync-status');
   if (el) { el.textContent = 'Saving...'; el.style.color = '#7c6100'; }
@@ -3485,12 +3490,12 @@ wireTextFields();
 
 // Pull latest from Supabase so admin edits sync across devices
 _fetchFromSupabase('admin_state').then(function(remote){
-  // If the user already edited before the remote fetch resolved, their edits
-  // win — merging remote here would clobber them and re-push the stale value.
-  if (_pendingSave) {
+  // If the user has edited anything (even mid-debounce, before the save fired),
+  // their edits win — merging remote here would clobber them and re-push the
+  // stale value, which is what made admin changes "revert to previous mode".
+  if (_userDirty || _pendingSave) {
     _remoteLoaded = true;
-    _pendingSave = false;
-    saveState();
+    if (_pendingSave) { _pendingSave = false; saveState(); }
     return;
   }
   if (remote && typeof remote === 'object') {
