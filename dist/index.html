@@ -227,7 +227,7 @@
     footer{padding-bottom:env(safe-area-inset-bottom)}
   }
 </style>
-  <script type="module" crossorigin src="/assets/main-BrJ1D4eX.js"></script>
+  <script type="module" crossorigin src="/assets/main-Po_PdsGL.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/main-BhBMKv1-.css">
 </head>
 <body class="bg-mesh text-on-surface">
@@ -661,6 +661,26 @@ window.__urjaaApplyLevelPrograms = function(levelPrograms) {
   }
 };
 
+// ── 5 Pillars (editable from admin → Our Story → 5 Pillars) ───────────────
+// Each pillar maps to a fixed slot/position; updates the desktop circle nodes
+// and the mobile cards in place.
+var PILLAR_SLOTS = ['love','stimulate','explore','connect','bloom'];
+window.__urjaaApplyPillars = function(pillars) {
+  if (!pillars || !pillars.length) return;
+  pillars.forEach(function(p, i) {
+    var slot = p.slot || PILLAR_SLOTS[i];
+    if (!slot) return;
+    document.querySelectorAll('[data-pillar="' + slot + '"]').forEach(function(el){
+      var emojiEl = el.querySelector('.p-emoji, .pillar-emoji');
+      var nameEl  = el.querySelector('.p-name, .pillar-title');
+      var tagEl   = el.querySelector('.p-tag, .pillar-quote');
+      if (emojiEl && p.emoji) emojiEl.textContent = p.emoji;
+      if (nameEl && p.title)  nameEl.textContent = p.title;
+      if (tagEl && p.quote)   tagEl.textContent = el.classList.contains('pillar-node') ? p.quote : '“' + p.quote + '”';
+    });
+  });
+};
+
 // ── PDF Guides ───────────────────────────────────────────────────────────
 var AGE_PDFS = {};
 
@@ -1087,27 +1107,27 @@ window._selectAge = function(key) {
     <div class="pillar-center">
       <img src="12.jpeg" data-img-id="pillar-center" alt="Urjaa Mindz Nurturing Pillars" />
     </div>
-    <div class="pillar-node node-love">
+    <div class="pillar-node node-love" data-pillar="love">
       <span class="p-emoji">💞</span>
       <span class="p-name">Love</span>
       <span class="p-tag">Foundation of every brilliant mind</span>
     </div>
-    <div class="pillar-node node-explore">
+    <div class="pillar-node node-explore" data-pillar="explore">
       <span class="p-emoji">🌈</span>
       <span class="p-name">Explore</span>
       <span class="p-tag">Learning through experience</span>
     </div>
-    <div class="pillar-node node-stimulate">
+    <div class="pillar-node node-stimulate" data-pillar="stimulate">
       <span class="p-emoji">🧠</span>
       <span class="p-name">Stimulate</span>
       <span class="p-tag">Activate the brain early</span>
     </div>
-    <div class="pillar-node node-bloom">
+    <div class="pillar-node node-bloom" data-pillar="bloom">
       <span class="p-emoji">🌱</span>
       <span class="p-name">Bloom</span>
       <span class="p-tag">Grow uniquely</span>
     </div>
-    <div class="pillar-node node-connect">
+    <div class="pillar-node node-connect" data-pillar="connect">
       <span class="p-emoji">💖</span>
       <span class="p-name">Connect</span>
       <span class="p-tag">Strong bonds, strong minds</span>
@@ -1120,25 +1140,25 @@ window._selectAge = function(key) {
         <img src="12.jpeg" data-img-id="pillar-center" alt="Urjaa Mindz Nurturing Pillars" style="width:100%;height:100%;object-fit:contain;border-radius:50%"/>
       </div>
     </div>
-    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-secondary/30">
-      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">💞</span><h3 class="serif-text text-2xl font-bold text-secondary">Love</h3></div>
-      <p class="text-sm italic text-on-secondary-container">"The foundation of every brilliant mind"</p>
+    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-secondary/30" data-pillar="love">
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl pillar-emoji">💞</span><h3 class="serif-text text-2xl font-bold text-secondary pillar-title">Love</h3></div>
+      <p class="text-sm italic text-on-secondary-container pillar-quote">"The foundation of every brilliant mind"</p>
     </div>
-    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-primary/30">
-      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">🧠</span><h3 class="serif-text text-2xl font-bold text-primary">Stimulate</h3></div>
-      <p class="text-sm italic text-on-primary-container">"Activate the brain in the early years"</p>
+    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-primary/30" data-pillar="stimulate">
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl pillar-emoji">🧠</span><h3 class="serif-text text-2xl font-bold text-primary pillar-title">Stimulate</h3></div>
+      <p class="text-sm italic text-on-primary-container pillar-quote">"Activate the brain in the early years"</p>
     </div>
-    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-tertiary/30">
-      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">🌈</span><h3 class="serif-text text-2xl font-bold text-tertiary">Explore</h3></div>
-      <p class="text-sm italic text-on-tertiary-container">"Learning through experience"</p>
+    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-tertiary/30" data-pillar="explore">
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl pillar-emoji">🌈</span><h3 class="serif-text text-2xl font-bold text-tertiary pillar-title">Explore</h3></div>
+      <p class="text-sm italic text-on-tertiary-container pillar-quote">"Learning through experience"</p>
     </div>
-    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-secondary/20">
-      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">💖</span><h3 class="serif-text text-2xl font-bold text-secondary">Connect</h3></div>
-      <p class="text-sm italic text-on-secondary-container">"Strong bonds create strong minds"</p>
+    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-secondary/20" data-pillar="connect">
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl pillar-emoji">💖</span><h3 class="serif-text text-2xl font-bold text-secondary pillar-title">Connect</h3></div>
+      <p class="text-sm italic text-on-secondary-container pillar-quote">"Strong bonds create strong minds"</p>
     </div>
-    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-primary/20">
-      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">🌱</span><h3 class="serif-text text-2xl font-bold text-primary">Bloom</h3></div>
-      <p class="text-sm italic text-on-primary-container">"Every child grows in their own unique way"</p>
+    <div class="glass-card rounded-2xl p-6 soft-card border-b-4 border-primary/20" data-pillar="bloom">
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl pillar-emoji">🌱</span><h3 class="serif-text text-2xl font-bold text-primary pillar-title">Bloom</h3></div>
+      <p class="text-sm italic text-on-primary-container pillar-quote">"Every child grows in their own unique way"</p>
     </div>
   </div>
 </section>

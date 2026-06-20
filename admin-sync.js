@@ -73,22 +73,9 @@
 
   function applyPillars(s){
     if(!s.pillars || !s.pillars.length) return;
-    var container = listAt('[data-sync-list="pillars"]');
-    if (!container) {
-      var anchor = document.querySelector('.pillar-love');
-      if (anchor) container = anchor.parentElement;
-    }
-    if (!container) return;
-    container.innerHTML = s.pillars.map(function(p,i){
-      return '<div class="glass-card rounded-2xl p-7 soft-card border-b-4 border-secondary/30'+(i===0?' sm:col-span-2 lg:col-span-1':'')+'">'+
-        '<div class="flex items-center gap-3 mb-3">'+
-          '<span class="text-3xl">'+esc(p.emoji)+'</span>'+
-          '<h3 class="serif-text text-2xl font-bold text-secondary">'+esc(p.title)+'</h3>'+
-        '</div>'+
-        '<p class="text-sm text-on-secondary-container font-medium mb-4 italic">&ldquo;'+esc(p.quote)+'&rdquo;</p>'+
-        '<div class="bg-white/50 px-4 py-2 rounded-xl"><p class="text-xs font-bold text-secondary">'+esc(p.focus)+'</p></div>'+
-      '</div>';
-    }).join('');
+    // The 5 Pillars are a fixed circular layout on the site; update the existing
+    // nodes/cards in place by slot rather than rebuilding a container.
+    if (window.__urjaaApplyPillars) window.__urjaaApplyPillars(s.pillars);
   }
 
   function applyPhilCards(s){

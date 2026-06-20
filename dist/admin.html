@@ -1805,11 +1805,11 @@ let state = {
     { id:3, label:'Wisdom in Community',   img:'wisdom-comm' },
   ],
   pillars: [
-    { id:1, emoji:'💞', title:'Love',      quote:'The foundation of every brilliant mind',    focus:'Emotional bonding, Safe environment, Positive reinforcement' },
-    { id:2, emoji:'🧠', title:'Stimulate', quote:'Activate the brain in the early years',      focus:'Memory & concentration, Cognitive development' },
-    { id:3, emoji:'🌈', title:'Explore',   quote:'Learning through experience',                focus:'Sensory play, Hands-on activities' },
-    { id:4, emoji:'💖', title:'Connect',   quote:'Strong bonds create strong minds',           focus:'Bonding, Emotional expression, Trust' },
-    { id:5, emoji:'🌱', title:'Bloom',     quote:"Every child grows in their own unique way",  focus:'Confidence building, Creativity, Holistic growth' },
+    { id:1, slot:'love',      emoji:'💞', title:'Love',      quote:'The foundation of every brilliant mind' },
+    { id:2, slot:'stimulate', emoji:'🧠', title:'Stimulate', quote:'Activate the brain in the early years' },
+    { id:3, slot:'explore',   emoji:'🌈', title:'Explore',   quote:'Learning through experience' },
+    { id:4, slot:'connect',   emoji:'💖', title:'Connect',   quote:'Strong bonds create strong minds' },
+    { id:5, slot:'bloom',     emoji:'🌱', title:'Bloom',     quote:"Every child grows in their own unique way" },
   ],
   levelPrograms: {
     '0-6':  { level:1, ageLabel:'0–6 Months',   ageSub:'Newborn',  name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.', focusAreas:['Visual Development','Auditory Development','Sensory Exploration','Brain Stimulation','Motor Skills (Tummy Time)','Emotional Bonding'] },
@@ -2341,57 +2341,32 @@ function renderHome() {
   makeImageField('founders', 'img-founders');
   makeImageField('pillar-center', 'img-pillar-center');
 
-  // Pillars — CRUD
+  // Pillars — fixed set of 5, edited in place (drives the 5 Pillars circle on the site)
   const pillarsList = document.getElementById('pillars-list');
   if (pillarsList) {
-    pillarsList.innerHTML = `
-      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <button class="topbar-btn primary" style="font-size:12px;padding:7px 14px" onclick="addPillar()">
-          <span class="material-symbols-outlined" style="font-size:15px">add</span> Add Pillar
-        </button>
-      </div>` +
+    pillarsList.innerHTML =
+      `<div style="font-size:12px;color:#94918a;margin-bottom:12px">Edit the 5 nurturing pillars shown on the Our Story page. Emoji, name and tagline update live on the site.</div>` +
       state.pillars.map(p => `
         <div style="border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,0.5)">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
             <span style="font-size:20px">${p.emoji}</span>
             <span style="font-size:13px;font-weight:700;flex:1">${p.title}</span>
-            <button class="ws-btn delete" onclick="deletePillar(${p.id})"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
           </div>
           <div class="field-row" style="margin-bottom:8px">
-            <input class="field-input" value="${p.emoji}" placeholder="Emoji" onchange="updatePillar(${p.id},'emoji',this.value)"/>
-            <input class="field-input" value="${p.title}" placeholder="Title" onchange="updatePillar(${p.id},'title',this.value)"/>
+            <div class="field"><div class="field-label">Emoji</div><input class="field-input" value="${p.emoji}" onchange="updatePillar(${p.id},'emoji',this.value)"/></div>
+            <div class="field"><div class="field-label">Name</div><input class="field-input" value="${p.title}" onchange="updatePillar(${p.id},'title',this.value)"/></div>
           </div>
-          <div class="field-row">
-            <input class="field-input" value="${p.quote}" placeholder="Quote" onchange="updatePillar(${p.id},'quote',this.value)"/>
-            <input class="field-input" value="${p.focus}" placeholder="Focus areas" onchange="updatePillar(${p.id},'focus',this.value)"/>
-          </div>
+          <div class="field"><div class="field-label">Tagline</div><input class="field-input" value="${p.quote}" onchange="updatePillar(${p.id},'quote',this.value)"/></div>
         </div>`).join('');
   }
 }
 
 
-// ── Pillar CRUD ────────────────────────────────────────────────────────────
-function addPillar() {
-  openItemModal('Add Nurturing Pillar', [
-    { id:'emoji', label:'Emoji', placeholder:'e.g. 🌟', value:'' },
-    { id:'title', label:'Pillar Title', placeholder:'e.g. Wonder', value:'' },
-    { id:'quote', label:'Tagline Quote', placeholder:'Short inspiring quote…', value:'' },
-    { id:'focus', label:'Focus Areas', placeholder:'Comma-separated areas', value:'' },
-  ], (vals) => {
-    if (!vals.title) return;
-    state.pillars.push({ id:Date.now(), emoji:vals.emoji||'⭐', title:vals.title, quote:vals.quote, focus:vals.focus });
-    autoSave(); renderHome(); toast('Pillar added!');
-  });
-}
+// ── Pillar editing (fixed set of 5) ──────────────────────────────────────────
 function updatePillar(id, field, val) {
   const p = state.pillars.find(x => x.id === id);
   if (p) p[field] = val;
   autoSave();
-}
-function deletePillar(id) {
-  if (!confirm('Delete this pillar?')) return;
-  state.pillars = state.pillars.filter(x => x.id !== id); autoSave();
-  renderHome(); toast('Pillar deleted');
 }
 
 function renderPrograms() {
