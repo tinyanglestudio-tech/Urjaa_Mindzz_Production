@@ -1699,7 +1699,7 @@ var _pendingSave  = false;
 var _userDirty    = false;
 let SUPABASE_URL = '';
 let SUPABASE_ANON_KEY = '';
-fetch('/api/config').then(function(r){return r.json();}).then(function(c){
+var _configReady = fetch('/api/config').then(function(r){return r.json();}).then(function(c){
   SUPABASE_URL = c.supabaseUrl || '';
   SUPABASE_ANON_KEY = c.supabaseAnonKey || '';
 }).catch(function(){});
@@ -3387,7 +3387,11 @@ showPage('dashboard');
 loadWebhookSettings();
 wireTextFields();
 
-// Pull latest from Supabase so admin edits sync across devices
+// Pull latest from Supabase so admin edits sync across devices.
+// Wait for /api/config first so SUPABASE_URL is populated before any request —
+// otherwise the first fetch hits a relative URL, 404s, and the admin falls back
+// to seeding defaults over real data.
+_configReady.then(function(){
 _fetchFromSupabase('admin_state').then(function(remote){
   // If the user has edited anything (even mid-debounce, before the save fired),
   // their edits win — merging remote here would clobber them and re-push the
@@ -3447,6 +3451,7 @@ _fetchFromSupabase('webhook_settings').then(function(remote){
       loadWebhookSettings();
     } catch(e){}
   }
+});
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
