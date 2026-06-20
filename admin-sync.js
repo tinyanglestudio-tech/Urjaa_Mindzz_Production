@@ -28,19 +28,14 @@
   }
   function listAt(selector){ return document.querySelector(selector); }
 
-  var TRANSPARENT_PX = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   function applyImages(s){
     if(!s.images) return;
     s.images.forEach(function(img){
-      // Admin is the source of truth: when no image is set, clear any stale
-      // baked-in image so nothing shows unless the admin provides one.
+      // When admin has no custom image, keep the page's baked-in default hero
+      // (e.g. Programs 0.png, Community 8.png, Our Story 22.png). For Programs,
+      // also drop any stale cached custom hero so the default shows again.
       if(!img.src){
-        var sel = 'img[data-img-id="'+img.id+'"]';
-        if (img.id === 'founders') sel += ', img[alt*="Founders"], img[alt*="Jayashree"]';
-        if (img.id === 'hero-bg')  sel += ', img[alt*="Mother and toddler"]';
-        document.querySelectorAll(sel).forEach(function(el){
-          if(el.getAttribute('src') !== TRANSPARENT_PX) el.src = TRANSPARENT_PX;
-        });
+        if (img.id === 'hero-banner') { try{localStorage.removeItem('urjaa_hero_src');}catch(e){} }
         return;
       }
       if(img.src.indexOf('data:') === 0) return;
