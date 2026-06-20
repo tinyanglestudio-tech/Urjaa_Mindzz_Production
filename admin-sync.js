@@ -106,21 +106,6 @@
     }).join('');
   }
 
-  function applyBubbles(s){
-    if(!s.bubbles || !s.bubbles.length) return;
-    var container = listAt('[data-sync-list="bubbles"]');
-    if(!container) return;
-    container.innerHTML = s.bubbles.map(function(b){
-      var src = imgOf(s, b.img) || '';
-      return '<div class="glass-card program-bubble soft-card border border-primary-container/20">'+
-        '<div style="width:130px;height:130px;min-width:130px;min-height:130px;border-radius:50%;overflow:hidden;margin-bottom:1.5rem;flex-shrink:0;box-shadow:0 4px 20px rgba(124,97,0,0.15)">'+
-          '<img alt="'+esc(b.title)+'" style="width:130px;height:130px;object-fit:cover;display:block" src="'+esc(src)+'"/>'+
-        '</div>'+
-        '<h3 class="font-[\'Noto_Serif\'] text-xl font-bold mb-3">'+esc(b.title)+'</h3>'+
-        '<p class="text-on-surface-variant text-sm mb-5">'+esc(b.desc)+'</p>'+
-      '</div>';
-    }).join('');
-  }
 
   function applyMontessori(s){
     if(!s.montessori || !s.montessori.length) return;
@@ -345,7 +330,6 @@
     try { applySections(s); } catch(e) { console.error(e); }
     try { applyPillars(s); } catch(e) { console.error(e); }
     try { applyPhilCards(s); } catch(e) { console.error(e); }
-    try { applyBubbles(s); } catch(e) { console.error(e); }
     try { applyMontessori(s); } catch(e) { console.error(e); }
     try { applyDIY(s); } catch(e) { console.error(e); }
     try { applyWorkshops(s); } catch(e) { console.error(e); }
