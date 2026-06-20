@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Programs & Workshops | Urjaa Mindz</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Noto+Serif+Devanagari:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <!-- ── Prevent browser scroll restoration jumping to wrong section ── -->
 <script>if('scrollRestoration'in history)history.scrollRestoration='manual';</script>
 <!-- ── Hero image: read from localStorage cache and preload instantly ── -->
@@ -331,7 +331,7 @@
 <section class="max-w-7xl mx-auto px-4 md:px-8 mb-10 md:mb-20 relative overflow-hidden pt-4 md:pt-6">
   <div id="hero-wrap" style="border-radius:1rem;overflow:hidden;min-height:220px;background:linear-gradient(135deg,rgba(252,204,56,0.13) 0%,rgba(167,70,50,0.08) 100%);position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.12)">
     <div id="hero-shimmer"></div>
-    <img data-img-id="hero-banner" src="0.png" alt="Every mother wonders how to nurture her child" loading="eager" fetchpriority="high" width="1200" height="630" onload="this.style.opacity='1';var s=document.getElementById('hero-shimmer');if(s)s.style.display='none';" style="width:100%;height:auto;display:block;border-radius:1rem;opacity:0;transition:opacity 0.35s ease;position:relative;z-index:2"/>
+    <video src="program-hero.mp4" poster="0.png" autoplay loop muted playsinline preload="auto" aria-label="Every mother wonders how to nurture her child" width="1200" height="630" onloadeddata="this.style.opacity='1';var s=document.getElementById('hero-shimmer');if(s)s.style.display='none';" style="width:100%;height:auto;display:block;border-radius:1rem;opacity:0;transition:opacity 0.35s ease;position:relative;z-index:2"></video>
     <!-- Swap in the cached hero URL during parse (before paint) so returning visitors with a custom hero see it instantly with no flash; 0.png stays the first-visit/no-JS default -->
     <script>(function(){try{var c=localStorage.getItem('urjaa_hero_src');if(!c)return;var i=document.currentScript.previousElementSibling;if(i&&i.getAttribute('data-img-id')==='hero-banner'&&i.getAttribute('src')!==c)i.src=c;}catch(e){}})();</script>
   </div>
@@ -1669,7 +1669,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
-
+
 
 <!-- Scroll Reveal Animations -->
 <style>

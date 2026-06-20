@@ -13,7 +13,7 @@ function copyPublicFilesPlugin() {
           try {
             const data = readFileSync(filePath);
             const ext = extname(url).toLowerCase();
-            const types = { '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml' };
+            const types = { '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp4': 'video/mp4' };
             if (types[ext]) {
               res.setHeader('Content-Type', types[ext]);
               res.end(data);
