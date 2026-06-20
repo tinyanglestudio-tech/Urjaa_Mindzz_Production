@@ -1808,7 +1808,7 @@ let state = {
     { id:'hero-bg',        label:'Our Story — Hero Background',     page:'Home',      src:'2.jpeg' },
     { id:'founders',       label:'Our Story — Founders Photo',      page:'Home',      src:'4.jpeg' },
     { id:'pillar-center',  label:'Our Story — Pillars Centre Image',page:'Home',      src:'12.jpeg' },
-    { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'1.jpeg' },
+    { id:'hero-banner',    label:'Programs — Hero Banner',          page:'Programs',  src:'0.png' },
     { id:'comm-hero',      label:'Community — Hero Banner',         page:'Community', src:'3.jpeg' },
     { id:'growing',        label:'Community — Growing Together',    page:'Community', src:'0.png' },
     { id:'nurture-circle', label:'Community — Nurture Circle',      page:'Community', src:'8.png' },
@@ -2129,14 +2129,14 @@ function handleFileUpload(event, imgId) {
     if (input) input.value = publicUrl;
     toast('Image uploaded: ' + file.name);
   }).catch(function(err) {
+    // Do NOT fall back to a base64 data: URL — it looks like it worked in the
+    // preview but gets stripped on the next save and never reaches the live
+    // site, which previously caused images to "revert" silently. Surface the
+    // failure and keep the existing image instead.
     console.error('Upload error:', err);
-    toast('Upload failed - using local preview');
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      updateImageUrl(imgId, e.target.result);
-      if (input) input.value = 'Local preview (upload failed)';
-    };
-    reader.readAsDataURL(file);
+    var prev = (state.images.find(function(i){ return i.id === imgId; }) || {}).src || '';
+    if (input) input.value = prev;
+    toast('Upload failed — image NOT saved. Check connection and try again.');
   });
 }
 
@@ -3485,6 +3485,14 @@ wireTextFields();
 
 // Pull latest from Supabase so admin edits sync across devices
 _fetchFromSupabase('admin_state').then(function(remote){
+  // If the user already edited before the remote fetch resolved, their edits
+  // win — merging remote here would clobber them and re-push the stale value.
+  if (_pendingSave) {
+    _remoteLoaded = true;
+    _pendingSave = false;
+    saveState();
+    return;
+  }
   if (remote && typeof remote === 'object') {
     for (var k in remote) {
       if (Object.prototype.hasOwnProperty.call(remote, k) && k !== 'currentPage') {
