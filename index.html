@@ -569,13 +569,19 @@ const AGES = [
   { key:'24-36', emoji:'🌟', label:'24–36 Months', sub:'Big Kid' },
 ];
 
-const btnGroup = document.getElementById('age-btn-group');
-btnGroup.innerHTML = AGES.map(a => `
-  <button class="age-btn" data-age="${a.key}" onclick="window._selectAge('${a.key}')">
-    <span class="age-emoji">${a.emoji}</span>
-    <span class="age-label">${a.label}</span>
-    <span class="age-range">${a.sub}</span>
-  </button>`).join('');
+function renderAgeButtons() {
+  var btnGroup = document.getElementById('age-btn-group');
+  if (!btnGroup) return;
+  var sel = document.querySelector('.age-btn.selected');
+  var selKey = sel ? sel.dataset.age : null;
+  btnGroup.innerHTML = AGES.map(a => `
+    <button class="age-btn${a.key===selKey?' selected':''}" data-age="${a.key}" onclick="window._selectAge('${a.key}')">
+      <span class="age-emoji">${a.emoji}</span>
+      <span class="age-label">${a.label}</span>
+      <span class="age-range">${a.sub}</span>
+    </button>`).join('');
+}
+renderAgeButtons();
 
 // ── Level Program Data ───────────────────────────────────────────────
 // Default icons for focus area mapping
@@ -638,7 +644,22 @@ window.__urjaaApplyLevelPrograms = function(levelPrograms) {
         return {icon: FOCUS_ICONS[title] || '✨', title: title, bg: FOCUS_BGS[i % FOCUS_BGS.length]};
       });
     }
+    // Editable age-group label + subtitle (from admin Levels tab)
+    var ageItem = AGES.find(function(a){ return a.key === key; });
+    if (ageItem) {
+      if (lp.ageLabel) ageItem.label = lp.ageLabel;
+      if (lp.ageSub)   ageItem.sub   = lp.ageSub;
+    }
   });
+  // Re-render the age buttons with updated labels (preserves selection)
+  renderAgeButtons();
+  // If a level is already open, refresh its header range label
+  var sel = document.querySelector('.age-btn.selected');
+  if (sel) {
+    var a = AGES.find(function(x){ return x.key === sel.dataset.age; });
+    var hdr = document.getElementById('level-age-range');
+    if (a && hdr) hdr.textContent = a.label;
+  }
 };
 
 // ── PDF Guides ───────────────────────────────────────────────────────────

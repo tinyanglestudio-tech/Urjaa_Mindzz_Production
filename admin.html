@@ -1270,7 +1270,6 @@ function adminLogin() {
       <div class="tabs" id="programs-tabs">
         <button class="tab active" onclick="switchTab('programs','hero')"><span class="material-symbols-outlined">star</span> Hero</button>
         <button class="tab" onclick="switchTab('programs','levels')"><span class="material-symbols-outlined">school</span> Levels</button>
-        <button class="tab" onclick="switchTab('programs','agesel')"><span class="material-symbols-outlined">picture_as_pdf</span> PDF Guides</button>
         <button class="tab" onclick="switchTab('programs','bubbles')"><span class="material-symbols-outlined">bubble_chart</span> Brain Programs</button>
       </div>
 
@@ -1312,25 +1311,6 @@ function adminLogin() {
       </div>
 
 
-
-      <div id="programs-tab-agesel" style="display:none">
-        <div class="card">
-          <div class="card-header" onclick="toggleCard(this)">
-            <div class="card-header-icon" style="background:rgba(124,97,0,0.1)"><span class="material-symbols-outlined" style="color:#7c6100">picture_as_pdf</span></div>
-            <div><div class="card-header-title">PDF Guides</div><div class="card-header-sub">Downloadable PDF guides per age group</div></div>
-            <div class="card-toggle"><span class="material-symbols-outlined" style="font-size:18px;color:#999">expand_more</span></div>
-          </div>
-          <div class="card-body open">
-            <div class="tabs" style="margin-bottom:16px">
-              <button class="tab active" onclick="switchAgeTab('0-6')">0–6 Mo</button>
-              <button class="tab" onclick="switchAgeTab('6-12')">6–12 Mo</button>
-              <button class="tab" onclick="switchAgeTab('12-24')">12–24 Mo</button>
-              <button class="tab" onclick="switchAgeTab('24-36')">24–36 Mo</button>
-            </div>
-            <div id="age-editor-panel"></div>
-          </div>
-        </div>
-      </div>
 
       <div id="programs-tab-bubbles" style="display:none">
         <div class="card">
@@ -1848,10 +1828,10 @@ let state = {
     { id:3, title:'Cognitive Activation',  desc:'Advanced problem-solving games that stimulate critical thinking.',                   img:'cognitive' },
   ],
   levelPrograms: {
-    '0-6':  { level:1, name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.', focusAreas:['Visual Development','Auditory Development','Sensory Exploration','Brain Stimulation','Motor Skills (Tummy Time)','Emotional Bonding'] },
-    '6-12': { level:2, name:'Explore & Learn', tagline:'Nurturing curiosity, communication, and focus during the most absorbent learning phase.', focusAreas:['Cognitive Development','Language Development','Visual Development','Sensory Exploration','Attention & Focus','Early Knowledge Building'] },
-    '12-24':{ level:3, name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.', focusAreas:['Cognitive Development','Fine Motor Skills','Visual Development','Language Development','Coordination (Bilateral)','Attention & Focus','Sensory Exploration'] },
-    '24-36':{ level:4, name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.', focusAreas:['Cognitive & Logical Development','Fine Motor Skills','Creativity & Imagination','Language & Communication','Visual Skills','Focus & Attention','Sensory Play','Early Maths Skills'] },
+    '0-6':  { level:1, ageLabel:'0–6 Months',   ageSub:'Newborn',  name:'Sense & See',    tagline:'Right stimulation at the right age – building brain connections from day one.', focusAreas:['Visual Development','Auditory Development','Sensory Exploration','Brain Stimulation','Motor Skills (Tummy Time)','Emotional Bonding'] },
+    '6-12': { level:2, ageLabel:'6–12 Months',  ageSub:'Explorer', name:'Explore & Learn', tagline:'Nurturing curiosity, communication, and focus during the most absorbent learning phase.', focusAreas:['Cognitive Development','Language Development','Visual Development','Sensory Exploration','Attention & Focus','Early Knowledge Building'] },
+    '12-24':{ level:3, ageLabel:'12–24 Months', ageSub:'Toddler',  name:'Think & Do',      tagline:'Hands-on play-based developmental program for cognitive, motor, language & coordination skills.', focusAreas:['Cognitive Development','Fine Motor Skills','Visual Development','Language Development','Coordination (Bilateral)','Attention & Focus','Sensory Exploration'] },
+    '24-36':{ level:4, ageLabel:'24–36 Months', ageSub:'Big Kid',  name:'Create & Solve',  tagline:'Skill-building program for logic, creativity, and early academic readiness.', focusAreas:['Cognitive & Logical Development','Fine Motor Skills','Creativity & Imagination','Language & Communication','Visual Skills','Focus & Attention','Sensory Play','Early Maths Skills'] },
   },
   pdfGuides: { '0-6':[], '6-12':[], '12-24':[], '24-36':[] },
   articles: [],
@@ -2430,13 +2410,6 @@ function deletePillar(id) {
   renderHome(); toast('Pillar deleted');
 }
 
-function switchAgeTab(ageKey) {
-  document.querySelectorAll('#programs-tab-agesel .tabs .tab').forEach(t => {
-    t.classList.toggle('active', t.getAttribute('onclick') && t.getAttribute('onclick').includes(ageKey));
-  });
-  renderAgeEditor(ageKey);
-}
-
 function renderPrograms() {
   makeImageField('hero-banner', 'img-prog-hero');
 
@@ -2465,8 +2438,6 @@ function renderPrograms() {
           <div style="min-width:180px">${makeInlineImgField(b.img)}</div>
         </div>
       </div>`).join('');
-
-  renderAgeEditor('0-6');
 }
 
 // ── Bubble CRUD ──────────────────────────────────────────────────────────
@@ -2508,25 +2479,10 @@ function makeInlineImgField(imgId) {
   </div>`;
 }
 
-function renderAgeEditor(ageKey) {
-  const ageLabels = { '0-6':'0–6 Months', '6-12':'6–12 Months', '12-24':'12–24 Months', '24-36':'24–36 Months' };
-  const panel = document.getElementById('age-editor-panel');
-  if (!panel) return;
-
-  // NOTE: Level name, tagline and focus areas for each age group are edited in
-  // the "Levels" tab (those are what actually render on the website). This tab
-  // only manages the downloadable PDF guides per age group.
-  panel.innerHTML = `
-    <!-- PDF Guides -->
-    <div style="background:rgba(124,97,0,0.04);border:1.5px solid rgba(124,97,0,0.15);border-radius:14px;padding:16px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div style="font-size:13px;font-weight:700;color:#7c6100">📄 PDF Guides — ${ageLabels[ageKey]}</div>
-        <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addPdf('${ageKey}')">
-          <span class="material-symbols-outlined" style="font-size:13px">add</span> Add PDF
-        </button>
-      </div>
-      <div id="pdf-admin-list-${ageKey}">${renderPdfAdminList(ageKey)}</div>
-    </div>`;
+// Re-render just one level's PDF list in place (PDFs live inside the Levels tab)
+function refreshPdfList(ageKey) {
+  var el = document.getElementById('pdf-admin-list-' + ageKey);
+  if (el) el.innerHTML = renderPdfAdminList(ageKey);
 }
 
 // ── PDF Guides CRUD ──────────────────────────────────────────────────────
@@ -2561,7 +2517,7 @@ function addPdf(ageKey) {
   }
   if (!Array.isArray(state.pdfGuides[ageKey])) state.pdfGuides[ageKey] = [];
   state.pdfGuides[ageKey].push({ id: Date.now(), title: '', desc: '', url: '' });
-  autoSave(); renderAgeEditor(ageKey); toast('PDF row added — fill in title and upload or paste URL');
+  autoSave(); refreshPdfList(ageKey); toast('PDF row added — fill in title and upload or paste URL');
 }
 
 function deletePdf(ageKey, id) {
@@ -2569,7 +2525,7 @@ function deletePdf(ageKey, id) {
   if (state.pdfGuides && state.pdfGuides[ageKey]) {
     state.pdfGuides[ageKey] = state.pdfGuides[ageKey].filter(function(p){ return p.id !== id; });
   }
-  autoSave(); renderAgeEditor(ageKey); toast('PDF removed');
+  autoSave(); refreshPdfList(ageKey); toast('PDF removed');
 }
 
 function updatePdf(ageKey, id, field, val) {
@@ -2597,43 +2553,12 @@ function handlePdfUpload(event, ageKey, id) {
     if (!r.ok) throw new Error('Upload failed: ' + r.status);
     var publicUrl = SUPABASE_URL + '/storage/v1/object/public/site-images/' + path;
     updatePdf(ageKey, id, 'url', publicUrl);
-    renderAgeEditor(ageKey);
+    refreshPdfList(ageKey);
     toast('✓ PDF uploaded: ' + file.name);
   }).catch(function(err) {
     console.error('PDF upload error:', err);
     toast('Upload failed — paste the PDF URL manually');
   });
-}
-
-function getMilestoneTitle(k) {
-  const m = { '0-6':'Sensory Awakening & Bonding', '6-12':'Motor Skills & Object Permanence', '12-24':'Walking, Talking & Symbolic Play', '24-36':'Language, Logic & Emotional Regulation' };
-  return m[k] || '';
-}
-function getMilestoneImg(k) {
-  const m = { '0-6':'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=800&q=80', '6-12':'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&q=80', '12-24':'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=800&q=80', '24-36':'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80' };
-  return m[k] || '';
-}
-function getMilestoneDesc(k) {
-  const m = { '0-6':'Your baby is discovering the world through their senses. They recognise your voice, track moving objects, and begin social smiling.', '6-12':'Baby begins sitting, crawling, and pulling to stand. They understand that objects exist even when hidden — a huge cognitive leap.', '12-24':'First steps mark a revolution in independence. Vocabulary explodes from first words to 50+ by age 2.', '24-36':'Sentences grow from 2 words to full stories. Toddlers ask "Why?" constantly — this is curiosity doing its best work.' };
-  return m[k] || '';
-}
-function getFocusAreas(k) {
-  const data = {
-    '0-6':   [{icon:'👁️',title:'Visual Tracking',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80',desc:'High-contrast images and slow movement'},{icon:'👂',title:'Auditory Stimulation',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Soft music and natural sounds'},{icon:'🤲',title:'Tactile Exploration',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80',desc:'Different textures and skin contact'},{icon:'💞',title:'Emotional Bonding',img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=400&q=80',desc:'Eye contact and responsive caregiving'}],
-    '6-12':  [{icon:'🧠',title:'Cognitive Growth',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80',desc:'Object permanence games'},{icon:'✋',title:'Fine Motor',img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80',desc:'Picking up small objects'},{icon:'🗣️',title:'Language Seeds',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Babbling and board books'},{icon:'🏃',title:'Gross Motor',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80',desc:'Crawling and sitting'}],
-    '12-24': [{icon:'🎭',title:'Pretend Play',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',desc:'Role-play scenarios'},{icon:'🔤',title:'Language Explosion',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Naming and pointing'},{icon:'🧩',title:'Problem Solving',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80',desc:'Shape sorters and puzzles'},{icon:'🎨',title:'Creative Expression',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&q=80',desc:'Finger painting and crayons'}],
-    '24-36': [{icon:'🔢',title:'Early Numeracy',img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400&q=80',desc:'Counting and sorting'},{icon:'🗺️',title:'Memory & Recall',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400&q=80',desc:'Retelling stories'},{icon:'🫂',title:'Emotional Intelligence',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=400&q=80',desc:'Naming feelings'},{icon:'🔬',title:'Scientific Curiosity',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400&q=80',desc:'Simple experiments'}],
-  };
-  return data[k] || [];
-}
-function getActivities(k) {
-  const data = {
-    '0-6':   [{text:'Black & white high-contrast cards',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80'},{text:'Gentle tummy time on a soft mat',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Sing the same lullaby daily',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'},{text:'Narrate everything you do while feeding',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Soft textured sensory book',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80'},{text:'Warm oil massage before bath',img:'https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=300&q=80'}],
-    '6-12':  [{text:'Peek-a-boo with a soft cloth',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Stacking soft rings',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80'},{text:'Treasure basket exploration',img:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&q=80'},{text:'Mirror play',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Water play in shallow tub',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Crawl obstacle course',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80'}],
-    '12-24': [{text:'Pretend kitchen play',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80'},{text:'Shape sorter challenge',img:'https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=300&q=80'},{text:'Nature walk',img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80'},{text:'Finger painting',img:'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=300&q=80'},{text:'Block stacking towers',img:'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=300&q=80'},{text:'Reading the same book nightly',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'}],
-    '24-36': [{text:'Sorting games by colour',img:'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=300&q=80'},{text:'Bedtime retelling',img:'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=300&q=80'},{text:'Water and oil experiment',img:'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=300&q=80'},{text:'Feelings check-in cards',img:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=300&q=80'},{text:'Nature mandalas',img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80'},{text:'Simple board games',img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80'}],
-  };
-  return data[k] || [];
 }
 
 function renderCommunity() {
@@ -2887,7 +2812,17 @@ function renderLevels() {
     <div style="margin-bottom:20px;padding:20px;background:rgba(255,255,255,0.5);border-radius:16px;border:1px solid rgba(255,255,255,0.8)">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
         <span style="display:inline-block;background:linear-gradient(135deg,#7c6100,#5a4700);color:#fccc38;font-size:10px;font-weight:800;letter-spacing:0.1em;padding:4px 12px;border-radius:999px">LEVEL ${lp.level}</span>
-        <span style="font-size:13px;color:#94918a;font-weight:600">${ageLabels[key]}</span>
+        <span style="font-size:12px;color:#94918a;font-weight:600">Age group: ${ageLabels[key]}</span>
+      </div>
+      <div class="field-row" style="margin-bottom:10px">
+        <div class="field">
+          <div class="field-label">Age Range <span style="font-size:10px;color:#94918a">(button title on site)</span></div>
+          <input class="field-input" value="${lp.ageLabel || ageLabels[key]}" onchange="state.levelPrograms['${key}'].ageLabel=this.value;autoSave()"/>
+        </div>
+        <div class="field">
+          <div class="field-label">Nickname <span style="font-size:10px;color:#94918a">(subtitle, e.g. Newborn)</span></div>
+          <input class="field-input" value="${lp.ageSub || ''}" onchange="state.levelPrograms['${key}'].ageSub=this.value;autoSave()"/>
+        </div>
       </div>
       <div class="field" style="margin-bottom:10px">
         <div class="field-label">Level Name</div>
@@ -2897,9 +2832,18 @@ function renderLevels() {
         <div class="field-label">Tagline</div>
         <textarea class="field-input field-textarea" style="min-height:60px" onchange="state.levelPrograms['${key}'].tagline=this.value;autoSave()">${lp.tagline}</textarea>
       </div>
-      <div class="field">
+      <div class="field" style="margin-bottom:14px">
         <div class="field-label">Focus Areas <span style="font-size:10px;color:#94918a">(comma-separated)</span></div>
         <textarea class="field-input field-textarea" style="min-height:50px" onchange="state.levelPrograms['${key}'].focusAreas=this.value.split(',').map(s=>s.trim()).filter(Boolean);autoSave()">${lp.focusAreas.join(', ')}</textarea>
+      </div>
+      <div style="background:rgba(124,97,0,0.04);border:1.5px solid rgba(124,97,0,0.15);border-radius:12px;padding:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:13px;font-weight:700;color:#7c6100">📄 PDF Guides</div>
+          <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px" onclick="addPdf('${key}')">
+            <span class="material-symbols-outlined" style="font-size:13px">add</span> Add PDF
+          </button>
+        </div>
+        <div id="pdf-admin-list-${key}">${renderPdfAdminList(key)}</div>
       </div>
     </div>`;
   }).join('');
